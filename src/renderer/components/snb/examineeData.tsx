@@ -21,7 +21,7 @@ function ExamineeCard() {
     <>
       {isPopupOpen && <ExamineeInfoPopup onClose={() => setPopupOpen(false)} />}
       <ul
-        className="examinee-card flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300 cursor-pointer"
+        className="examinee-card flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300"
         onClick={() => {
           setPopupOpen(!isPopupOpen);
         }}
@@ -31,6 +31,17 @@ function ExamineeCard() {
         </li>
         <li className="examination-date">
           <p>2023-01-01 01:01</p>
+        </li>
+        <li className="btn-delete">
+          <button
+            type="button"
+            className="bg-transparent"
+            onClick={() => {
+              alert('버튼 클릭 시 출력되는 메시지 박스입니다.');
+            }}
+          >
+            삭제
+          </button>
         </li>
       </ul>
     </>
@@ -50,6 +61,7 @@ function ExamineeInfoPopup({ onClose }) {
             &times;
           </button>
         </div>
+
         <div className="pop-contents bg-white h-full p-10">
           <h2 className="text-2xl font-bold mb-4">피검사자 정보</h2>
           <p className="mb-4">이름: John Doe</p>
