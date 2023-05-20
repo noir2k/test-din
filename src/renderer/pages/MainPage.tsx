@@ -1,5 +1,5 @@
-import Header from 'renderer/components/header';
-import SNB from 'renderer/components/snb';
+import Header from 'renderer/components/main/header';
+import SNB from 'renderer/components/snb/snb';
 
 export default function MainPage() {
   return (
