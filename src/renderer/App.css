@@ -81,3 +81,13 @@ a:hover {
 .examinee-card {
   /* background-color: burlywood; */
 }
+
+/* examineeInfoForm.tsx */
+.progress-btn-wrapper {
+  width: 550px;
+}
+
+.progress-bar .active {
+  background-color: gray;
+  width: 2rem;
+}
