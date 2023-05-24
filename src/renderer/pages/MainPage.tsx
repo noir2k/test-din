@@ -5,7 +5,7 @@ import main_logo from '../../../assets/images/main_logo.png';
 import ico_home from '../../../assets/images/icons/icon_home.png';
 import ico_settings from '../../../assets/images/icons/icon_settings.png';
 import ico_user from '../../../assets/images/icons/icon_user.png';
-import ExamineeInfoForm from 'renderer/components/test/examineeInfoForm';
+import ExamineeInfoForm from '@components/test/testForm';
 
 export default function MainPage() {
   const [isNoticeVisible, setNoticeVisible] = useState(true);
