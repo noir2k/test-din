@@ -5,7 +5,7 @@ import main_logo from '../../../assets/images/main_logo.png';
 import ico_home from '../../../assets/images/icons/icon_home.png';
 import ico_settings from '../../../assets/images/icons/icon_settings.png';
 import ico_user from '../../../assets/images/icons/icon_user.png';
-import ExamineeInfoForm from '@components/test/testForm';
+import TestForm from 'renderer/components/test/testForm';
 
 export default function MainPage() {
   const [isNoticeVisible, setNoticeVisible] = useState(true);
@@ -82,7 +82,7 @@ export default function MainPage() {
                 />
               </li>
             </ul>
-            <div className="import-success-screen h-full">
+            <div className="import-success-screen overflow-y-auto">
               {/* examineeData 시작 */}
               <div className="examinee-data-wrapper">
                 <div className="data-text text-cyan-900 p-5">
@@ -99,7 +99,6 @@ export default function MainPage() {
                     피검사자명
                   </a>
                 </div>
-
                 {/* ExamineeCard 시작 */}
                 <div
                   className="cursor-pointer"
@@ -109,25 +108,12 @@ export default function MainPage() {
                     setNoticeVisible(false);
                   }}
                 >
-                  <ul className="examinee-card flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300">
-                    <li className="examinee-name">
-                      <p>TEST</p>
-                    </li>
-                    <li className="examination-date">
-                      <p>2023-01-01 01:01</p>
-                    </li>
-                    <li className="btn-delete">
-                      <button
-                        type="button"
-                        className="bg-transparent"
-                        onClick={() => {
-                          alert('버튼 클릭 시 출력되는 메시지 박스입니다.');
-                        }}
-                      >
-                        삭제
-                      </button>
-                    </li>
-                  </ul>
+                  <ExamineeCard />
+                  <ExamineeCard />
+                  <ExamineeCard />
+                  <ExamineeCard />
+                  <ExamineeCard />
+                  <ExamineeCard />
                 </div>
                 {/* ExamineeCard 끝 */}
               </div>
@@ -157,7 +143,7 @@ export default function MainPage() {
             >
               {isNoticeVisible && <Notice />}
               {isHistoryOpen && <History />}
-              {isTestStarted ? <ExamineeInfoForm /> : null}
+              {isTestStarted ? <TestForm /> : null}
             </div>
           </main>
         </div>
@@ -182,5 +168,29 @@ function History() {
     <h1 id="testText" className="text-slate-950">
       검사 기록입니다.
     </h1>
+  );
+}
+
+function ExamineeCard() {
+  return (
+    <ul className="examinee-card flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300">
+      <li className="examinee-name">
+        <p>TEST</p>
+      </li>
+      <li className="examination-date">
+        <p>2023-01-01 01:01</p>
+      </li>
+      <li className="btn-delete">
+        <button
+          type="button"
+          className="bg-transparent"
+          onClick={() => {
+            alert('버튼 클릭 시 출력되는 메시지 박스입니다.');
+          }}
+        >
+          삭제
+        </button>
+      </li>
+    </ul>
   );
 }
