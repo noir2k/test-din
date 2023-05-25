@@ -59,6 +59,8 @@ export default function TestForm() {
       </div>
       {currentPage === 0 && <ExamineeInfoForm />}
       {currentPage === 1 && <PreCheckScreen />}
+      {currentPage === 2 && <CheckScreen />}
+      {currentPage === 3 && <TestResult />}
     </div>
   );
 }
@@ -203,8 +205,8 @@ function PreCheckScreen() {
     setValue(newValue);
   };
 
-  const [digits, setDigits] = useState(['', '', '']); // 입력된 숫자를 분리 저장하는 상태 변수
-  const [currentIndex, setCurrentIndex] = useState(0); // 현재 입력할 숫자의 인덱스
+  const [digits, setDigits] = useState(['', '', '']);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNumberClick = (number) => {
     if (currentIndex < 3) {
@@ -322,6 +324,172 @@ function PreCheckScreen() {
         </button>
         <button type="button" className="w-36 h-14 bg-gray-300	 rounded-full">
           완료
+        </button>
+      </div>
+    </>
+  );
+}
+
+function CheckScreen() {
+  const [digits, setDigits] = useState(['', '', '']);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [count, setCount] = useState(1);
+  const [error, setError] = useState(false);
+  const totalQuestions = 25;
+
+  const handleNumberClick = (number) => {
+    if (currentIndex < 3) {
+      const updatedDigits = [...digits];
+      updatedDigits[currentIndex] = number;
+      setDigits(updatedDigits);
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const handleCheck = () => {
+    if (currentIndex === 3) {
+      if (count < totalQuestions) {
+        setCount(count + 1);
+        setDigits(['', '', '']);
+        setCurrentIndex(0);
+        setError(false);
+      }
+    } else {
+      setError(true);
+      alert('모든 숫자가 입력되지 않았습니다.');
+    }
+  };
+
+  const renderButtons = () => {
+    const buttons = [];
+    for (let i = 1; i <= 9; i++) {
+      buttons.push(
+        <div key={i} className="w-1/3 p-1">
+          <button
+            className="rounded-full bg-gray-300 w-16 h-16 text-2xl"
+            onClick={() => handleNumberClick(i.toString())}
+          >
+            {i}
+          </button>
+        </div>
+      );
+    }
+    // 간격 조절용 버튼
+    buttons.push(
+      <div key={-1} className="w-1/3">
+        <button className="hidden" disabled>
+          공백
+        </button>
+      </div>
+    );
+    // 간격 조절용 버튼 끝
+    buttons.push(
+      <div key={0} className="w-1/3">
+        <button
+          className="rounded-full bg-gray-300 w-16 h-16 text-2xl"
+          onClick={() => handleNumberClick('0')}
+        >
+          0
+        </button>
+      </div>
+    );
+    buttons.push(
+      <div key="confirm" className="w-1/3">
+        <button
+          className="rounded-full bg-gray-300 w-16 h-16 text-2xl"
+          onClick={handleCheck}
+        >
+          &#10003;
+        </button>
+      </div>
+    );
+    return buttons;
+  };
+
+  return (
+    <>
+      <h1 className="text-slate-950 text-center mb-11">테스트 진행 중</h1>
+
+      {/* 오른쪽 SNB 시작 */}
+      <div className="flex flex-col absolute end-0 text-slate-950 bg-white border-2 border-black box-border">
+        <div className="bg-green-200 p-5 border-b-2 border-black">
+          <p>검사현황</p>
+        </div>
+        <div className="p-5">
+          <p>검사 사운드 세트: List 1</p>
+          <p className="mt-5 mb-5">
+            사운드 제시 방향: Noise Left + Speech Right
+          </p>
+          <p>채점 방식: Digit Scoring</p>
+        </div>
+      </div>
+      {/* 오른쪽 SNB 끝 */}
+
+      <div className="text-center text-slate-950 mt-16">
+        <p>
+          {count}/{totalQuestions}
+        </p>
+      </div>
+
+      <div className="flex flex-col justify-center items-center text-center text-slate-950 w-64 mx-auto mt-24">
+        <div className="flex mt-3 mb-5">
+          {digits.map((digit, index) => (
+            <input
+              key={index}
+              type="text"
+              value={digit}
+              readOnly
+              className="w-1/3 text-center p-2 text-2xl border-b-2 border-black ml-3"
+            />
+          ))}
+        </div>
+        <div className="flex flex-wrap">{renderButtons()}</div>
+      </div>
+
+      <div className="flex justify-center items-center text-slate-950 mt-5">
+        <button type="button" className="w-36 h-14 bg-green-200 rounded-full">
+          중단하기
+        </button>
+      </div>
+    </>
+  );
+}
+
+function TestResult() {
+  return (
+    <>
+      <h1 className="text-slate-950 text-center mb-11">테스트 결과</h1>
+
+      {/* 오른쪽 SNB 시작 */}
+      <div className="flex flex-col absolute end-0 text-slate-950 bg-white border-2 border-black box-border">
+        <div className="bg-green-200 p-5 border-b-2 border-black">
+          <p>검사현황</p>
+        </div>
+        <div className="p-5">
+          <p>검사 사운드 세트: List 1</p>
+          <p className="mt-5 mb-5">
+            사운드 제시 방향: Noise Left + Speech Right
+          </p>
+          <p>채점 방식: Digit Scoring</p>
+        </div>
+      </div>
+      {/* 오른쪽 SNB 끝 */}
+
+      <div className="graph-wrapper flex justify-center items-center text-slate-950">
+        <div className="flex justify-center items-center border border-black w-1/2 h-96">
+          그래프 영역
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center text-slate-950 mt-10">
+        <button type="button" className="w-48 h-14 bg-green-200 rounded-full">
+          내 결과와 오버레이
+        </button>
+        <button type="button" className="w-48 h-14 bg-green-200 rounded-full">
+          PDF로 저장
+        </button>
+        <button type="button" className="w-48 h-14 bg-green-200 rounded-full">
+          저장 후 종료
         </button>
       </div>
     </>
