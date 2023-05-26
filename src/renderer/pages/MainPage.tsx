@@ -1,11 +1,12 @@
 /* eslint-disable camelcase */
 import { useState } from 'react';
-import ExamineeInfoPopup from 'renderer/components/snb/examineePopup';
-import main_logo from '../../../assets/images/main_logo.png';
-import ico_home from '../../../assets/images/icons/icon_home.png';
-import ico_settings from '../../../assets/images/icons/icon_settings.png';
-import ico_user from '../../../assets/images/icons/icon_user.png';
-import TestForm from 'renderer/components/test/testForm';
+import main_logo from '@assets/images/main_logo.png';
+import ico_home from '@assets/images/icons/icon_home.png';
+import ico_settings from '@assets/images/icons/icon_settings.png';
+import ico_user from '@assets/images/icons/icon_user.png';
+
+import ExamineeInfoPopup from '@components/snb/examineePopup';
+import TestForm from '@components/test/testForm';
 
 export default function MainPage() {
   const [isNoticeVisible, setNoticeVisible] = useState(true);
@@ -210,7 +211,7 @@ function ExamineeCard() {
 function Setting() {
   const [value, setValue] = useState(0);
 
-  const handleSliderChange = (e) => {
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
     setValue(newValue);
   };

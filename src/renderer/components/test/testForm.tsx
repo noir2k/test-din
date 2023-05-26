@@ -1,8 +1,7 @@
-/* eslint-disable camelcase */
-import ico_refresh from '../../../../assets/images/icons/icon_refresh.png';
-import ico_check from '../../../../assets/images/icons/icon_check.png';
-import ico_angle_left from '../../../../assets/images/icons/icon_angle_left.png';
-import ico_angle_right from '../../../../assets/images/icons/icon_angle_right.png';
+import ico_refresh from '@assets/images/icons/icon_refresh.png';
+import ico_check from '@assets/images/icons/icon_check.png';
+import ico_angle_left from '@assets/images/icons/icon_angle_left.png';
+import ico_angle_right from '@assets/images/icons/icon_angle_right.png';
 import { useState } from 'react';
 
 export default function TestForm() {
@@ -124,10 +123,10 @@ function ExamineeInfoForm() {
             </select>
           </li>
           <li className="flex justify-between items-center mb-5">
-            <label htmlFor="direction-select" className="w-48">
+            <label htmlFor="start-level" className="w-48">
               시작레벨
             </label>
-            <select id="direction-select" className="w-full">
+            <select id="start-level" className="w-full">
               <option value="-6">-6</option>
               <option value="-5">-5</option>
               <option value="-4">-4</option>
@@ -148,19 +147,19 @@ function ExamineeInfoForm() {
             </select>
           </li>
           <li className="flex justify-between items-center mb-5">
-            <label htmlFor="direction-select" className="w-48">
+            <label htmlFor="scoring-method" className="w-48">
               채점방식
             </label>
-            <select id="direction-select" className="w-full">
+            <select id="scoring-method" className="w-full">
               <option value="Digit Scoring">Digit Scoring</option>
               <option value="Tripet Scoring">Tripet Scoring</option>
             </select>
           </li>
           <li className="flex justify-between items-center mb-5">
-            <label htmlFor="direction-select" className="w-48">
+            <label htmlFor="sound-set" className="w-48">
               사운드세트
             </label>
-            <select id="direction-select" className="w-full">
+            <select id="sound-set" className="w-full">
               <option value="List 1">List 1</option>
               <option value="List 2">List 2</option>
               <option value="List 3">List 3</option>
@@ -200,7 +199,7 @@ function ExamineeInfoForm() {
 function PreCheckScreen() {
   const [value, setValue] = useState(0);
 
-  const handleSliderChange = (e) => {
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
     setValue(newValue);
   };
@@ -208,7 +207,7 @@ function PreCheckScreen() {
   const [digits, setDigits] = useState(['', '', '']);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleNumberClick = (number) => {
+  const handleNumberClick = (number: string) => {
     if (currentIndex < 3) {
       const updatedDigits = [...digits];
       updatedDigits[currentIndex] = number;
@@ -337,7 +336,7 @@ function CheckScreen() {
   const [error, setError] = useState(false);
   const totalQuestions = 25;
 
-  const handleNumberClick = (number) => {
+  const handleNumberClick = (number: string) => {
     if (currentIndex < 3) {
       const updatedDigits = [...digits];
       updatedDigits[currentIndex] = number;

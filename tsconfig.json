@@ -2,9 +2,10 @@
   "compilerOptions": {
     "baseUrl" : "./src",
     "paths" : {
-      "@components/*" : ["./renderer/components/*"],
-      "@hooks/*" : ["./renderer/hooks/*"],
-      "@store/*" : ["./renderer/store/*"],
+      "@assets/*": ["../assets/*"],
+      "@components/*": ["./renderer/components/*"],
+      "@hooks/*": ["./renderer/hooks/*"],
+      "@store/*": ["./renderer/store/*"],
     },
     "incremental": true,
     "target": "es2021",
