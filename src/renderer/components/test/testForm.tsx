@@ -87,8 +87,8 @@ function ExamineeInfoForm() {
             <p className="w-48">성별</p>
             <input
               type="text"
-              name="username"
-              id="username"
+              name="gender"
+              id="gender"
               className="border-b border-gray-300 focus:border-blue-500 w-full"
             />
           </li>
@@ -96,8 +96,8 @@ function ExamineeInfoForm() {
             <p className="w-48">생년월일</p>
             <input
               type="text"
-              name="username"
-              id="username"
+              name="birthDate"
+              id="birthDate"
               className="border-b border-gray-300 focus:border-blue-500 w-full"
             />
           </li>
@@ -105,8 +105,8 @@ function ExamineeInfoForm() {
             <p className="w-48">피검사자번호</p>
             <input
               type="text"
-              name="username"
-              id="username"
+              name="examineeId"
+              id="examineeId"
               className="border-b border-gray-300 focus:border-blue-500 w-full"
             />
           </li>

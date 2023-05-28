@@ -1,59 +1,33 @@
 /* eslint-disable camelcase */
 import { useState } from 'react';
-import main_logo from '@assets/images/main_logo.png';
-import ico_home from '@assets/images/icons/icon_home.png';
-import ico_settings from '@assets/images/icons/icon_settings.png';
-import ico_user from '@assets/images/icons/icon_user.png';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+  setNoticeVisible,
+  setHistoryOpen,
+  setSettingOpen,
+  setTestStarted,
+  RootState,
+} from '@store/index';
 
 import ExamineeInfoPopup from '@components/snb/examineePopup';
 import TestForm from '@components/test/testForm';
+import Header from '@components/header/header';
 
 export default function MainPage() {
-  const [isNoticeVisible, setNoticeVisible] = useState(true);
-  const [isHistoryOpen, setHistoryOpen] = useState(false);
-  const [isSettingOpen, setSettingOpen] = useState(false);
-  const [isTestStarted, setTestStarted] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
+
+  const state = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
+
+  const isNoticeVisible = state.isNoticeVisible.isNoticeVisible;
+  const isHistoryOpen = state.isHistoryOpen.isHistoryOpen;
+  const isTestStarted = state.isTestStarted.isTestStarted;
+  const isSettingOpen = state.isSettingOpen.isSettingOpen;
 
   return (
     <div>
-      {/* Header 시작 */}
-      <div id="gnb" className="gnb bg-green-200">
-        <nav className="nav flex justify-items-center mx-auto relative ">
-          <img
-            width="150vh"
-            src={main_logo}
-            alt="main_logo"
-            className="absolute left-10"
-          />
-          <ul className="flex items-end">
-            <li className="flex flex-none justify-center mx-10">
-              <a href="!#">
-                <img width="30vh" src={ico_user} alt="icon_home" />
-              </a>
-            </li>
-            <li className="flex flex-none justify-center">
-              <a
-                href="#!"
-                onClick={() => {
-                  setSettingOpen(true);
-                  setNoticeVisible(false);
-                  setHistoryOpen(false);
-                  setTestStarted(false);
-                }}
-              >
-                <img width="30vh" src={ico_settings} alt="icon_home" />
-              </a>
-            </li>
-            <li className="flex flex-auto justify-center">
-              <a href="!#">
-                <img width="30vh" src={ico_home} alt="icon_home" />
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      {/* Header 끝 */}
+      <Header />
       <div className="flex">
         <div className="w-3/12">
           {/* snb 시작 */}
@@ -113,10 +87,10 @@ export default function MainPage() {
                 <div
                   className="cursor-pointer"
                   onClick={() => {
-                    setHistoryOpen(true);
-                    setTestStarted(false);
-                    setNoticeVisible(false);
-                    setSettingOpen(false);
+                    dispatch(setHistoryOpen(true));
+                    dispatch(setTestStarted(false));
+                    dispatch(setNoticeVisible(false));
+                    dispatch(setSettingOpen(false));
                   }}
                 >
                   <ExamineeCard />
@@ -135,10 +109,10 @@ export default function MainPage() {
                 type="button"
                 className="bg-lime-400 text-cyan-900 w-2/3"
                 onClick={() => {
-                  setTestStarted(true);
-                  setNoticeVisible(false);
-                  setHistoryOpen(false);
-                  setSettingOpen(false);
+                  dispatch(setHistoryOpen(false));
+                  dispatch(setTestStarted(true));
+                  dispatch(setNoticeVisible(false));
+                  dispatch(setSettingOpen(false));
                 }}
               >
                 검사하기
@@ -155,7 +129,7 @@ export default function MainPage() {
             >
               {isNoticeVisible && <Notice />}
               {isHistoryOpen && <History />}
-              {isTestStarted ? <TestForm /> : null}
+              {isTestStarted && <TestForm />}
               {isSettingOpen && <Setting />}
             </div>
           </main>
