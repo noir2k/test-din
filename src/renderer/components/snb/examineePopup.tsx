@@ -1,4 +1,8 @@
-export default function ExamineeInfoPopup({ onClose }) {
+export default function ExamineeInfoPopup({
+  onClose,
+}: {
+  onClose: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}) {
   return (
     <div className="fixed inset-24 flex items-center justify-center text-cyan-900 z-50 w-full">
       <div className="shadow-lg">
