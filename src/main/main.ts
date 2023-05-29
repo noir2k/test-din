@@ -15,12 +15,28 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-assembler';
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
+}
+
+async function installExtensions(){
+  [REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS].forEach(extension => {
+    console.log(extension);
+    installExtension(extension, {
+      loadExtensionOptions: {
+        allowFileAccess: true,
+      },
+      forceDownload: !!process.env.UPGRADE_EXTENSIONS
+    })
+    .then((name) => console.log(`Added Extension: ${name}`))
+    .catch((err) => console.log(`"${extension}" An error occurred: `, err));
+  });
 }
 
 let mainWindow: BrowserWindow | null = null;
@@ -42,19 +58,6 @@ const isDebug =
 if (isDebug) {
   require('electron-debug')();
 }
-
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
-
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
-    .catch(console.log);
-};
 
 const createWindow = async () => {
   if (isDebug) {
