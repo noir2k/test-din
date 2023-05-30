@@ -1,5 +1,5 @@
 import RightSnb from '@components/snb/rightSnb';
-import { useNumberInput } from '@hooks/index';
+import { useNumberInput } from 'renderer/services/hook/index';
 
 export default function CheckScreen() {
   const hooks = useNumberInput();

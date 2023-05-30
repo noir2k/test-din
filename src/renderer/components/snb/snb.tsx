@@ -1,20 +1,19 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@store/index';
 
 import ExamineeCard from '@components/main/examineeCard';
 import ExamineeInfoPopup from './examineePopup';
 
-import {
-  setHistoryOpen,
-  setNoticeVisible,
-  setSettingOpen,
-  setTestStarted,
-} from '@store/index';
+import { setHistoryOpen, setTestStartOpen } from '@store/slices/popupToggle';
 
-export default function () {
+const snb = () => {
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const dispatch = useDispatch();
+  // will be removed
+  const popupToggle = useSelector((state: RootState) => state.popupToggle);
+  console.log(popupToggle);
 
   return (
     <div
@@ -70,12 +69,7 @@ export default function () {
           </div>
           <div
             className="cursor-pointer"
-            onClick={() => {
-              dispatch(setHistoryOpen(true));
-              dispatch(setTestStarted(false));
-              dispatch(setNoticeVisible(false));
-              dispatch(setSettingOpen(false));
-            }}
+            onClick={() => { dispatch(setHistoryOpen()); }}
           >
             <ExamineeCard />
             <ExamineeCard />
@@ -90,12 +84,7 @@ export default function () {
         <button
           type="button"
           className="bg-lime-400 text-cyan-900 w-2/3"
-          onClick={() => {
-            dispatch(setHistoryOpen(false));
-            dispatch(setTestStarted(true));
-            dispatch(setNoticeVisible(false));
-            dispatch(setSettingOpen(false));
-          }}
+          onClick={() => { dispatch(setTestStartOpen()); }}
         >
           검사하기
         </button>
@@ -103,3 +92,5 @@ export default function () {
     </div>
   );
 }
+
+export default snb;

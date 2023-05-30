@@ -4,8 +4,8 @@
     "paths" : {
       "@assets/*": ["../assets/*"],
       "@components/*": ["./renderer/components/*"],
-      "@hooks/*": ["./renderer/hooks/*"],
-      "@store/*": ["./renderer/store/*"],
+      "@hook/*": ["./renderer/services/hook/*"],
+      "@store/*": ["./renderer/services/store/*"],
     },
     "incremental": true,
     "target": "es2021",

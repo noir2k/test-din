@@ -1,5 +1,5 @@
-import { useNumberInput } from '@hooks/index';
 import { useState } from 'react';
+import { useNumberInput } from 'renderer/services/hook/index';
 
 export default function PreCheckScreen() {
   const [value, setValue] = useState(0);

@@ -9,13 +9,14 @@ import History from '@components/main/history';
 import Setting from '@components/main/setting';
 import Snb from '@components/snb/snb';
 
-export default function MainPage() {
-  const state = useSelector((state: RootState) => state);
+const MainPage = () => {
+  // const state = useSelector((state: RootState) => state);
+  const popupToggle = useSelector((state: RootState) => state.popupToggle);
 
-  const isNoticeVisible = state.isNoticeVisible.isNoticeVisible;
-  const isHistoryOpen = state.isHistoryOpen.isHistoryOpen;
-  const isTestStarted = state.isTestStarted.isTestStarted;
-  const isSettingOpen = state.isSettingOpen.isSettingOpen;
+  const isNoticeOpen = popupToggle.isNoticeOpen;
+  const isHistoryOpen = popupToggle.isHistoryOpen;
+  const isTestStartOpen = popupToggle.isTestStartOpen;
+  const isSettingOpen = popupToggle.isSettingOpen;
 
   return (
     <div>
@@ -30,9 +31,9 @@ export default function MainPage() {
               id="mainContent"
               className="flex justify-center items-center h-full"
             >
-              {isNoticeVisible && <Notice />}
+              {isNoticeOpen && <Notice />}
               {isHistoryOpen && <History />}
-              {isTestStarted && <TestForm />}
+              {isTestStartOpen && <TestForm />}
               {isSettingOpen && <Setting />}
             </div>
           </main>
@@ -41,3 +42,5 @@ export default function MainPage() {
     </div>
   );
 }
+
+export default MainPage;

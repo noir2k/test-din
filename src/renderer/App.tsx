@@ -1,6 +1,6 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { store } from './services/store';
 
 import 'tailwindcss/tailwind.css';
 import './App.css';

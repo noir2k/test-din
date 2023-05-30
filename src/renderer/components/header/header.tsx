@@ -1,17 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  setNoticeVisible,
-  setHistoryOpen,
-  setSettingOpen,
-  setTestStarted,
-} from '@store/index';
+import { useDispatch } from 'react-redux';
+
+import { setSettingOpen } from '@store/slices/popupToggle';
 
 import main_logo from '@assets/images/main_logo.png';
 import ico_home from '@assets/images/icons/icon_home.png';
 import ico_settings from '@assets/images/icons/icon_settings.png';
 import ico_user from '@assets/images/icons/icon_user.png';
 
-export default function Header() {
+const Header = () => {
   const dispatch = useDispatch();
 
   return (
@@ -33,12 +29,7 @@ export default function Header() {
             <li className="flex flex-none justify-center">
               <a
                 href="#!"
-                onClick={() => {
-                  dispatch(setSettingOpen(true));
-                  dispatch(setNoticeVisible(false));
-                  dispatch(setHistoryOpen(false));
-                  dispatch(setTestStarted(false));
-                }}
+                onClick={() => { dispatch(setSettingOpen()); }}
               >
                 <img width="30vh" src={ico_settings} alt="icon_home" />
               </a>
@@ -54,3 +45,5 @@ export default function Header() {
     </>
   );
 }
+
+export default Header;
