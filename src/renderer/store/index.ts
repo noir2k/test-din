@@ -1,4 +1,5 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
 
 interface NoticeState {
   isNoticeVisible: boolean;
@@ -68,6 +69,7 @@ export const store = configureStore({
     isSettingOpen: isSettingOpen.reducer,
     isTestStarted: isTestStarted.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

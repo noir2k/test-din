@@ -26,7 +26,8 @@ class AppUpdater {
 }
 
 async function installExtensions(){
-  [REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS].forEach(extension => {
+  // REACT_DEVELOPER_TOOLS not work!
+  [REDUX_DEVTOOLS].forEach(extension => {
     console.log(extension);
     installExtension(extension, {
       loadExtensionOptions: {
