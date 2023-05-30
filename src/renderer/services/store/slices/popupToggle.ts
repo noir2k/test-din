@@ -19,28 +19,28 @@ export const popupToggleSlice = createSlice({
   initialState,
   reducers: {
     setNoticeOpen: (state) => {
-      state.isNoticeOpen = !state.isNoticeOpen;
+      state.isNoticeOpen = true; //!state.isNoticeOpen;
       state.isHistoryOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
     },
     setHistoryOpen: (state) => {
       state.isNoticeOpen = false;
-      state.isHistoryOpen = !state.isHistoryOpen;
+      state.isHistoryOpen = true; //!state.isHistoryOpen;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
     },
     setSettingOpen: (state) => {
       state.isNoticeOpen = false;
       state.isHistoryOpen = false;
-      state.isSettingOpen = !state.isSettingOpen;
+      state.isSettingOpen = true; //!state.isSettingOpen;
       state.isTestStartOpen = false;
     },
     setTestStartOpen: (state) => {
       state.isNoticeOpen = false;
       state.isHistoryOpen = false;
       state.isSettingOpen = false;
-      state.isTestStartOpen = !state.isTestStartOpen;
+      state.isTestStartOpen = true; //!state.isTestStartOpen;
     },
   },
 });
