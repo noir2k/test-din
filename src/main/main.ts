@@ -13,7 +13,7 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
+import { resolveHtmlPath, loadDb } from './util';
 
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-assembler';
 
@@ -40,13 +40,13 @@ async function installExtensions(){
   });
 }
 
-let mainWindow: BrowserWindow | null = null;
+ipcMain.on('ipc', async (event, arg) => {
+  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
+  console.log(msgTemplate(arg));
+  event.reply('ipc', msgTemplate('pong'));
+});
 
-// ipcMain.on('ipc-example', async (event, arg) => {
-//   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-//   console.log(msgTemplate(arg));
-//   event.reply('ipc-example', msgTemplate('pong'));
-// });
+let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -85,6 +85,18 @@ const createWindow = async () => {
     },
   });
 
+  ipcMain.on('testDb', (event) => {
+    const webContents = event.sender;
+    const win = BrowserWindow.fromWebContents(webContents);
+    console.log(win);
+
+    const dbFileName = getAssetPath('/db/test-din.db');
+    console.log(dbFileName);
+
+    loadDb(dbFileName);
+    event.reply('testDb', 'pong');
+  });
+
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
@@ -114,6 +126,7 @@ const createWindow = async () => {
   // Remove this if your app does not use auto updates
   // new AppUpdater();
 };
+
 
 /**
  * Add event listeners...
