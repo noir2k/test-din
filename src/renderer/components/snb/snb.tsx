@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@store/index';
 
@@ -11,9 +11,16 @@ const snb = () => {
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   const dispatch = useDispatch();
-  // will be removed
+  // TODO: will be removed
   const popupToggle = useSelector((state: RootState) => state.popupToggle);
   console.log(popupToggle);
+
+  useEffect(() => {
+    window.electron.ipcRenderer.on('sql-file-selected', (message) => {
+      console.log('sql-file-selected');
+      console.log(message);
+    });
+  }, []);
 
   return (
     <div
@@ -39,16 +46,14 @@ const snb = () => {
         </li>
         <li className="flex items-center">
           <label htmlFor="examineeDataFile">
-            <div className="text-examinee p-3 cursor-pointer m-2.5">
+            <div className="text-examinee p-3 cursor-pointer m-2.5"
+              onClick={() => {
+                console.log('loadFile');
+                window.electron.ipcRenderer.sendMessage('show-open-sql', []);
+              }}>
               가져오기
             </div>
           </label>
-          <input
-            type="file"
-            name="examineeDataFile"
-            id="examineeDataFile"
-            className="hidden"
-          />
         </li>
       </ul>
       <div className="import-success-screen overflow-y-auto">

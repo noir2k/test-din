@@ -1,5 +1,3 @@
-/* eslint global-require: off, no-console: off, promise/always-return: off */
-
 /**
  * This module executes inside of electron's main process. You can start
  * electron renderer process from here and communicate with the other processes
@@ -9,13 +7,19 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  dialog,
+} from 'electron';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath, loadDb } from './util';
 
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-assembler';
+// import { autoUpdater } from 'electron-updater';
 
 // class AppUpdater {
 //   constructor() {
@@ -26,7 +30,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electro
 // }
 
 async function installExtensions(){
-  // REACT_DEVELOPER_TOOLS not work!
+  // [REACT_DEVELOPER_TOOLS] not work!
   [REDUX_DEVTOOLS].forEach(extension => {
     console.log(extension);
     installExtension(extension, {
@@ -40,12 +44,6 @@ async function installExtensions(){
   });
 }
 
-ipcMain.on('ipc', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc', msgTemplate('pong'));
-});
-
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
@@ -58,11 +56,13 @@ const isDebug =
 
 if (isDebug) {
   require('electron-debug')();
+  log.initialize({ preload: true });
 }
 
 const createWindow = async () => {
   if (isDebug) {
     await installExtensions();
+    log.info('Log from the main process');
   }
 
   const RESOURCES_PATH = app.isPackaged
@@ -83,18 +83,6 @@ const createWindow = async () => {
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
-  });
-
-  ipcMain.on('testDb', (event) => {
-    const webContents = event.sender;
-    const win = BrowserWindow.fromWebContents(webContents);
-    console.log(win);
-
-    const dbFileName = getAssetPath('/db/test-din.db');
-    console.log(dbFileName);
-
-    loadDb(dbFileName);
-    event.reply('testDb', 'pong');
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
@@ -121,6 +109,38 @@ const createWindow = async () => {
   mainWindow.webContents.setWindowOpenHandler((edata) => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
+  });
+
+  // ipcMain event
+  ipcMain.on('ipc', async (event, arg) => {
+    const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
+    console.log(msgTemplate(arg));
+    event.reply('ipc', msgTemplate('pong'));
+  });
+
+  ipcMain.on('show-open-sql', (event) => {
+    const options = {
+      title: 'Open a file or folder',
+      buttonLabel: 'Open',
+      filters: [
+        { name: 'sql', extensions: ['sql'] }
+      ]
+    };
+
+    const filePaths = dialog.showOpenDialogSync(options);
+    event.sender.send('sql-file-selected', filePaths);
+  });
+
+  ipcMain.on('testDb', (event) => {
+    const webContents = event.sender;
+    const win = BrowserWindow.fromWebContents(webContents);
+    console.log(win);
+
+    const dbFileName = getAssetPath('/db/test-din.db');
+    console.log(dbFileName);
+
+    loadDb(dbFileName);
+    event.reply('testDb', 'pong');
   });
 
   // Remove this if your app does not use auto updates
