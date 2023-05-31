@@ -16,11 +16,10 @@ import {
 } from 'electron';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import { resolveHtmlPath, loadDb } from './util';
+import * as Util from './util';
 
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-assembler';
 // import { autoUpdater } from 'electron-updater';
-
 // class AppUpdater {
 //   constructor() {
 //     log.transports.file.level = 'info';
@@ -28,6 +27,16 @@ import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electro
 //     autoUpdater.checkForUpdatesAndNotify();
 //   }
 // }
+
+const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../../assets');
+
+const getAssetPath = (...paths: string[]): string => {
+  return path.join(RESOURCES_PATH, ...paths);
+};
+
+const initTablePath = getAssetPath('/db/schema.sql');
 
 async function installExtensions(){
   // [REACT_DEVELOPER_TOOLS] not work!
@@ -65,13 +74,11 @@ const createWindow = async () => {
     log.info('Log from the main process');
   }
 
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
+  const db = await Util.createDb();
+  Util.execSqlFile(db, initTablePath);
+  // Util.testDb(db);
+  // Util.execSql(db, getAssetPath('/db/insert_dummy.sql'));
+  // Util.testDb(db);
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -85,7 +92,7 @@ const createWindow = async () => {
     },
   });
 
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  mainWindow.loadURL(Util.resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -111,10 +118,12 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  // ipcMain event
+  /**
+   * ipcMain event
+  **/
   ipcMain.on('ipc', async (event, arg) => {
     const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-    console.log(msgTemplate(arg));
+    log.log(msgTemplate(arg));
     event.reply('ipc', msgTemplate('pong'));
   });
 
@@ -128,19 +137,8 @@ const createWindow = async () => {
     };
 
     const filePaths = dialog.showOpenDialogSync(options);
+    // processing sql to json
     event.sender.send('sql-file-selected', filePaths);
-  });
-
-  ipcMain.on('testDb', (event) => {
-    const webContents = event.sender;
-    const win = BrowserWindow.fromWebContents(webContents);
-    console.log(win);
-
-    const dbFileName = getAssetPath('/db/test-din.db');
-    console.log(dbFileName);
-
-    loadDb(dbFileName);
-    event.reply('testDb', 'pong');
   });
 
   // Remove this if your app does not use auto updates

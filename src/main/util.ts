@@ -3,8 +3,10 @@ import { URL } from 'url';
 import path from 'path';
 import fs from 'fs';
 
+import log from 'electron-log';
+
 import initSqlJs from 'sql.js';
-import type { QueryExecResult } from 'sql.js';
+import type { Database, QueryExecResult } from 'sql.js';
 
 export function resolveHtmlPath(htmlFileName: string) {
   if (process.env.NODE_ENV === 'development') {
@@ -32,18 +34,36 @@ const _rowsFromSqlDataArray = (queryExecResult: QueryExecResult) => {
   return data;
 };
 
-export const loadDb = ( filePath: string ) => {
-  initSqlJs().then(function (SQL) {
-    const db = new SQL.Database(fs.readFileSync(filePath));
-    let stmt = `select * from test_din_history desc limit 1`;
-    let res = db.exec(stmt);
-    console.log(res);
-    if (res.length === 0) {
-      console.error("No Data Found!");
-    } else {
-      const resultArr = _rowsFromSqlDataArray(res[0]);
-      console.log(resultArr);
-      db.close();
-    }
+
+export const createDb = async (): Promise<any> => {
+  return initSqlJs().then((SQL) => {
+    // const db = new SQL.Database(fs.readFileSync(filePath));
+    log.info('Create Database');
+    return new SQL.Database();
+  })
+  .catch((err) => {
+    log.error('Create Database Error', err);
+    return null;
   });
+}
+
+export const testDb = ( db: Database ) => {
+  let stmt = `select * from test_din_history desc limit 1`;
+  let res = db.exec(stmt);
+  console.log(res);
+  if (res.length === 0) {
+    console.error("No Data Found!");
+  } else {
+    const resultArr = _rowsFromSqlDataArray(res[0]);
+    console.log(resultArr);
+  }
+}
+
+export const execSql = ( db: Database, filePath: string ) => {
+  log.log('2. initTable', filePath);
+  log.log(db);
+  const sqlstr = fs.readFileSync(filePath, 'utf8');
+  log.log('3. sqlstr', filePath);
+  log.log(sqlstr);
+  db.run(sqlstr);
 }
