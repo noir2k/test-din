@@ -17,3 +17,7 @@ window.electron.ipcRenderer.sendMessage('ipc', ['ping']);
 window.electron.ipcRenderer.on('sql-file-canceled', (message) => {
   alert(message);
 });
+window.electron.ipcRenderer.on('sql-file-failured', (message) => {
+  alert(message);
+});
+

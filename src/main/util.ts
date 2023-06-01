@@ -78,6 +78,13 @@ const _resultData = ( queryExecResults: QueryExecResult[] ) => {
   return resultArr;
 }
 
+const _checkRegexSql = (queryText: string) => {
+  const regexPattern: RegExp = /^BEGIN TRANSACTION;\n(?:INSERT INTO test_din_history.*\n)*COMMIT;$/;
+
+  queryText = queryText.replace(/\n$/, "");
+  return regexPattern.test(queryText);
+}
+
 // NOT USED
 export const writeDb = (db: Database) => {
   const data = db.export();
@@ -102,9 +109,16 @@ export const initDbTable = (db: Database) => {
 }
 
 export const loadFromSql = (db: Database, filePath: string) => {
-  initDbTable(db);
   const sqlstr = fs.readFileSync(filePath, 'utf8');
-  db.run(sqlstr);
+
+  if (_checkRegexSql(sqlstr)) {
+    log.info('check regex OK');
+    initDbTable(db);
+    db.run(sqlstr);
+  } else {
+    log.error('check regex NOT OK');
+  }
+
   return findByRegDate(db);
 }
 
