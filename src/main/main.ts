@@ -32,11 +32,9 @@ const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
   : path.join(__dirname, '../../assets');
 
-const getAssetPath = (...paths: string[]): string => {
+export const getAssetPath = (...paths: string[]): string => {
   return path.join(RESOURCES_PATH, ...paths);
 };
-
-const initTablePath = getAssetPath('/db/schema.sql');
 
 async function installExtensions(){
   // [REACT_DEVELOPER_TOOLS] not work!
@@ -75,7 +73,7 @@ const createWindow = async () => {
   }
 
   const db = await Util.createDb();
-  Util.execSqlFile(db, initTablePath);
+  Util.initDbTable(db);
   // Util.testDb(db);
   // Util.execSql(db, getAssetPath('/db/insert_dummy.sql'));
   // Util.testDb(db);
@@ -120,7 +118,7 @@ const createWindow = async () => {
 
   /**
    * ipcMain event
-  **/
+   **/
   ipcMain.on('ipc', async (event, arg) => {
     const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
     log.log(msgTemplate(arg));
@@ -137,8 +135,15 @@ const createWindow = async () => {
     };
 
     const filePaths = dialog.showOpenDialogSync(options);
-    // processing sql to json
-    event.sender.send('sql-file-selected', filePaths);
+    // processing sql to data object
+    if (filePaths !== undefined && filePaths.length > 0) {
+      const result = Util.loadFromSql(db, filePaths[0]);
+
+      log.log(result);
+      event.sender.send('sql-file-selected', result);
+    } else {
+      event.sender.send('sql-file-canceled', 'File open canceled');
+    }
   });
 
   // Remove this if your app does not use auto updates
@@ -162,6 +167,7 @@ app
   .whenReady()
   .then(() => {
     createWindow();
+    log.info("ts", new Date().getTime());
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

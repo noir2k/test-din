@@ -14,3 +14,6 @@ window.electron.ipcRenderer.once('ipc', (arg) => {
 log.info('Log from the renderer process');
 
 window.electron.ipcRenderer.sendMessage('ipc', ['ping']);
+window.electron.ipcRenderer.on('sql-file-canceled', (message) => {
+  alert(message);
+});
