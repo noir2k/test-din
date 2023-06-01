@@ -65,7 +65,7 @@ const _rowsFromSqlDataArray = (queryExecResult: QueryExecResult) => {
     i++;
   }
   return data;
-};
+}
 
 const _resultData = ( queryExecResults: QueryExecResult[] ) => {
   let resultArr;
@@ -115,17 +115,17 @@ export const loadFromSql = (db: Database, filePath: string) => {
     log.info('check regex OK');
     initDbTable(db);
     db.run(sqlstr);
+    return findByRegDate(db);
   } else {
     log.error('check regex NOT OK');
+    return null;
   }
-
-  return findByRegDate(db);
 }
 
 export const findAll = (db: Database) => {
   let sqlstr = `SELECT * FROM ${tbName}`;
   const res = db.exec(sqlstr);
-  return _resultData(res);
+  return res;
 }
 
 export const findByRegDate = (db: Database, offset?: string) => {
@@ -200,26 +200,24 @@ export const deleteData = (db: Database, data: ColumnType, id: string) => {
 }
 
 export const generateInsertQueryFromSelect = (selectResult: QueryExecResult[]) => {
-  log.log(selectResult);
-  const columns = Object.keys(selectResult[0]);
+  const columns = Object.values(selectResult[0].columns);
+  const values = Object.values(selectResult[0].values);
 
-  let insertQuery = `INSERT INTO table (`;
-  // for (const column of columns) {
-  //   insertQuery += `${column},`;
-  // }
-  // insertQuery = insertQuery.slice(0, -1) + `) VALUES (`;
+  let insertQuery = `BEGIN TRANSACTION;\n`;
+  for (const value of values) {
+    insertQuery += `INSERT INTO ${tbName} (`;
+    for (const column of columns) {
+      insertQuery += `'${column}', `;
+    }
+    insertQuery = insertQuery.slice(0, -2) + `) VALUES (`;
+    for (const v of value) {
+      insertQuery += (typeof v === 'string') ? `'${v}', ` : `${v}, `;
+    }
+    insertQuery = insertQuery.slice(0, -2) + `);\n`;
+  }
+  insertQuery += `COMMIT;`;
 
-  // Add the values from the SELECT result to the INSERT query
-  // for (const row of selectResult) {
-  //   for (const column of columns) {
-  //     insertQuery += `${row[column]},`;
-  //   }
-  //   insertQuery = insertQuery.slice(0, -1) + `);`;
-  // }
-
-  // Return the INSERT query
   return insertQuery;
-
 }
 
 export const isExistFile = (filePath: string) => {

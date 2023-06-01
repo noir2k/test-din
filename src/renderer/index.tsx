@@ -14,10 +14,10 @@ window.electron.ipcRenderer.once('ipc', (arg) => {
 log.info('Log from the renderer process');
 
 window.electron.ipcRenderer.sendMessage('ipc', ['ping']);
-window.electron.ipcRenderer.on('sql-file-canceled', (message) => {
+window.electron.ipcRenderer.on('sql-file-failured', (message) => {
   alert(message);
 });
-window.electron.ipcRenderer.on('sql-file-failured', (message) => {
+window.electron.ipcRenderer.on('save-file-failured', (message) => {
   alert(message);
 });
 

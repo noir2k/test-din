@@ -22,7 +22,6 @@ import MenuBuilder from './menu';
 import * as Util from './util';
 
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-assembler';
-import { MessageBoxOptions } from 'electron';
 
 // import { autoUpdater } from 'electron-updater';
 // class AppUpdater {
@@ -36,8 +35,8 @@ import { MessageBoxOptions } from 'electron';
 const STORE = new Store();
 
 const RESOURCES_PATH = app.isPackaged
-  ? path.join(process.resourcesPath, 'assets')
-  : path.join(__dirname, '../../assets');
+? path.join(process.resourcesPath, 'assets')
+: path.join(__dirname, '../../assets');
 
 export const getAssetPath = (...paths: string[]): string => {
   return path.join(RESOURCES_PATH, ...paths);
@@ -82,8 +81,6 @@ const createWindow = async () => {
   const db = await Util.createDb();
   Util.initDbTable(db);
   // Util.testDb(db);
-  // Util.execSql(db, getAssetPath('/db/insert_dummy.sql'));
-  // Util.testDb(db);
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -92,8 +89,8 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
-        ? path.join(__dirname, 'preload.js')
-        : path.join(__dirname, '../../.erb/dll/preload.js'),
+      ? path.join(__dirname, 'preload.js')
+      : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
   });
 
@@ -142,70 +139,46 @@ const createWindow = async () => {
     };
 
     const filePaths = dialog.showOpenDialogSync(options);
-    // processing sql to data object
+
     if (filePaths !== undefined && filePaths.length > 0) {
+      STORE.set('loadFilePath', filePaths[0]);
       const result = Util.loadFromSql(db, filePaths[0]);
-      result && result.length > 0 ?
-        event.sender.send('sql-file-selected', result) :
-        event.sender.send('sql-file-failured', 'File open Error\nEmpty Data or Invalid file Format');
+      result && result.length > 0
+      ? event.sender.send('sql-file-selected', result)
+      : event.sender.send('sql-file-failured', 'File open Error\nEmpty Data or Invalid file Format');
     } else {
-      event.sender.send('sql-file-canceled', 'File open canceled');
+      // event.sender.send('sql-file-canceled', 'File open canceled');
     }
   });
 
   ipcMain.on('show-save-sql', (event) => {
-    const result = Util.findAll(db);
-    log.log('show-save-sql');
-    log.log(result);
+    const options = {
+      title: 'Save Database File',
+      buttonLabel: 'Save',
+      filters: [
+        { name: 'sql', extensions: ['sql']}
+      ],
+    };
 
-    if( result && result.length > 0) {
-      dialog.showMessageBox({
-        message: JSON.stringify(result),
-        buttons: ['OK']
-      })
-      /*
-      const options = {
-        title: 'Save Database File',
-        buttonLabel: 'Save',
-        filters: [
-          { name: 'sql', extensions: ['sql']}
-        ],
-      };
+    const filePath = dialog.showSaveDialogSync(options);
 
-      const filePath = dialog.showSaveDialogSync(options);
+    if (filePath) {
+      const result = Util.findAll(db);
 
-      if (filePath) {
-        if(Util.isExistFile(filePath)) {
-          dialog.showMessageBox({
-            message: 'Are you sure you want to quit?',
-            title: 'Quit Application',
-            buttons: ['OK', 'Cancel']
-          })
-          .then((result) => {
-            if (result.response === 0) {
-              Util.saveFile(filePath, '') ?
-                event.sender.send('save-file-completed', 'File save completed') :
-                event.sender.send('save-file-failured', 'File save Error');
-            } else {
-              log.info('Save canceled');
-              event.sender.send('save-file-canceled', 'File save canceled');
-            }
-          });
-        } else {
-          Util.saveFile(filePath, '') ?
-            event.sender.send('save-file-completed', 'File save completed') :
-            event.sender.send('save-file-failured', 'File save Error');
-        }
+      if(result && result.length > 0) {
+        const sqlstr = Util.generateInsertQueryFromSelect(result);
+        Util.saveFile(filePath, sqlstr)
+        ? event.sender.send('save-file-completed', 'File save completed')
+        : event.sender.send('save-file-failured', 'File save Error');
       } else {
-        log.log('No file selected.');
-        // event.sender.send('no-file-selected', 'File open canceled');
+        dialog.showMessageBox({
+          message: 'No Data Found!',
+          buttons: ['OK']
+        })
       }
-      */
     } else {
-      dialog.showMessageBox({
-        message: 'No Data Found!',
-        buttons: ['OK']
-      })
+      log.log('No file selected.');
+      // event.sender.send('no-file-selected', 'File open canceled');
     }
   });
 
