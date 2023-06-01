@@ -1,13 +1,21 @@
-export default function ExamineeCard() {
+import { ColumnType } from '@main/util';
+
+type DataProps = {
+  props : ColumnType
+}
+
+const ExamineeCard = ({props}: DataProps) => {
+  const { id,	direction, scoring, memo, sound_set, test_date, test_result, reg_timestamp } = props;
+
   return (
-    <ul className="examinee-card flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300">
-      <li className="examinee-name">
-        <p>TEST</p>
-      </li>
-      <li className="examination-date">
-        <p>2023-01-01 01:01</p>
-      </li>
-      <li className="btn-delete">
+    <div className="examinee-card flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300">
+      <div className="examinee-name">
+        {id.toString()}
+      </div>
+      <div className="examination-date">
+        {test_date}
+      </div>
+      <div className="btn-delete">
         <button
           type="button"
           className="bg-transparent"
@@ -17,7 +25,9 @@ export default function ExamineeCard() {
         >
           삭제
         </button>
-      </li>
-    </ul>
+      </div>
+    </div>
   );
 }
+
+export default ExamineeCard;

@@ -138,8 +138,6 @@ const createWindow = async () => {
     // processing sql to data object
     if (filePaths !== undefined && filePaths.length > 0) {
       const result = Util.loadFromSql(db, filePaths[0]);
-
-      log.log(result);
       event.sender.send('sql-file-selected', result);
     } else {
       event.sender.send('sql-file-canceled', 'File open canceled');

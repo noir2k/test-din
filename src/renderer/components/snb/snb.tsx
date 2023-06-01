@@ -7,8 +7,11 @@ import ExamineeInfoPopup from './examineePopup';
 
 import { setHistoryOpen, setTestStartOpen } from '@store/slices/popupToggle';
 
+import { ColumnType } from '@main/util';
+
 const snb = () => {
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [data, setData] = useState<ColumnType[] | null>(null);
 
   const dispatch = useDispatch();
   // TODO: will be removed
@@ -19,6 +22,10 @@ const snb = () => {
     window.electron.ipcRenderer.on('sql-file-selected', (message) => {
       console.log('sql-file-selected');
       console.log(message);
+      const colData = message as ColumnType[];
+      if (colData !== null) {
+        setData(colData);
+      }
     });
   }, []);
 
@@ -76,12 +83,10 @@ const snb = () => {
             className="cursor-pointer"
             onClick={() => { dispatch(setHistoryOpen()); }}
           >
-            <ExamineeCard />
-            <ExamineeCard />
-            <ExamineeCard />
-            <ExamineeCard />
-            <ExamineeCard />
-            <ExamineeCard />
+            {
+              data !== null &&
+              data.map((item) => <ExamineeCard props={item} key={item.id.toFixed()}/>)
+            }
           </div>
         </div>
       </div>

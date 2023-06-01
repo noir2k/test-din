@@ -6,6 +6,7 @@
       "@components/*": ["./renderer/components/*"],
       "@hook/*": ["./renderer/services/hook/*"],
       "@store/*": ["./renderer/services/store/*"],
+      "@main/*": ["./main/*"],
     },
     "incremental": true,
     "target": "es2021",

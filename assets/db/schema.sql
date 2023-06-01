@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS "test_din_history" (
 	"patient"	INTEGER NOT NULL,
 	"direction"	TEXT NOT NULL,
 	"volume_level"	INTEGER NOT NULL,
-	"scoring"	INTEGER NOT NULL,
+	"scoring"	TEXT NOT NULL,
 	"memo"	TEXT,
 	"sound_set"	INTEGER NOT NULL,
 	"test_date"	TEXT,

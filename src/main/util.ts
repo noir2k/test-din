@@ -17,9 +17,9 @@ export interface ColumnType {
 	patient: Number,
 	direction: string,
 	volume_level: Number,
-	scoring: Number,
+	scoring: string,
 	memo: string,
-	sound_set: string,
+	sound_set: Number,
 	test_date: string,
 	test_result: Number,
 	reg_timestamp: Number,
@@ -67,6 +67,17 @@ const _rowsFromSqlDataArray = (queryExecResult: QueryExecResult) => {
   return data;
 };
 
+const _resultData = ( queryExecResults: QueryExecResult[] ) => {
+  let resultArr;
+  if (queryExecResults.length === 0) {
+    log.error("No Data Found!");
+  } else {
+    resultArr = _rowsFromSqlDataArray(queryExecResults[0]);
+  }
+  log.log(resultArr);
+  return resultArr;
+}
+
 // NOT USED
 export const writeDb = (db: Database) => {
   const data = db.export();
@@ -105,7 +116,7 @@ export const findByRegDate = (db: Database, offset?: string) => {
   sqlstr += ` offset ${offset}`;
   const res = db.exec(sqlstr);
 
-  return resultData(res);
+  return _resultData(res);
 }
 
 export const getGraphData = (db: Database) => {
@@ -119,7 +130,7 @@ export const getGraphData = (db: Database) => {
   FROM ${tbName} ORDER BY ${col.reg_timestamp} DESC LIMIT 6`;
   const res = db.exec(sqlstr);
 
-  return resultData(res);
+  return _resultData(res);
 }
 
 export const insertData = (db: Database, data: ColumnType) => {
@@ -172,16 +183,5 @@ export const testDb = ( db: Database ) => {
   let sqlstr = `select * from ${tbName} limit 1`;
   let res = db.exec(sqlstr);
 
-  resultData(res);
-}
-
-const resultData = ( res: QueryExecResult[] ) => {
-  let resultArr;
-  if (res.length === 0) {
-    log.error("No Data Found!");
-  } else {
-    resultArr = _rowsFromSqlDataArray(res[0]);
-  }
-  log.log(resultArr);
-  return resultArr;
+  _resultData(res);
 }
