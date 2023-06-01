@@ -12,6 +12,7 @@ import { ColumnType } from '@main/util';
 const snb = () => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [data, setData] = useState<ColumnType[] | null>(null);
+  const [offset, setOffset] = useState<Number>(0);
 
   const dispatch = useDispatch();
   // TODO: will be removed
@@ -25,6 +26,7 @@ const snb = () => {
       const colData = message as ColumnType[];
       if (colData !== null) {
         setData(colData);
+        setOffset(colData.length);
       }
     });
   }, []);
@@ -40,24 +42,18 @@ const snb = () => {
         </li>
         <li className="flex items-center ml-auto">
           <label htmlFor="backupData">
-            <div className="text-examinee p-3 cursor-pointer m-2.5">
+            <div className="text-examinee p-3 cursor-pointer m-2.5"
+              onClick={() => { window.electron.ipcRenderer.sendMessage('show-save-sql', []); }
+            }>
               백업하기
             </div>
           </label>
-          <input
-            type="file"
-            name="backupData"
-            id="backupData"
-            className="hidden"
-          />
         </li>
         <li className="flex items-center">
           <label htmlFor="examineeDataFile">
             <div className="text-examinee p-3 cursor-pointer m-2.5"
-              onClick={() => {
-                console.log('loadFile');
-                window.electron.ipcRenderer.sendMessage('show-open-sql', []);
-              }}>
+              onClick={() => { window.electron.ipcRenderer.sendMessage('show-open-sql', []); }
+            }>
               가져오기
             </div>
           </label>

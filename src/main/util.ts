@@ -108,6 +108,12 @@ export const loadFromSql = (db: Database, filePath: string) => {
   return findByRegDate(db);
 }
 
+export const findAll = (db: Database) => {
+  let sqlstr = `SELECT * FROM ${tbName}`;
+  const res = db.exec(sqlstr);
+  return _resultData(res);
+}
+
 export const findByRegDate = (db: Database, offset?: string) => {
   let sqlstr = `SELECT * FROM ${tbName} ORDER BY ${col.reg_timestamp} DESC LIMIT 10`;
   if (offset === undefined) {
@@ -177,6 +183,46 @@ export const deleteData = (db: Database, data: ColumnType, id: string) => {
 
   db.run(sqlstr);
   return findByRegDate(db);
+}
+
+export const generateInsertQueryFromSelect = (selectResult: QueryExecResult[]) => {
+  log.log(selectResult);
+  const columns = Object.keys(selectResult[0]);
+
+  let insertQuery = `INSERT INTO table (`;
+  // for (const column of columns) {
+  //   insertQuery += `${column},`;
+  // }
+  // insertQuery = insertQuery.slice(0, -1) + `) VALUES (`;
+
+  // Add the values from the SELECT result to the INSERT query
+  // for (const row of selectResult) {
+  //   for (const column of columns) {
+  //     insertQuery += `${row[column]},`;
+  //   }
+  //   insertQuery = insertQuery.slice(0, -1) + `);`;
+  // }
+
+  // Return the INSERT query
+  return insertQuery;
+
+}
+
+export const isExistFile = (filePath: string) => {
+  return fs.existsSync(filePath);
+}
+
+export const saveFile = (filePath: string, queryText: string) => {
+  let result = false;
+  try {
+    fs.writeFileSync(filePath, queryText, 'utf8');
+    log.log("File saved:", filePath);
+    result = true;
+  } catch (error) {
+    log.error("Error saving file:", error);
+  } finally {
+    return result;
+  }
 }
 
 export const testDb = ( db: Database ) => {

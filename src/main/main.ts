@@ -14,11 +14,16 @@ import {
   ipcMain,
   dialog,
 } from 'electron';
+
+import Store from 'electron-store';
 import log from 'electron-log';
+
 import MenuBuilder from './menu';
 import * as Util from './util';
 
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-assembler';
+import { MessageBoxOptions } from 'electron';
+
 // import { autoUpdater } from 'electron-updater';
 // class AppUpdater {
 //   constructor() {
@@ -27,6 +32,8 @@ import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electro
 //     autoUpdater.checkForUpdatesAndNotify();
 //   }
 // }
+
+const STORE = new Store();
 
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
@@ -144,10 +151,65 @@ const createWindow = async () => {
     }
   });
 
+  ipcMain.on('show-save-sql', (event) => {
+    const result = Util.findAll(db);
+    log.log('show-save-sql');
+    log.log(result);
+
+    if( result && result.length > 0) {
+      dialog.showMessageBox({
+        message: JSON.stringify(result),
+        buttons: ['OK']
+      })
+      /*
+      const options = {
+        title: 'Save Database File',
+        buttonLabel: 'Save',
+        filters: [
+          { name: 'sql', extensions: ['sql']}
+        ],
+      };
+
+      const filePath = dialog.showSaveDialogSync(options);
+
+      if (filePath) {
+        if(Util.isExistFile(filePath)) {
+          dialog.showMessageBox({
+            message: 'Are you sure you want to quit?',
+            title: 'Quit Application',
+            buttons: ['OK', 'Cancel']
+          })
+          .then((result) => {
+            if (result.response === 0) {
+              Util.saveFile(filePath, '') ?
+                event.sender.send('save-file-completed', 'File save completed') :
+                event.sender.send('save-file-failured', 'File save Error');
+            } else {
+              log.info('Save canceled');
+              event.sender.send('save-file-canceled', 'File save canceled');
+            }
+          });
+        } else {
+          Util.saveFile(filePath, '') ?
+            event.sender.send('save-file-completed', 'File save completed') :
+            event.sender.send('save-file-failured', 'File save Error');
+        }
+      } else {
+        log.log('No file selected.');
+        // event.sender.send('no-file-selected', 'File open canceled');
+      }
+      */
+    } else {
+      dialog.showMessageBox({
+        message: 'No Data Found!',
+        buttons: ['OK']
+      })
+    }
+  });
+
   // Remove this if your app does not use auto updates
   // new AppUpdater();
 };
-
 
 /**
  * Add event listeners...
@@ -165,7 +227,7 @@ app
   .whenReady()
   .then(() => {
     createWindow();
-    log.info("ts", new Date().getTime());
+    // log.info('ts', new Date().getTime());
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
