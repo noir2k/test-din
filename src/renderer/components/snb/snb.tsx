@@ -11,8 +11,9 @@ import { ColumnType } from '@main/util';
 
 const snb = () => {
   const [isPopupOpen, setPopupOpen] = useState(false);
-  const [data, setData] = useState<ColumnType[] | null>(null);
-  const [offset, setOffset] = useState<Number>(0);
+  const [isMoreData, setMoreData] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [exData, setExData] = useState<ColumnType[] | null>(null);
 
   const dispatch = useDispatch();
   // TODO: will be removed
@@ -20,16 +21,42 @@ const snb = () => {
   console.log(popupToggle);
 
   useEffect(() => {
-    window.electron.ipcRenderer.on('sql-file-selected', (message) => {
-      console.log('sql-file-selected');
-      console.log(message);
-      const colData = message as ColumnType[];
+    const channel = 'sql-file-selected';
+    window.electron.ipcRenderer.on(channel, (data) => {
+      const colData = data as ColumnType[];
+      // console.log(colData);
       if (colData !== null) {
-        setData(colData);
-        setOffset(colData.length);
+        setExData(colData);
+        const isNoMore = colData.length < 10;
+        setMoreData(!isNoMore);
       }
+      setLoading(false);
     });
-  }, []);
+    return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  });
+
+  useEffect(() => {
+    const channel = 'load-more-data';
+    window.electron.ipcRenderer.on(channel, (data) => {
+      const colData = data as ColumnType[];
+      // console.log(colData);
+      if (colData !== null && exData !== null) {
+        setExData([...exData, ...colData]);
+        const isNoMore = colData.length < 10;
+        setMoreData(!isNoMore);
+      }
+      setLoading(false);
+    });
+    return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  });
+
+  useEffect(() => {
+    const channel = 'no-more-data';
+    window.electron.ipcRenderer.on(channel, () => {
+      setMoreData(false);
+    });
+    return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  });
 
   return (
     <div
@@ -38,7 +65,13 @@ const snb = () => {
     >
       <ul className="snb-list flex shadow-md">
         <li className="flex items-center">
-          <div className="text-examinee p-3 m-2.5">피검사자</div>
+          <div className="text-examinee p-3 m-2.5"
+            onClick={() => {
+              setLoading(true);
+              window.electron.ipcRenderer.sendMessage('next-page', []); }
+            }>
+          피검사자
+          </div>
         </li>
         <li className="flex items-center ml-auto">
           <label htmlFor="backupData">
@@ -52,8 +85,10 @@ const snb = () => {
         <li className="flex items-center">
           <label htmlFor="examineeDataFile">
             <div className="text-examinee p-3 cursor-pointer m-2.5"
-              onClick={() => { window.electron.ipcRenderer.sendMessage('show-open-sql', []); }
-            }>
+              onClick={() => {
+                setLoading(true);
+                window.electron.ipcRenderer.sendMessage('show-open-sql', []); }
+              }>
               가져오기
             </div>
           </label>
@@ -80,8 +115,8 @@ const snb = () => {
             onClick={() => { dispatch(setHistoryOpen()); }}
           >
             {
-              data !== null &&
-              data.map((item) => <ExamineeCard props={item} key={item.id.toFixed()}/>)
+              exData !== null &&
+              exData.map((item) => <ExamineeCard props={item} key={item.id.toFixed()}/>)
             }
           </div>
         </div>

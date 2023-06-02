@@ -12,6 +12,7 @@ import {
   BrowserWindow,
   shell,
   ipcMain,
+  ipcRenderer,
   dialog,
 } from 'electron';
 
@@ -143,9 +144,14 @@ const createWindow = async () => {
     if (filePaths !== undefined && filePaths.length > 0) {
       STORE.set('loadFilePath', filePaths[0]);
       const result = Util.loadFromSql(db, filePaths[0]);
-      result && result.length > 0
-      ? event.sender.send('sql-file-selected', result)
-      : event.sender.send('sql-file-failured', 'File open Error\nEmpty Data or Invalid file Format');
+      if (result && result.length > 0) {
+        const rowCount = Util.rowCount(db);
+        STORE.set('rowCount', rowCount);
+        STORE.set('currentPage', 1);
+        event.sender.send('sql-file-selected', result);
+      } else {
+        event.sender.send('sql-file-failured', 'File open Error\nEmpty Data or Invalid file Format');
+      }
     } else {
       // event.sender.send('sql-file-canceled', 'File open canceled');
     }
@@ -179,6 +185,27 @@ const createWindow = async () => {
     } else {
       log.log('No file selected.');
       // event.sender.send('no-file-selected', 'File open canceled');
+    }
+  });
+
+  ipcMain.on('next-page', (event) => {
+    const PAGE_COUNT = 10;
+    const rowCount = Number(STORE.get('rowCount'));
+    const currentPage = Number(STORE.get('currentPage'));
+    const offset = currentPage * PAGE_COUNT;
+
+    if (rowCount > offset)  {
+      const result = Util.findByRegDate(db, offset.toString());
+      if (result && result.length > 0) {
+        event.sender.send('load-more-data', result);
+        STORE.set('currentPage', currentPage+1);
+      } else {
+        log.log('No more data(1)');
+        event.sender.send('no-more-data', 'No more data(1)');
+      }
+    } else {
+      log.log('No more data(2)');
+      event.sender.send('no-more-data', 'No more data(2)');
     }
   });
 

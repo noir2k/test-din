@@ -128,12 +128,19 @@ export const findAll = (db: Database) => {
   return res;
 }
 
+export const rowCount = (db: Database) => {
+  let sqlstr = `SELECT COUNT(id) FROM ${tbName} LIMIT 1`;
+  const res = db.exec(sqlstr);
+  return res[0].values[0][0];
+}
+
 export const findByRegDate = (db: Database, offset?: string) => {
   let sqlstr = `SELECT * FROM ${tbName} ORDER BY ${col.reg_timestamp} DESC LIMIT 10`;
   if (offset === undefined) {
     offset = '0';
   }
-  sqlstr += ` offset ${offset}`;
+  sqlstr += ` OFFSET ${offset}`;
+  log.log('findByRegDate sqlstr : ', sqlstr);
   const res = db.exec(sqlstr);
 
   return _resultData(res);
