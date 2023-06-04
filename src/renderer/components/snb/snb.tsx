@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@store/index';
 
@@ -7,13 +7,56 @@ import ExamineeInfoPopup from './examineePopup';
 
 import { setHistoryOpen, setTestStartOpen } from '@store/slices/popupToggle';
 
+import { ColumnType } from '@main/util';
+
 const snb = () => {
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isMoreData, setMoreData] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [exData, setExData] = useState<ColumnType[] | null>(null);
 
   const dispatch = useDispatch();
-  // will be removed
+  // TODO: will be removed
   const popupToggle = useSelector((state: RootState) => state.popupToggle);
   console.log(popupToggle);
+
+  useEffect(() => {
+    const channel = 'sql-file-selected';
+    window.electron.ipcRenderer.on(channel, (data) => {
+      const colData = data as ColumnType[];
+      // console.log(colData);
+      if (colData !== null) {
+        setExData(colData);
+        const isNoMore = colData.length < 10;
+        setMoreData(!isNoMore);
+      }
+      setLoading(false);
+    });
+    return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  });
+
+  useEffect(() => {
+    const channel = 'load-more-data';
+    window.electron.ipcRenderer.on(channel, (data) => {
+      const colData = data as ColumnType[];
+      // console.log(colData);
+      if (colData !== null && exData !== null) {
+        setExData([...exData, ...colData]);
+        const isNoMore = colData.length < 10;
+        setMoreData(!isNoMore);
+      }
+      setLoading(false);
+    });
+    return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  });
+
+  useEffect(() => {
+    const channel = 'no-more-data';
+    window.electron.ipcRenderer.on(channel, () => {
+      setMoreData(false);
+    });
+    return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  });
 
   return (
     <div
@@ -22,33 +65,33 @@ const snb = () => {
     >
       <ul className="snb-list flex shadow-md">
         <li className="flex items-center">
-          <div className="text-examinee p-3 m-2.5">피검사자</div>
+          <div className="text-examinee p-3 m-2.5"
+            onClick={() => {
+              setLoading(true);
+              window.electron.ipcRenderer.sendMessage('next-page', []); }
+            }>
+          피검사자
+          </div>
         </li>
         <li className="flex items-center ml-auto">
           <label htmlFor="backupData">
-            <div className="text-examinee p-3 cursor-pointer m-2.5">
+            <div className="text-examinee p-3 cursor-pointer m-2.5"
+              onClick={() => { window.electron.ipcRenderer.sendMessage('show-save-sql', []); }
+            }>
               백업하기
             </div>
           </label>
-          <input
-            type="file"
-            name="backupData"
-            id="backupData"
-            className="hidden"
-          />
         </li>
         <li className="flex items-center">
           <label htmlFor="examineeDataFile">
-            <div className="text-examinee p-3 cursor-pointer m-2.5">
+            <div className="text-examinee p-3 cursor-pointer m-2.5"
+              onClick={() => {
+                setLoading(true);
+                window.electron.ipcRenderer.sendMessage('show-open-sql', []); }
+              }>
               가져오기
             </div>
           </label>
-          <input
-            type="file"
-            name="examineeDataFile"
-            id="examineeDataFile"
-            className="hidden"
-          />
         </li>
       </ul>
       <div className="import-success-screen overflow-y-auto">
@@ -71,12 +114,10 @@ const snb = () => {
             className="cursor-pointer"
             onClick={() => { dispatch(setHistoryOpen()); }}
           >
-            <ExamineeCard />
-            <ExamineeCard />
-            <ExamineeCard />
-            <ExamineeCard />
-            <ExamineeCard />
-            <ExamineeCard />
+            {
+              exData !== null &&
+              exData.map((item) => <ExamineeCard props={item} key={item.id.toFixed()}/>)
+            }
           </div>
         </div>
       </div>

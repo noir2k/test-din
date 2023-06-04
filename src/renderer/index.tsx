@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import log from 'electron-log/renderer';
 import App from './App';
 
 const container = document.getElementById('root') as HTMLElement;
@@ -6,8 +7,17 @@ const root = createRoot(container);
 root.render(<App />);
 
 // calling IPC exposed from preload script
-window.electron.ipcRenderer.once('ipc-example', (arg) => {
-  // eslint-disable-next-line no-console
+window.electron.ipcRenderer.once('ipc', (arg) => {
   console.log(arg);
 });
-window.electron.ipcRenderer.sendMessage('ipc-example', ['ping']);
+
+log.info('Log from the renderer process');
+
+window.electron.ipcRenderer.sendMessage('ipc', ['ping']);
+window.electron.ipcRenderer.on('sql-file-failured', (message) => {
+  alert(message);
+});
+window.electron.ipcRenderer.on('save-file-failured', (message) => {
+  alert(message);
+});
+
