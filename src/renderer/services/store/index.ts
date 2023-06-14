@@ -2,9 +2,11 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
 import popupToggle from './slices/popupToggle';
+import answerProvider from './slices/answerProvider';
 
 const rootReducer = combineReducers({
   popupToggle: popupToggle,
+  answerProvider: answerProvider,
 });
 
 export const store = configureStore({

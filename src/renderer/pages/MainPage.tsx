@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '@hook/index';
 import { RootState } from '@store/index';
 
 import TestForm from '@components/test/testForm';
@@ -10,8 +10,8 @@ import Setting from '@components/main/setting';
 import Snb from '@components/snb/snb';
 
 const MainPage = () => {
-  // const state = useSelector((state: RootState) => state);
-  const popupToggle = useSelector((state: RootState) => state.popupToggle);
+  // const state = useAppSelector((state: RootState) => state);
+  const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
 
   const isNoticeOpen = popupToggle.isNoticeOpen;
   const isHistoryOpen = popupToggle.isHistoryOpen;

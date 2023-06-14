@@ -1,6 +1,6 @@
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@hook/index';
 
-import { setSettingOpen } from '@store/slices/popupToggle';
+import { setSettingOpen, setTestStartOpen } from '@store/slices/popupToggle';
 
 import main_logo from '@assets/images/main_logo.png';
 import ico_home from '@assets/images/icons/icon_home.png';
@@ -8,7 +8,7 @@ import ico_settings from '@assets/images/icons/icon_settings.png';
 import ico_user from '@assets/images/icons/icon_user.png';
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -22,7 +22,9 @@ const Header = () => {
           />
           <ul className="flex items-end">
             <li className="flex flex-none justify-center mx-10">
-              <a href="!#">
+              <a
+              href="!#"
+              onClick={() => { dispatch(setTestStartOpen()); }}>
                 <img width="30vh" src={ico_user} alt="icon_home" />
               </a>
             </li>

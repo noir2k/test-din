@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@store/index';
+import { useAppSelector, useAppDispatch } from '@hook/index';
+
+import type { RootState } from '@store/index';
 
 import ExamineeCard from '@components/main/examineeCard';
 import ExamineeInfoPopup from './examineePopup';
 
 import { setHistoryOpen, setTestStartOpen } from '@store/slices/popupToggle';
+import { getAnswers } from '@store/slices/answerProvider';
 
 import { ColumnType } from '@main/util';
 
@@ -15,10 +17,14 @@ const snb = () => {
   const [isLoading, setLoading] = useState(false);
   const [exData, setExData] = useState<ColumnType[] | null>(null);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   // TODO: will be removed
-  const popupToggle = useSelector((state: RootState) => state.popupToggle);
-  console.log(popupToggle);
+  // const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
+  // console.log(popupToggle);
+  // const answerProvider = useAppSelector((state: RootState) => state.answerProvider);
+  // console.log(answerProvider);
+  // TODO: will be removed END
 
   useEffect(() => {
     const channel = 'sql-file-selected';
@@ -67,8 +73,12 @@ const snb = () => {
         <li className="flex items-center">
           <div className="text-examinee p-3 m-2.5"
             onClick={() => {
-              setLoading(true);
-              window.electron.ipcRenderer.sendMessage('next-page', []); }
+              console.log("getAnswer");
+              getAnswers(2);
+              // more load
+              // setLoading(true);
+              // window.electron.ipcRenderer.sendMessage('next-page', []);
+            }
             }>
           피검사자
           </div>
@@ -100,15 +110,7 @@ const snb = () => {
             {isPopupOpen && (
               <ExamineeInfoPopup onClose={() => setPopupOpen(false)} />
             )}
-            <a
-              href="#!"
-              className="text-left"
-              onClick={() => {
-                setPopupOpen(!isPopupOpen);
-              }}
-            >
-              피검사자명
-            </a>
+            피검사자명
           </div>
           <div
             className="cursor-pointer"
