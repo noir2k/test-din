@@ -197,9 +197,19 @@ export const insertData = (db: Database, data: ColumnType) => {
   return findByRegDate(db);
 }
 
-export const deleteData = (db: Database, data: ColumnType, id: string) => {
+export const deleteData = (db: Database, id: string) => {
   let sqlstr = `BEGIN TRANSACTION;\n`;
-  sqlstr += `DELETE FROM ${tbName} WHERE ${col.id} = ${id} LIMIT 1;\n`;
+  sqlstr += `DELETE FROM ${tbName} WHERE ${col.id} = ${id};\n`;
+  sqlstr += `COMMIT;`;
+
+  db.run(sqlstr);
+
+  return findByRegDate(db);
+}
+
+export const updateUserName = (db: Database, userName: string) => {
+  let sqlstr = `BEGIN TRANSACTION;\n`;
+  sqlstr += `UPDATE ${tbName} SET ${col.user_name} = ${userName}\n`;
   sqlstr += `COMMIT;`;
 
   db.run(sqlstr);

@@ -116,6 +116,8 @@ a:hover {
 /* examineeData.tsx */
 .examinee-data-wrapper {
   background-color: lavender;
+  display: flex;
+  justify-content: space-between;
 }
 
 .examinee-card {

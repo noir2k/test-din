@@ -27,7 +27,9 @@ const ExamineeCard = ({props}: DataProps) => {
           type="button"
           className="bg-transparent"
           onClick={() => {
-            alert('버튼 클릭 시 출력되는 메시지 박스입니다.');
+            if (confirm('삭제하시겠습니까?')) {
+              window.electron.ipcRenderer.sendMessage('delete-data', [id]);
+            }
           }}
         >
           삭제

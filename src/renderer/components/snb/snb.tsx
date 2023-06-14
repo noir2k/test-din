@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
@@ -13,8 +13,6 @@ import { getAnswers } from '@store/slices/answerProvider';
 import { ColumnType } from '@main/util';
 
 const snb = () => {
-  const targetRef = useRef<HTMLDivElement>(null);
-
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -23,14 +21,22 @@ const snb = () => {
   const dispatch = useAppDispatch();
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
-    console.log('isIntersecting', isIntersecting);
-    console.log('isMoreData', isMoreData);
-    console.log('isLoading', isLoading);
     if (isIntersecting && isMoreData && !isLoading) {
       setLoading(true);
       window.electron.ipcRenderer.sendMessage('next-page', []);
     }
   };
+
+  const onLoadData = (data: unknown) => {
+    const colData = data as ColumnType[];
+      // console.log(colData);
+      if (colData !== null) {
+        setExData(colData);
+        const isNoMore = colData.length < 10;
+        setMoreData(!isNoMore);
+      }
+      setLoading(false);
+  }
 
   const { setTarget } = useInfiniteScroll({ onIntersect });
 
@@ -43,16 +49,13 @@ const snb = () => {
 
   useEffect(() => {
     const channel = 'sql-file-selected';
-    window.electron.ipcRenderer.on(channel, (data) => {
-      const colData = data as ColumnType[];
-      // console.log(colData);
-      if (colData !== null) {
-        setExData(colData);
-        const isNoMore = colData.length < 10;
-        setMoreData(!isNoMore);
-      }
-      setLoading(false);
-    });
+    window.electron.ipcRenderer.on(channel, onLoadData);
+    return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  });
+
+  useEffect(() => {
+    const channel = 'reload-data';
+    window.electron.ipcRenderer.on(channel, onLoadData);
     return () => window.electron.ipcRenderer.removeAllListeners(channel);
   });
 
@@ -89,10 +92,7 @@ const snb = () => {
             <div className="text-examinee"
               onClick={() => {
                 console.log("getAnswer");
-                getAnswers(2);
-                // more load
-                // setLoading(true);
-                // window.electron.ipcRenderer.sendMessage('next-page', []);
+                console.log(getAnswers(2));
               }
               }>
             피검사자
@@ -120,12 +120,23 @@ const snb = () => {
           </div>
         </div>
       </div>
-      <div className="child examinee-data-wrapper">
-        <div className="data-text text-cyan-900 p-5">
-          {isPopupOpen && (
-            <ExamineeInfoPopup onClose={() => setPopupOpen(false)} />
-          )}
-          피검사자명
+      <div className="child">
+        <div className="examinee-data-wrapper">
+          <div className="data-text text-cyan-900 p-5">
+            {isPopupOpen && (
+              <ExamineeInfoPopup onClose={() => setPopupOpen(false)} />
+            )}
+            피검사자명
+          </div>
+          <button
+            type="button"
+            className="bg-transparent"
+            onClick={() => {
+              alert('버튼 클릭 시 출력되는 메시지 박스입니다.');
+            }}
+          >
+            수정
+          </button>
         </div>
       </div>
       <div className="child import-success-screen overflow-y-auto">

@@ -210,6 +210,19 @@ const createWindow = async () => {
     }
   });
 
+  ipcMain.on('delete-data', (event, arg) => {
+    log.log(arg);
+    const result = Util.deleteData(db, arg);
+    if (result && result.length > 0) {
+      const rowCount = Util.rowCount(db);
+      STORE.set('rowCount', rowCount);
+      STORE.set('currentPage', 1);
+      event.sender.send('reload-data', result);
+    } else {
+      event.sender.send('data-load-failured', 'Empty Data');
+    }
+  });
+
   // Remove this if your app does not use auto updates
   // new AppUpdater();
 };
