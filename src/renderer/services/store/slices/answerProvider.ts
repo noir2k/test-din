@@ -3,7 +3,7 @@ import answerData from '@assets/resources/answer.json';
 
 type dataType = typeof answerData;
 
-export const answerSlice = createSlice({
+const answerSlice = createSlice({
   name: 'answers',
   initialState: answerData,
   reducers: {}

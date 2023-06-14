@@ -14,7 +14,7 @@ const initialState: PopupToggleState = {
   isTestStartOpen: false,
 };
 
-export const popupToggleSlice = createSlice({
+const popupToggleSlice = createSlice({
   name: 'popupToggle',
   initialState,
   reducers: {

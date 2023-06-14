@@ -8,6 +8,7 @@ import ExamineeCard from '@components/main/examineeCard';
 import ExamineeInfoPopup from './examineePopup';
 
 import { setTestStartOpen } from '@store/slices/popupToggle';
+import { setUserInfo } from '@store/slices/userDataProvider';
 import { getAnswers } from '@store/slices/answerProvider';
 
 import { ColumnType } from '@main/util';
@@ -27,23 +28,24 @@ const snb = () => {
     }
   };
 
+  const { setTarget } = useInfiniteScroll({ onIntersect });
+
   const onLoadData = (data: unknown) => {
     const colData = data as ColumnType[];
       // console.log(colData);
-      if (colData !== null) {
+      if (colData !== null && colData.length > 0) {
         setExData(colData);
+        dispatch(setUserInfo(colData[0]));
         const isNoMore = colData.length < 10;
         setMoreData(!isNoMore);
       }
       setLoading(false);
   }
 
-  const { setTarget } = useInfiniteScroll({ onIntersect });
-
   // TODO: will be removed
   // const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
   // console.log(popupToggle);
-  // const answerProvider = useAppSelector((state: RootState) => state.answerProvider);
+  // const answerProvider = useAppSelector((state: RootState) => state.answer);
   // console.log(answerProvider);
   // TODO: will be removed END
 
@@ -122,7 +124,9 @@ const snb = () => {
       </div>
       <div className="child">
         <div className="examinee-data-wrapper">
-          <div className="data-text text-cyan-900 p-5">
+          <div className="cursor-pointer data-text text-cyan-900 p-5"
+          onClick={() => setPopupOpen(!isPopupOpen)}
+          >
             {isPopupOpen && (
               <ExamineeInfoPopup onClose={() => setPopupOpen(false)} />
             )}

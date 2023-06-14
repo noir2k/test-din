@@ -211,8 +211,8 @@ export const updateUserName = (db: Database, userName: string) => {
   let sqlstr = `BEGIN TRANSACTION;\n`;
   sqlstr += `UPDATE ${tbName} SET ${col.user_name} = ${userName}\n`;
   sqlstr += `COMMIT;`;
-
-  db.run(sqlstr);
+  log.log(sqlstr);
+  //db.run(sqlstr);
   return findByRegDate(db);
 }
 

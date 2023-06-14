@@ -3,10 +3,12 @@ import logger from 'redux-logger';
 
 import popupToggle from './slices/popupToggle';
 import answerProvider from './slices/answerProvider';
+import userDataProvider from './slices/userDataProvider';
 
 const rootReducer = combineReducers({
   popupToggle: popupToggle,
-  answerProvider: answerProvider,
+  answer: answerProvider,
+  userData: userDataProvider,
 });
 
 export const store = configureStore({
