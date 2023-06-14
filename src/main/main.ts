@@ -22,6 +22,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import * as Util from './util';
 
+import type { Database } from 'sql.js';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-assembler';
 
 // import { autoUpdater } from 'electron-updater';
@@ -71,6 +72,17 @@ const isDebug =
 if (isDebug) {
   require('electron-debug')();
   log.initialize({ preload: true });
+}
+
+const _loadData = (db: Database, channel: string, event: Electron.IpcMainEvent, result:{}[] | null | undefined) => {
+  if (result && result.length > 0) {
+    const rowCount = Util.rowCount(db);
+    STORE.set('rowCount', rowCount);
+    STORE.set('currentPage', 1);
+    event.sender.send(channel, result);
+  } else {
+    event.sender.send('load-data-failured', 'Empty Data');
+  }
 }
 
 const createWindow = async () => {
@@ -145,14 +157,7 @@ const createWindow = async () => {
     if (filePaths !== undefined && filePaths.length > 0) {
       STORE.set('loadFilePath', filePaths[0]);
       const result = Util.loadFromSql(db, filePaths[0]);
-      if (result && result.length > 0) {
-        const rowCount = Util.rowCount(db);
-        STORE.set('rowCount', rowCount);
-        STORE.set('currentPage', 1);
-        event.sender.send('sql-file-selected', result);
-      } else {
-        event.sender.send('sql-file-failured', 'File open Error\nEmpty Data or Invalid file Format');
-      }
+      _loadData(db, 'sql-file-selected', event, result);
     } else {
       // event.sender.send('sql-file-canceled', 'File open canceled');
     }
@@ -211,16 +216,13 @@ const createWindow = async () => {
   });
 
   ipcMain.on('delete-data', (event, arg) => {
-    log.log(arg);
     const result = Util.deleteData(db, arg);
-    if (result && result.length > 0) {
-      const rowCount = Util.rowCount(db);
-      STORE.set('rowCount', rowCount);
-      STORE.set('currentPage', 1);
-      event.sender.send('reload-data', result);
-    } else {
-      event.sender.send('data-load-failured', 'Empty Data');
-    }
+    _loadData(db, 'reload-data', event, result);
+  });
+
+  ipcMain.on('update-user-name', (event, arg) => {
+    const result = Util.updateUserName(db, arg);
+    _loadData(db, 'update-user-name', event, result);
   });
 
   // Remove this if your app does not use auto updates

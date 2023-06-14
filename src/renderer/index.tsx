@@ -13,7 +13,7 @@ window.electron.ipcRenderer.once('ipc', (arg) => {
 
 window.electron.ipcRenderer.sendMessage('ipc', ['ping']);
 
-window.electron.ipcRenderer.on('data-load-failured', (message) => {
+window.electron.ipcRenderer.on('load-data-failured', (message) => {
   alert(message);
 });
 
