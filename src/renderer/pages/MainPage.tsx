@@ -21,7 +21,7 @@ const MainPage = () => {
   return (
     <div>
       <Header />
-      <div className="flex">
+      <div className="main-container">
         <div className="w-3/12">
           <Snb />
         </div>

@@ -3,12 +3,9 @@
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
 body {
-  position: relative;
   color: white;
   font-family: sans-serif;
   overflow-y: hidden;
-  justify-content: center;
-  align-items: center;
 }
 
 button {
@@ -46,7 +43,7 @@ a:hover {
 /* header.tsx */
 .gnb {
   width: 100%;
-  height: 20vh;
+  height: 12vh;
 }
 
 .nav {
@@ -58,20 +55,62 @@ a:hover {
   width: 100%;
 }
 
+.main-container {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 88vh;
+}
+
 /* snb.tsx */
-.snb-list {
-  /* width: 100%; */
+.snb-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  /* height: 100%; */
+}
+
+.snb-container > .child {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+}
+
+.snb-container > .bottom-fixed {
+  margin-top: auto;
+}
+
+.scroll-end {
+  display: block;
+  height: 100px;
+}
+
+.snb-column-container {
   background-color: lightpink;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  height: 80px;
+}
+
+.snb-column-child-container {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: auto;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 .import-success-screen {
   /* background-color: lightyellow; */
-  min-height: 450px;
-  max-height: 450px;
+  height: 62vh;
 }
 
 .btn-wrapper {
-  /* background-color: lightblue; */
+  align-items: center;
+  margin-top: 45px;
+  margin-bottom: 25px;
 }
 
 /* examineeData.tsx */

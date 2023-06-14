@@ -1,3 +1,6 @@
+import { useAppDispatch } from '@hook/index';
+import { setHistoryOpen } from '@store/slices/popupToggle';
+
 import { ColumnType } from '@main/util';
 
 type DataProps = {
@@ -6,9 +9,13 @@ type DataProps = {
 
 const ExamineeCard = ({props}: DataProps) => {
   const { id,	direction, scoring, memo, sound_set, test_date, test_result, reg_timestamp } = props;
+  const dispatch = useAppDispatch();
 
   return (
-    <div className="examinee-card flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300">
+    <div
+    className="examinee-card cursor-pointer flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300"
+    onClick={() => { dispatch(setHistoryOpen()); }}
+    >
       <div className="examinee-name">
         {id.toString()}
       </div>
