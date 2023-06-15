@@ -33,7 +33,7 @@ const snb = () => {
   const onLoadData = (data: unknown) => {
     const colData = data as ColumnType[];
       // console.log(colData);
-      if (colData !== null && colData.length > 0) {
+      if (colData !== null) {
         setExData(colData);
         dispatch(setUserInfo(colData[0]));
         const isNoMore = colData.length < 10;
@@ -65,7 +65,6 @@ const snb = () => {
     const channel = 'load-more-data';
     window.electron.ipcRenderer.on(channel, (data) => {
       const colData = data as ColumnType[];
-      // console.log(colData);
       if (colData !== null && exData !== null) {
         setExData([...exData, ...colData]);
         const isNoMore = colData.length < 10;
@@ -73,14 +72,13 @@ const snb = () => {
       }
       setLoading(false);
     });
+
     return () => window.electron.ipcRenderer.removeAllListeners(channel);
   });
 
   useEffect(() => {
     const channel = 'no-more-data';
-    window.electron.ipcRenderer.on(channel, () => {
-      setMoreData(false);
-    });
+    window.electron.ipcRenderer.on(channel, () => setMoreData(false));
     return () => window.electron.ipcRenderer.removeAllListeners(channel);
   });
 

@@ -124,6 +124,15 @@ a:hover {
   /* background-color: burlywood; */
 }
 
+.chart-wrapper {
+  align-self: baseline;
+  margin-top: 10vh;
+}
+.chart-component {
+  width: 420px;
+  height: 500px;
+}
+
 /* testForm.tsx */
 .progress-btn-wrapper {
   width: 600px;
