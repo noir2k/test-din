@@ -1,24 +1,40 @@
 import { Link } from 'react-router-dom';
-import logo from '@assets/welcome_logo.png';
+import sm_logo from '@assets/images/logo/main_sm_logo.png';
+import lg_logo from '@assets/images/logo/main_lg_logo.png';
+import { useState } from 'react';
 
 export default function Welcome() {
+  // licenseStatus === 1 → 라이센스 확인 완료
+  const [licenseStatus, setLicenseStatus] = useState(0);
+
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center text-slate-950">
-      <img width="150" alt="icon" src={logo} />
-      <h1>BrainCog_CM</h1>
-      <img width="200" height="100" alt="icon" src={logo} />
-      <h2 className="mb-5">i HAB 청력 테스트</h2>
-      <Link to="/main-page">
-        <button
-          type="button"
-          className="bg-lime-400 text-cyan-900"
-          onClick={() => {
-            alert('버튼 클릭 시 출력되는 메시지 박스입니다.');
-          }}
-        >
-          시작
-        </button>
-      </Link>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <img width="250" alt="icon" src={sm_logo} />
+      <img width="738" height="100" alt="icon" src={lg_logo} />
+      <h2 className="my-10 text-2xl font-semibold">i HAB 청력 테스트</h2>
+      <button
+        type="button"
+        className="start-btn rounded-full"
+        onClick={() => {
+          setLicenseStatus(1);
+        }}
+      >
+        START
+      </button>
+      {licenseStatus === 1 && <WelcomePopup />}
+    </div>
+  );
+}
+
+function WelcomePopup() {
+  return (
+    <div className="popup-wrapper">
+      <div className="popup-inner">
+        <p className="popup-text">라이센스 확인 완료!</p>
+        <Link to="/main-page" className="popup-btn">
+          확인
+        </Link>
+      </div>
     </div>
   );
 }
