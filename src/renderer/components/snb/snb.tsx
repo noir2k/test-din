@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
+
+import ico_home from '@assets/images/icons/icon_home.png';
+import ico_settings from '@assets/images/icons/icon_settings.png';
+import ico_user from '@assets/images/icons/icon_user_white.png';
+
 import useInfiniteScroll from '@hook/useInfiniteScroll';
 
 import ExamineeCard from '@components/main/examineeCard';
 import ExamineeInfoPopup from './examineePopup';
 
-import { setTestStartOpen } from '@store/slices/popupToggle';
+import { setSettingOpen, setTestStartOpen } from '@store/slices/popupToggle';
 import { setUserInfo } from '@store/slices/userDataProvider';
 import { getAnswers } from '@store/slices/answerProvider';
 
@@ -32,15 +37,15 @@ const snb = () => {
 
   const onLoadData = (data: unknown) => {
     const colData = data as ColumnType[];
-      // console.log(colData);
-      if (colData !== null) {
-        setExData(colData);
-        dispatch(setUserInfo(colData[0]));
-        const isNoMore = colData.length < 10;
-        setMoreData(!isNoMore);
-      }
-      setLoading(false);
-  }
+    // console.log(colData);
+    if (colData !== null) {
+      setExData(colData);
+      dispatch(setUserInfo(colData[0]));
+      const isNoMore = colData.length < 10;
+      setMoreData(!isNoMore);
+    }
+    setLoading(false);
+  };
 
   // TODO: will be removed
   // const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
@@ -83,56 +88,85 @@ const snb = () => {
   });
 
   return (
-    <div id="snb"
-      className="snb-container h-full border-r-2 border-black box-border"
-    >
-      <div className="child">
-        <div className="snb-column-container shadow-md">
-          <div className="snb-column-child-container items-center">
-            <div className="text-examinee"
+    <div id="snb" className="snb-container">
+      <div className="child snb-setting-wrapper">
+        <div className="snb-column-container">
+          <div className="snb-icons-container">
+            <a href="!#">
+              <img width="26" src={ico_home} alt="icon_home" />
+            </a>
+            <a
+              href="!#"
               onClick={() => {
-                console.log("getAnswer");
-                console.log(getAnswers(2));
-              }
-              }>
-            피검사자
-            </div>
+                dispatch(setSettingOpen());
+              }}
+            >
+              <img width="26" src={ico_settings} alt="icon_home" />
+            </a>
           </div>
-          <div className="snb-column-child-container items-center">
-            <label htmlFor="backupData">
-              <div className="text-examinee cursor-pointer"
-                onClick={() => { window.electron.ipcRenderer.sendMessage('show-save-sql', []); }
-              }>
-                백업하기
-              </div>
-            </label>
-          </div>
-          <div className="snb-column-child-container items-center">
-            <label htmlFor="examineeDataFile">
-              <div className="text-examinee cursor-pointer"
+          <div className="snb-btn-container">
+            <div className="snb-column-child-container">
+              <button
+                type="button"
+                className="snb-column-child-btn btn-blue"
                 onClick={() => {
-                  setLoading(true);
-                  window.electron.ipcRenderer.sendMessage('show-open-sql', []); }
-                }>
-                가져오기
-              </div>
-            </label>
+                  console.log('getAnswer');
+                  console.log(getAnswers(2));
+                }}
+              >
+                피검사자
+              </button>
+            </div>
+            <div className="snb-column-child-container">
+              <label htmlFor="backupData">
+                <button
+                  type="button"
+                  className="snb-column-child-btn btn-backup"
+                  onClick={() => {
+                    window.electron.ipcRenderer.sendMessage(
+                      'show-save-sql',
+                      []
+                    );
+                  }}
+                >
+                  백업하기
+                </button>
+              </label>
+            </div>
+            <div className="snb-column-child-container">
+              <label htmlFor="examineeDataFile">
+                <button
+                  className="snb-column-child-btn btn-import"
+                  onClick={() => {
+                    setLoading(true);
+                    window.electron.ipcRenderer.sendMessage(
+                      'show-open-sql',
+                      []
+                    );
+                  }}
+                >
+                  가져오기
+                </button>
+              </label>
+            </div>
           </div>
         </div>
       </div>
-      <div className="child">
+      <div className="child snb-data-wrapper">
         <div className="examinee-data-wrapper">
-          <div className="cursor-pointer data-text text-cyan-900 p-5"
-          onClick={() => setPopupOpen(!isPopupOpen)}
+          <div
+            className="cursor-pointer data-text ml-5"
+            onClick={() => setPopupOpen(!isPopupOpen)}
           >
             {isPopupOpen && (
               <ExamineeInfoPopup onClose={() => setPopupOpen(false)} />
             )}
-            피검사자명
+            <img className="float-left mr-5" src={ico_user} alt="user icon" />
+            <span className="text-white">피검사자명</span>
           </div>
           <button
             type="button"
-            className="bg-transparent"
+            className="bg-transparent snb-column-child-btn snb-modify-btn"
             onClick={() => {
               alert('버튼 클릭 시 출력되는 메시지 박스입니다.');
             }}
@@ -143,24 +177,26 @@ const snb = () => {
       </div>
       <div className="child import-success-screen overflow-y-auto">
         <div>
-          {
-            exData !== null &&
-            exData.map((item) => <ExamineeCard props={item} key={item.id.toFixed()}/>)
-          }
+          {exData !== null &&
+            exData.map((item) => (
+              <ExamineeCard props={item} key={item.id.toFixed()} />
+            ))}
         </div>
         <div className="scroll-end" ref={setTarget} />
       </div>
       <div className="child btn-wrapper">
         <button
           type="button"
-          className="bg-lime-400 text-cyan-900 w-2/3"
-          onClick={() => { dispatch(setTestStartOpen()); }}
+          className="test-start-btn"
+          onClick={() => {
+            dispatch(setTestStartOpen());
+          }}
         >
           검사하기
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default snb;

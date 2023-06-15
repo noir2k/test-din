@@ -3,6 +3,8 @@
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
 body {
+  width: 1440px;
+  height: 1024px;
   background: linear-gradient(
     180deg,
     #568af0 -4.98%,
@@ -10,7 +12,7 @@ body {
   );
   color: black;
   font-family: sans-serif;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 button {
@@ -54,38 +56,6 @@ a:hover {
   font-weight: 600;
 }
 
-.popup-wrapper {
-  position: absolute;
-  background-color: white;
-  width: 518px;
-  height: 153px;
-  border-radius: 10px;
-  text-align: center;
-}
-.popup-inner {
-  display: flex;
-  flex-direction: column;
-}
-.popup-text {
-  height: 103px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.popup-btn {
-  display: block;
-  color: white;
-  background-color: #568af0;
-  width: 100%;
-  height: 50px;
-  margin: 0 auto;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* header.tsx */
 .gnb {
   width: 100%;
@@ -104,16 +74,40 @@ a:hover {
 .main-container {
   display: flex;
   flex-flow: row nowrap;
-  height: 88vh;
+  height: 100vh;
 }
 
 /* snb.tsx */
 .snb-container {
+  width: 400px;
+  height: 100%;
+  background-color: #f3f3f3;
+  border-radius: 0px 10px 10px 0px;
+  box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
-  /* height: 100%; */
+}
+
+.snb-setting-wrapper {
+  width: 100%;
+  height: 151px;
+  background-color: white;
+}
+
+.snb-icons-container {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.snb-data-wrapper {
+  width: 100%;
+  height: 80px;
+  background-color: #568af0;
 }
 
 .snb-container > .child {
@@ -132,25 +126,52 @@ a:hover {
 }
 
 .snb-column-container {
-  background-color: lightpink;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
   align-items: center;
-  height: 80px;
 }
 
 .snb-column-child-container {
   display: flex;
   flex-flow: column nowrap;
-  margin: auto;
-  margin-top: 25px;
-  margin-bottom: 25px;
+  margin: 0;
 }
 
-.import-success-screen {
-  /* background-color: lightyellow; */
-  height: 62vh;
+.snb-column-child-btn {
+  width: 74px;
+  height: 31px;
+  background-color: #e2e2e2;
+  border-radius: 8px;
+  padding: 0;
+  margin: 0px 10px;
+  font-weight: 400;
+  font-size: 12px;
+  text-align: center;
+}
+
+.snb-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.snb-column-child-btn.btn-blue {
+  background-color: #568af0;
+  color: white;
+}
+
+.snb-column-child-btn.btn-backup,
+.snb-column-child-btn.btn-import {
+  /* margin-left: auto; */
+}
+
+.snb-modify-btn.snb-modify-btn {
+  background: rgba(255, 255, 255, 0.6);
+  text-decoration: underline;
 }
 
 .btn-wrapper {
@@ -159,11 +180,26 @@ a:hover {
   margin-bottom: 25px;
 }
 
+.test-start-btn {
+  width: 324px;
+  height: 58px;
+  background: #568af0;
+  color: white;
+  border-radius: 20px;
+}
+
+.import-success-screen {
+  /* background-color: lightyellow; */
+  height: 62vh;
+}
+
 /* examineeData.tsx */
 .examinee-data-wrapper {
-  background-color: lavender;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .examinee-card {
@@ -219,4 +255,73 @@ input[type='range']::-webkit-slider-runnable-track {
 
 input[type='range']:focus::-webkit-slider-runnable-track {
   background: #f2f4f6;
+}
+
+/* Alert.tsx */
+.alert-wrapper {
+  position: absolute;
+  background-color: white;
+  width: 518px;
+  height: 153px;
+  border-radius: 10px;
+  text-align: center;
+}
+.alert-inner {
+  display: flex;
+  flex-direction: column;
+}
+.alert-text {
+  height: 103px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alert-btn {
+  display: block;
+  color: white;
+  background-color: #568af0;
+  width: 100%;
+  height: 50px;
+  margin: 0 auto;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* notice.tsx */
+.notice-wrapper {
+  position: absolute;
+  width: 820px;
+  height: 600px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notice-inner {
+  text-align: center;
+}
+
+.notice-inner img {
+  display: inline-block;
+  margin: 0px 0px 55px 0px;
+}
+
+.notice-text {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 64px;
+}
+
+/* MainPage.tsx */
+.main-contents {
+  position: relative;
+  width: 1040px;
+  height: 100%;
+  /* background: rgba(255, 255, 255, 0.7); */
+  border-radius: 20px;
 }

@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface PopupToggleState {
-  isNoticeOpen: boolean,
-  isHistoryOpen: boolean,
-  isSettingOpen: boolean,
-  isTestStartOpen: boolean,
+  isNoticeOpen: boolean;
+  isHistoryOpen: boolean;
+  isSettingOpen: boolean;
+  isTestStartOpen: boolean;
 }
 
 const initialState: PopupToggleState = {
-  isNoticeOpen: false,
+  isNoticeOpen: true,
   isHistoryOpen: false,
   isSettingOpen: false,
   isTestStartOpen: false,

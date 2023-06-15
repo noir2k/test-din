@@ -21,17 +21,18 @@ export default function Welcome() {
       >
         START
       </button>
-      {licenseStatus === 1 && <WelcomePopup />}
+      {licenseStatus === 1 && <Alert />}
     </div>
   );
 }
 
-function WelcomePopup() {
+// TODO: Alert.tsx로 분리 예정
+function Alert() {
   return (
-    <div className="popup-wrapper">
-      <div className="popup-inner">
-        <p className="popup-text">라이센스 확인 완료!</p>
-        <Link to="/main-page" className="popup-btn">
+    <div className="alert-wrapper">
+      <div className="alert-inner">
+        <p className="alert-text">라이센스 확인 완료!</p>
+        <Link to="/main-page" className="alert-btn">
           확인
         </Link>
       </div>
