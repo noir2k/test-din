@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@hook/index';
 import { RootState } from '@store/index';
 import { setNoticeOpen } from '@store/slices/popupToggle';
 
 import ico_speaker_white from '@assets/images/icons/icon_speaker_white.png';
 import ico_user_blue from '@assets/images/icons/icon_user_blue.png';
-import { useState } from 'react';
 
 export default function EditingName() {
   const userData = useAppSelector((state: RootState) => state.userData);
@@ -19,8 +19,7 @@ export default function EditingName() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    // TODO: 이름 수정을 처리하는 로직 추가하기
+    window.electron.ipcRenderer.sendMessage('update-user-name', [name]);
 
     setShowSuccessPopup(true);
   };

@@ -23,8 +23,6 @@ import { getAnswers } from '@store/slices/answerProvider';
 import { ColumnType } from '@main/util';
 
 const snb = () => {
-  const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
-
   const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [exData, setExData] = useState<ColumnType[] | null>(null);
@@ -42,7 +40,6 @@ const snb = () => {
 
   const onLoadData = (data: unknown) => {
     const colData = data as ColumnType[];
-    // console.log(colData);
     if (colData !== null) {
       setExData(colData);
       dispatch(setUserInfo(colData[0]));
@@ -67,6 +64,12 @@ const snb = () => {
 
   useEffect(() => {
     const channel = 'reload-data';
+    window.electron.ipcRenderer.on(channel, onLoadData);
+    return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  });
+
+  useEffect(() => {
+    const channel = 'update-user-name';
     window.electron.ipcRenderer.on(channel, onLoadData);
     return () => window.electron.ipcRenderer.removeAllListeners(channel);
   });

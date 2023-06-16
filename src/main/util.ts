@@ -57,6 +57,7 @@ export const resolveHtmlPath = (htmlFileName: string) => {
     url.pathname = htmlFileName;
     return url.href;
   }
+
   return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
 }
 
@@ -73,6 +74,7 @@ const _rowsFromSqlDataArray = (queryExecResult: QueryExecResult) => {
     }
     i++;
   }
+
   return data;
 }
 
@@ -83,7 +85,7 @@ const _resultData = ( queryExecResults: QueryExecResult[] ) => {
   } else {
     resultArr = _rowsFromSqlDataArray(queryExecResults[0]);
   }
-  log.log(resultArr);
+
   return resultArr;
 }
 
@@ -113,7 +115,6 @@ export const createDb = async (): Promise<any> => {
 
 export const initDbTable = async (db: Database) => {
   const sqlstr = fs.readFileSync(getAssetPath('/db/schema.sql'), 'utf8');
-  // log.log("initDBTable sqlstr : ", sqlstr);
   db.run(sqlstr);
 }
 
@@ -139,6 +140,7 @@ export const findAll = (db: Database) => {
 
 export const rowCount = (db: Database) => {
   let sqlstr = `SELECT COUNT(id) FROM ${tbName} LIMIT 1`;
+
   const res = db.exec(sqlstr);
   return res[0].values[0][0];
 }
@@ -149,9 +151,8 @@ export const findByRegDate = (db: Database, offset?: string) => {
     offset = '0';
   }
   sqlstr += ` OFFSET ${offset}`;
-  log.log('findByRegDate sqlstr : ', sqlstr);
-  const res = db.exec(sqlstr);
 
+  const res = db.exec(sqlstr);
   return _resultData(res);
 }
 
@@ -164,8 +165,8 @@ export const getGraphData = (db: Database) => {
     ${col.test_result},
     ${col.reg_timestamp}
   FROM ${tbName} ORDER BY ${col.reg_timestamp} DESC LIMIT 6`;
-  const res = db.exec(sqlstr);
 
+  const res = db.exec(sqlstr);
   return _resultData(res);
 }
 
@@ -212,16 +213,15 @@ export const deleteData = (db: Database, id: string) => {
   sqlstr += `COMMIT;`;
 
   db.run(sqlstr);
-
   return findByRegDate(db);
 }
 
 export const updateUserName = (db: Database, userName: string) => {
   let sqlstr = `BEGIN TRANSACTION;\n`;
-  sqlstr += `UPDATE ${tbName} SET ${col.user_name} = ${userName}\n`;
+  sqlstr += `UPDATE ${tbName} SET ${col.user_name} = '${userName}';\n`;
   sqlstr += `COMMIT;`;
-  log.log(sqlstr);
-  //db.run(sqlstr);
+  // log.log(sqlstr);
+  db.run(sqlstr);
   return findByRegDate(db);
 }
 
