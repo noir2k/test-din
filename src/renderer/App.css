@@ -3,12 +3,19 @@
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
 body {
-  color: white;
+  width: 1440px;
+  height: 1024px;
+  background: linear-gradient(
+    180deg,
+    #568af0 -4.98%,
+    rgba(207, 216, 234, 0.72) 100%
+  );
+  color: black;
   font-family: sans-serif;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
-button {
+/* button {
   padding: 10px 20px;
   border-radius: 10px;
   border: none;
@@ -17,12 +24,16 @@ button {
   transition: all ease-in 0.1s;
   cursor: pointer;
   opacity: 0.9;
-}
+} */
 
 /* button:hover {
   transform: scale(1.05);
   opacity: 1;
 } */
+
+.main-background-component {
+  z-index: -999;
+}
 
 li {
   list-style: none;
@@ -32,12 +43,21 @@ a {
   text-decoration: none;
   height: fit-content;
   width: fit-content;
-  margin: 10px;
+  /* margin: 10px; */
 }
 
 a:hover {
   opacity: 1;
   text-decoration: none;
+}
+
+/* WelcomePage.tsx */
+.start-btn {
+  width: 170px;
+  height: 63px;
+  background-color: white;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 /* header.tsx */
@@ -58,16 +78,44 @@ a:hover {
 .main-container {
   display: flex;
   flex-flow: row nowrap;
-  height: 88vh;
+  height: 100vh;
 }
 
 /* snb.tsx */
 .snb-container {
+  width: 400px;
+  height: 100%;
+  background-color: #f3f3f3;
+  border-radius: 0px 10px 10px 0px;
+  box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
-  /* height: 100%; */
+}
+
+.snb-setting-wrapper {
+  width: 100%;
+  height: 151px;
+  background-color: white;
+}
+
+.snb-icons-container {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.snb-icons-container > a {
+  margin: 10px;
+}
+
+.snb-data-wrapper {
+  width: 100%;
+  height: 80px;
+  background-color: #568af0;
 }
 
 .snb-container > .child {
@@ -86,25 +134,52 @@ a:hover {
 }
 
 .snb-column-container {
-  background-color: lightpink;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
   align-items: center;
-  height: 80px;
 }
 
 .snb-column-child-container {
   display: flex;
   flex-flow: column nowrap;
-  margin: auto;
-  margin-top: 25px;
-  margin-bottom: 25px;
+  margin: 0;
 }
 
-.import-success-screen {
-  /* background-color: lightyellow; */
-  height: 62vh;
+.snb-column-child-btn {
+  width: 74px;
+  height: 31px;
+  background-color: #e2e2e2;
+  border-radius: 8px;
+  padding: 0;
+  margin: 0px 10px;
+  font-weight: 400;
+  font-size: 12px;
+  text-align: center;
+}
+
+.snb-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.snb-column-child-btn.btn-blue {
+  background-color: #568af0;
+  color: white;
+}
+
+.snb-column-child-btn.btn-backup,
+.snb-column-child-btn.btn-import {
+  /* margin-left: auto; */
+}
+
+.snb-modify-btn.snb-modify-btn {
+  background: rgba(255, 255, 255, 0.6);
+  text-decoration: underline;
 }
 
 .btn-wrapper {
@@ -113,11 +188,26 @@ a:hover {
   margin-bottom: 25px;
 }
 
+.test-start-btn {
+  width: 324px;
+  height: 58px;
+  background: #568af0;
+  color: white;
+  border-radius: 20px;
+}
+
+.import-success-screen {
+  /* background-color: lightyellow; */
+  height: 62vh;
+}
+
 /* examineeData.tsx */
 .examinee-data-wrapper {
-  background-color: lavender;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .examinee-card {
@@ -173,4 +263,269 @@ input[type='range']::-webkit-slider-runnable-track {
 
 input[type='range']:focus::-webkit-slider-runnable-track {
   background: #f2f4f6;
+}
+
+/* Alert.tsx */
+.alert-wrapper {
+  position: absolute;
+  background-color: white;
+  width: 518px;
+  height: 153px;
+  border-radius: 10px;
+  text-align: center;
+}
+.alert-inner {
+  display: flex;
+  flex-direction: column;
+}
+.alert-text {
+  height: 103px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alert-btn {
+  display: block;
+  color: white;
+  background-color: #568af0;
+  width: 100%;
+  height: 50px;
+  margin: 0 auto;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* notice.tsx */
+.notice-wrapper {
+  position: absolute;
+  width: 820px;
+  height: 600px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notice-inner {
+  text-align: center;
+}
+
+.notice-inner img {
+  display: inline-block;
+  margin: 0px 0px 55px 0px;
+}
+
+.notice-text {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 64px;
+}
+
+/* MainPage.tsx */
+.main-contents {
+  position: relative;
+  width: 1040px;
+  height: 100%;
+  /* background: rgba(255, 255, 255, 0.7); */
+  border-radius: 20px;
+}
+
+/* examineePopup.tsx */
+.examinee-popup-wrapper {
+  position: absolute;
+  width: 450px;
+  height: 516px;
+  background: #ffffff;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.close-btn-wrapper {
+  width: 450px;
+  height: 50px;
+  background: #568af0;
+  border-radius: 10px 10px 0px 0px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px 23px 0px 0px;
+}
+
+.popup-contents {
+  height: 466px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-contents > .popup-title {
+  margin: 46px 0px 52px 0px;
+}
+
+.popup-contents > .popup-title {
+  font-weight: 600;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-contents > .popup-title > img,
+span {
+  float: left;
+}
+
+.popup-contents > .popup-title > img {
+  width: 28px;
+  margin: 0px 12px 0px 0px;
+}
+
+.popup-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0px 0px 32px 0px;
+}
+
+.popup-item > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-item > .popup-item-order-number {
+  width: 25px;
+  height: 25px;
+  background: #568af0;
+  color: white;
+  border-radius: 100%;
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 25px;
+  margin: 0px 14px 0px 0px;
+}
+
+.popup-item > .popup-item-subject {
+  width: 100px;
+  height: 20px;
+  margin: 0px 28px 0px 0px;
+  text-align: left;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.popup-item > .popup-item-data {
+  width: 170px;
+  height: 46px;
+  background: #e2e2e2;
+  border-radius: 10px;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0px 0px 0px 17px;
+}
+
+/* EditingName.tsx */
+.editing-name-wrapper {
+  width: 518px;
+  height: 276px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.editing-name-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editing-name-title > img {
+  float: left;
+  margin: 0px 23px 0px 0px;
+}
+
+.editing-name-title > p {
+  font-weight: 400;
+  font-size: 20px;
+  color: white;
+}
+
+.editing-name-modal {
+  width: 518px;
+  height: 176px;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.modal-item-wrapper {
+  width: 100%;
+  height: 127px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-item-wrapper > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-item-wrapper > li > img {
+  margin: 0px 23px 0px 0px;
+}
+
+.modal-item-wrapper > li > .modal-item-subject {
+  margin: 0px 94px 0px 0px;
+}
+
+.modal-item-wrapper > li > .modal-item-data {
+  width: 175px;
+  height: 46px;
+  background: #e2e2e2;
+  border-radius: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0px 0px 0px 20px;
+}
+
+.modal-btn-wrapper {
+  width: 518px;
+  height: 50px;
+  background: #568af0;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.modal-btn-wrapper > li > .btn-apply,
+.btn-cancle {
+  width: 50%;
+  height: 50px;
+  box-sizing: border-box;
+  color: white;
+}
+
+.modal-btn-wrapper > li > .btn-apply {
+  border-right: 1px solid white;
+}
+
+.modal-btn-inner {
+  width: 100%;
+  height: 100%;
+}
+
+.modal-btn-wrapper > li > .confirm-btn {
+  width: 100%;
+  height: 100%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
