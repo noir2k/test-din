@@ -108,6 +108,7 @@ const createWindow = async () => {
     show: false,
     width: 1440,
     height: 1024,
+    minWidth: 1024,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged

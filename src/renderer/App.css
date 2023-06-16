@@ -3,8 +3,6 @@
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
 body {
-  /* width: 1440px;
-  height: 1024px; */
   background: linear-gradient(
     180deg,
     #568af0 -4.98%,
@@ -182,6 +180,8 @@ a:hover {
   align-items: center;
   margin-top: 45px;
   margin-bottom: 25px;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .test-start-btn {
