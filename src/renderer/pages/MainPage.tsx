@@ -1,5 +1,4 @@
-/* eslint-disable camelcase */
-import { useAppDispatch, useAppSelector } from '@hook/index';
+import { useAppSelector } from '@hook/index';
 import { RootState } from '@store/index';
 
 import bg_circle_1 from '@assets/images/bg_circle_1.png';
@@ -10,13 +9,12 @@ import bg_circle_4 from '@assets/images/bg_circle_4.png';
 import TestForm from '@components/test/testForm';
 import Notice from '@components/main/notice';
 import History from '@components/main/history';
-import Setting from '@components/main/setting';
+import Setting from '@components/main/SettingComponent';
 import Snb from '@components/snb/snb';
 import ExamineeInfoPopup from '@components/snb/examineePopup';
 import EditingName from '@components/main/EditingName';
 
 const MainPage = () => {
-  // const state = useAppSelector((state: RootState) => state);
   const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
 
   const isNoticeOpen = popupToggle.isNoticeOpen;
