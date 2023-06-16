@@ -9,8 +9,6 @@ const Setting = () => {
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
     setValue(newValue);
-    _config.soundInterval = newValue;
-    window.electron.store.set('config', _config);
   };
 
   useEffect(() => {
@@ -19,6 +17,11 @@ const Setting = () => {
       setValue(conf.soundInterval);
     }
   }, []);
+
+  useEffect(() => {
+    _config.soundInterval = value;
+    window.electron.store.set('config', _config);
+  }, [value]);
 
   return (
     <div className="flex flex-col justify-start h-full p-5 w-1/2">
