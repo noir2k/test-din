@@ -9,6 +9,15 @@ import initSqlJs from 'sql.js';
 import type { Database, QueryExecResult } from 'sql.js';
 
 const tbName = 'test_din_history';
+
+export type ConfigSchemaType = {
+  soundInterval?: number;
+}
+
+export const defaultConfig: ConfigSchemaType = {
+  soundInterval: 3
+}
+
 export interface ColumnType {
   id: Number,
 	name: string,
@@ -93,7 +102,6 @@ export const writeDb = (db: Database) => {
 
 export const createDb = async (): Promise<any> => {
   return initSqlJs().then((SQL) => {
-    // const db = new SQL.Database(fs.readFileSync(filePath));
     log.info('Create Database');
     return new SQL.Database();
   })
@@ -103,8 +111,9 @@ export const createDb = async (): Promise<any> => {
   });
 }
 
-export const initDbTable = (db: Database) => {
+export const initDbTable = async (db: Database) => {
   const sqlstr = fs.readFileSync(getAssetPath('/db/schema.sql'), 'utf8');
+  // log.log("initDBTable sqlstr : ", sqlstr);
   db.run(sqlstr);
 }
 

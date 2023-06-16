@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import log from 'electron-log/renderer';
+
 import App from './App';
 
 const container = document.getElementById('root') as HTMLElement;

@@ -1,12 +1,24 @@
-import { useState } from 'react';
+import type { ConfigSchemaType } from '@main/util';
+import { useState, useEffect } from 'react';
 
-export default function Setting() {
+const _config = {} as ConfigSchemaType;
+
+const Setting = () => {
   const [value, setValue] = useState(0);
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
     setValue(newValue);
+    _config.soundInterval = newValue;
+    window.electron.store.set('config', _config);
   };
+
+  useEffect(() => {
+    const conf = window.electron.store.get('config');
+    if (conf.soundInterval) {
+      setValue(conf.soundInterval);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col justify-start h-full p-5 w-1/2">
@@ -51,3 +63,5 @@ export default function Setting() {
     </div>
   );
 }
+
+export default Setting;
