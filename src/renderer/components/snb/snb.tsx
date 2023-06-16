@@ -12,6 +12,7 @@ import useInfiniteScroll from '@hook/useInfiniteScroll';
 import ExamineeCard from '@components/main/examineeCard';
 
 import {
+  setEditingName,
   setInfoPopupOpen,
   setSettingOpen,
   setTestStartOpen,
@@ -24,7 +25,6 @@ import { ColumnType } from '@main/util';
 const snb = () => {
   const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
 
-  // const [isInfoPopupOpen, setInfoPopupOpen] = useState(false);
   const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [exData, setExData] = useState<ColumnType[] | null>(null);
@@ -165,9 +165,6 @@ const snb = () => {
               dispatch(setInfoPopupOpen());
             }}
           >
-            {/* {isPopupOpen && (
-              <ExamineeInfoPopup onClose={() => setPopupOpen(false)} />
-            )} */}
             <img className="float-left mr-5" src={ico_user} alt="user icon" />
             <span className="text-white">피검사자명</span>
           </a>
@@ -175,7 +172,7 @@ const snb = () => {
             type="button"
             className="bg-transparent snb-column-child-btn snb-modify-btn"
             onClick={() => {
-              alert('버튼 클릭 시 출력되는 메시지 박스입니다.');
+              dispatch(setEditingName());
             }}
           >
             수정

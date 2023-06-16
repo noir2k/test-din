@@ -6,6 +6,7 @@ interface PopupToggleState {
   isSettingOpen: boolean;
   isTestStartOpen: boolean;
   isInfoPopupOpen: boolean;
+  isEditingName: boolean;
 }
 
 const initialState: PopupToggleState = {
@@ -14,6 +15,7 @@ const initialState: PopupToggleState = {
   isSettingOpen: false,
   isTestStartOpen: false,
   isInfoPopupOpen: false,
+  isEditingName: false,
 };
 
 const popupToggleSlice = createSlice({
@@ -26,6 +28,7 @@ const popupToggleSlice = createSlice({
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
+      state.isEditingName = false;
     },
     setHistoryOpen: (state) => {
       state.isNoticeOpen = false;
@@ -33,6 +36,7 @@ const popupToggleSlice = createSlice({
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
+      state.isEditingName = false;
     },
     setSettingOpen: (state) => {
       state.isNoticeOpen = false;
@@ -40,6 +44,7 @@ const popupToggleSlice = createSlice({
       state.isSettingOpen = true; //!state.isSettingOpen;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
+      state.isEditingName = false;
     },
     setTestStartOpen: (state) => {
       state.isNoticeOpen = false;
@@ -47,6 +52,7 @@ const popupToggleSlice = createSlice({
       state.isSettingOpen = false;
       state.isTestStartOpen = true; //!state.isTestStartOpen;
       state.isInfoPopupOpen = false;
+      state.isEditingName = false;
     },
     setInfoPopupOpen: (state) => {
       state.isNoticeOpen = false;
@@ -54,6 +60,15 @@ const popupToggleSlice = createSlice({
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = true; //!state.isInfoPopupOpen;
+      state.isEditingName = false;
+    },
+    setEditingName: (state) => {
+      state.isNoticeOpen = false;
+      state.isHistoryOpen = false;
+      state.isSettingOpen = false;
+      state.isTestStartOpen = false;
+      state.isInfoPopupOpen = false;
+      state.isEditingName = true; //!state.isEditingName;
     },
   },
 });
@@ -64,6 +79,7 @@ export const {
   setSettingOpen,
   setTestStartOpen,
   setInfoPopupOpen,
+  setEditingName,
 } = popupToggleSlice.actions;
 
 export default popupToggleSlice.reducer;

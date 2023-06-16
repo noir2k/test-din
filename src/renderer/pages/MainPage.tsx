@@ -13,6 +13,7 @@ import History from '@components/main/history';
 import Setting from '@components/main/setting';
 import Snb from '@components/snb/snb';
 import ExamineeInfoPopup from '@components/snb/examineePopup';
+import EditingName from '@components/main/EditingName';
 
 const MainPage = () => {
   // const state = useAppSelector((state: RootState) => state);
@@ -23,6 +24,7 @@ const MainPage = () => {
   const isTestStartOpen = popupToggle.isTestStartOpen;
   const isSettingOpen = popupToggle.isSettingOpen;
   const isInfoPopupOpen = popupToggle.isInfoPopupOpen;
+  const isEditingName = popupToggle.isEditingName;
 
   return (
     <div>
@@ -55,6 +57,7 @@ const MainPage = () => {
               className="main-contents flex justify-center items-center h-full"
             >
               {isInfoPopupOpen && <ExamineeInfoPopup />}
+              {isEditingName && <EditingName />}
               {isNoticeOpen && <Notice />}
               {isHistoryOpen && <History />}
               {isTestStartOpen && <TestForm />}
