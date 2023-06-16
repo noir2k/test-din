@@ -18,9 +18,11 @@ import {
 
 import Store from 'electron-store';
 import log from 'electron-log';
+import 'dotenv/config';
 
 import MenuBuilder from './menu';
 import * as Util from './util';
+import type { ConfigSchemaType } from './util';
 
 import type { Database } from 'sql.js';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-assembler';
@@ -34,6 +36,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electro
 //   }
 // }
 
+Store.initRenderer();
 const STORE = new Store();
 
 const RESOURCES_PATH = app.isPackaged
@@ -47,7 +50,7 @@ export const getAssetPath = (...paths: string[]): string => {
 async function installExtensions(){
   // [REACT_DEVELOPER_TOOLS] not work!
   [REDUX_DEVTOOLS].forEach(extension => {
-    console.log(extension);
+    log.log(extension);
     installExtension(extension, {
       loadExtensionOptions: {
         allowFileAccess: true,
@@ -74,6 +77,16 @@ if (isDebug) {
   log.initialize({ preload: true });
 }
 
+// log.log(app.getPath('userData'));
+
+const _loadDefaultConfig = () => {
+  const config = STORE.get('config') as ConfigSchemaType;
+  if (!config.hasOwnProperty('soundInterval')) {
+    config.soundInterval = Util.defaultConfig.soundInterval;
+    STORE.set('config', config);
+  }
+}
+
 const _loadData = (db: Database, channel: string, event: Electron.IpcMainEvent, result:{}[] | null | undefined) => {
   if (result && result.length > 0) {
     const rowCount = Util.rowCount(db);
@@ -90,10 +103,6 @@ const createWindow = async () => {
     await installExtensions();
     log.info('Log from the main process');
   }
-
-  const db = await Util.createDb();
-  Util.initDbTable(db);
-  // Util.testDb(db);
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -133,6 +142,11 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
+
+  const db = await Util.createDb();
+  await Util.initDbTable(db);
+  _loadDefaultConfig();
+  // Util.testDb(db);
 
   /**
    * ipcMain event
@@ -223,6 +237,14 @@ const createWindow = async () => {
   ipcMain.on('update-user-name', (event, arg) => {
     const result = Util.updateUserName(db, arg);
     _loadData(db, 'update-user-name', event, result);
+  });
+
+  ipcMain.on('electron-store-get', async (event, val) => {
+    event.returnValue = STORE.get(val);
+  });
+
+  ipcMain.on('electron-store-set', async (event, key, val) => {
+    STORE.set(key, val);
   });
 
   // Remove this if your app does not use auto updates

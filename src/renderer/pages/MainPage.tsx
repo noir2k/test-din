@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { useAppSelector } from '@hook/index';
 import { RootState } from '@store/index';
 
@@ -6,7 +5,8 @@ import TestForm from '@components/test/testForm';
 import Header from '@components/header/header';
 import Notice from '@components/main/notice';
 import History from '@components/main/history';
-import Setting from '@components/main/setting';
+import Setting from '@components/main/SettingComponent';
+
 import Snb from '@components/snb/snb';
 
 const MainPage = () => {

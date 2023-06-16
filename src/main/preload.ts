@@ -29,6 +29,15 @@ const electronHandler = {
       return ipcRenderer;
     }
   },
+  store: {
+    get(key: string) {
+      return ipcRenderer.sendSync('electron-store-get', key);
+    },
+    set(property: string, val: any) {
+      ipcRenderer.send('electron-store-set', property, val);
+    },
+    // Other method you want to add like has(), reset(), etc.
+  },
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
