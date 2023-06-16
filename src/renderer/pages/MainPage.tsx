@@ -30,7 +30,7 @@ const MainPage = () => {
     <div>
       <div className="main-container">
         <Snb />
-        <div id="contents">
+        <div id="contents" className="main-background-component">
           <img
             className="absolute bottom-0"
             src={bg_circle_1}
