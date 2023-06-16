@@ -1,10 +1,15 @@
 import type { ConfigSchemaType } from '@main/util';
 import { useState, useEffect } from 'react';
 
+import { useAppDispatch } from '@hook/index';
+import { setNoticeOpen } from '@store/slices/popupToggle';
+
 const _config = {} as ConfigSchemaType;
 
 const Setting = () => {
   const [value, setValue] = useState(0);
+
+  const dispatch = useAppDispatch();
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
@@ -18,10 +23,12 @@ const Setting = () => {
     }
   }, []);
 
-  useEffect(() => {
-    _config.soundInterval = value;
-    window.electron.store.set('config', _config);
-  }, [value]);
+  // TODO: will be removed
+  // save config onChanged
+  // useEffect(() => {
+  //   _config.soundInterval = value;
+  //   window.electron.store.set('config', _config);
+  // }, [value]);
 
   return (
     <div className="flex flex-col justify-start h-full p-5 w-1/2">
@@ -56,10 +63,21 @@ const Setting = () => {
         <button
           type="button"
           className="w-36 h-14 bg-green-200 rounded-full mr-10"
+          onClick={() => {
+            dispatch(setNoticeOpen());
+          }}
         >
           종료
         </button>
-        <button type="button" className="w-36 h-14 bg-green-200 rounded-full">
+        <button
+          type="button"
+          className="w-36 h-14 bg-green-200 rounded-full"
+          onClick={() => {
+            _config.soundInterval = value;
+            window.electron.store.set('config', _config);
+            alert("설정이 저장되었습니다.");
+          }}
+        >
           설정완료
         </button>
       </div>
