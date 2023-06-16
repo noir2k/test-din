@@ -1,36 +1,57 @@
-import { useAppSelector } from '@hook/index';
+import { useAppDispatch, useAppSelector } from '@hook/index';
 import type { RootState } from '@store/index';
+import { setNoticeOpen } from '@store/slices/popupToggle';
 
-const ExamineeInfoPopup = ({
-  onClose,
-}: {
-  onClose: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}) => {
+import ico_close from '@assets/images/icons/icon_close.png';
+import ico_speaker from '@assets/images/icons/icon_speaker.png';
+
+const ExamineeInfoPopup = () => {
   const userData = useAppSelector((state: RootState) => state.userData);
 
-  return (
-    <div className="fixed inset-24 flex items-center justify-center text-cyan-900 z-50 w-full">
-      <div className="shadow-lg">
-        <div className="close-btn-wrapper bg-cyan-500 flex justify-end">
-          <button
-            type="button"
-            className="px-4 py-2 text-white"
-            onClick={onClose}
-          >
-            &times;
-          </button>
-        </div>
+  const dispatch = useAppDispatch();
 
-        <div className="pop-contents bg-white h-full p-10">
-          <h2 className="text-2xl font-bold mb-4">피검사자 정보</h2>
-          <p className="mb-4">이름: {userData.name}</p>
-          <p className="mb-4">성별: {userData.sex}</p>
-          <p className="mb-4">생년월일: {userData.birth}</p>
-          <p className="mb-4">환자번호: {userData.patient.toString()}</p>
-        </div>
+  return (
+    <div className="examinee-popup-wrapper">
+      <div className="close-btn-wrapper">
+        <button
+          type="button"
+          className="close-btn"
+          onClick={() => {
+            dispatch(setNoticeOpen());
+          }}
+        >
+          <img src={ico_close} alt="close icon" />
+        </button>
       </div>
+
+      <ul className="popup-contents">
+        <li className="popup-title">
+          <img src={ico_speaker} alt="speaker icon" />
+          <span>피검사자 정보</span>
+        </li>
+        <li className="popup-item">
+          <p className="popup-item-order-number">01</p>
+          <p className="popup-item-subject">이름</p>
+          <p className="popup-item-data">{userData.name}</p>
+        </li>
+        <li className="popup-item">
+          <p className="popup-item-order-number">02</p>
+          <p className="popup-item-subject">성별</p>
+          <p className="popup-item-data">{userData.sex}</p>
+        </li>
+        <li className="popup-item">
+          <p className="popup-item-order-number">03</p>
+          <p className="popup-item-subject">생년월일</p>
+          <p className="popup-item-data">{userData.birth}</p>
+        </li>
+        <li className="popup-item">
+          <p className="popup-item-order-number">04</p>
+          <p className="popup-item-subject">피검사자번호</p>
+          <p className="popup-item-data">{userData.patient.toString()}</p>
+        </li>
+      </ul>
     </div>
   );
-}
+};
 
 export default ExamineeInfoPopup;

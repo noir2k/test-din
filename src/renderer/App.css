@@ -325,3 +325,96 @@ input[type='range']:focus::-webkit-slider-runnable-track {
   /* background: rgba(255, 255, 255, 0.7); */
   border-radius: 20px;
 }
+
+/* examineePopup.tsx */
+.examinee-popup-wrapper {
+  position: absolute;
+  width: 450px;
+  height: 516px;
+  background: #ffffff;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.close-btn-wrapper {
+  width: 450px;
+  height: 50px;
+  background: #568af0;
+  border-radius: 10px 10px 0px 0px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.popup-contents {
+  height: 466px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-contents > .popup-title {
+  margin: 46px 0px 52px 0px;
+}
+
+.popup-contents > .popup-title {
+  font-weight: 600;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-contents > .popup-title > img,
+span {
+  float: left;
+}
+
+.popup-contents > .popup-title > img {
+  width: 28px;
+  margin: 0px 12px 0px 0px;
+}
+
+.popup-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0px 0px 32px 0px;
+}
+
+.popup-item > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-item > .popup-item-order-number {
+  width: 25px;
+  height: 25px;
+  background: #568af0;
+  color: white;
+  border-radius: 100%;
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 25px;
+  margin: 0px 14px 0px 0px;
+}
+
+.popup-item > .popup-item-subject {
+  width: 100px;
+  height: 20px;
+  margin: 0px 28px 0px 0px;
+  text-align: left;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.popup-item > .popup-item-data {
+  width: 170px;
+  height: 46px;
+  background: #e2e2e2;
+  border-radius: 10px;
+}

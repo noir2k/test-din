@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { useAppSelector } from '@hook/index';
+import { useAppDispatch, useAppSelector } from '@hook/index';
 import { RootState } from '@store/index';
 
 import bg_circle_1 from '@assets/images/bg_circle_1.png';
@@ -12,6 +12,7 @@ import Notice from '@components/main/notice';
 import History from '@components/main/history';
 import Setting from '@components/main/setting';
 import Snb from '@components/snb/snb';
+import ExamineeInfoPopup from '@components/snb/examineePopup';
 
 const MainPage = () => {
   // const state = useAppSelector((state: RootState) => state);
@@ -21,6 +22,7 @@ const MainPage = () => {
   const isHistoryOpen = popupToggle.isHistoryOpen;
   const isTestStartOpen = popupToggle.isTestStartOpen;
   const isSettingOpen = popupToggle.isSettingOpen;
+  const isInfoPopupOpen = popupToggle.isInfoPopupOpen;
 
   return (
     <div>
@@ -52,6 +54,7 @@ const MainPage = () => {
               id="mainContent"
               className="main-contents flex justify-center items-center h-full"
             >
+              {isInfoPopupOpen && <ExamineeInfoPopup />}
               {isNoticeOpen && <Notice />}
               {isHistoryOpen && <History />}
               {isTestStartOpen && <TestForm />}

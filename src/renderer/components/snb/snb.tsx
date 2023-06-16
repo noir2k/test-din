@@ -10,16 +10,21 @@ import ico_user from '@assets/images/icons/icon_user_white.png';
 import useInfiniteScroll from '@hook/useInfiniteScroll';
 
 import ExamineeCard from '@components/main/examineeCard';
-import ExamineeInfoPopup from './examineePopup';
 
-import { setSettingOpen, setTestStartOpen } from '@store/slices/popupToggle';
+import {
+  setInfoPopupOpen,
+  setSettingOpen,
+  setTestStartOpen,
+} from '@store/slices/popupToggle';
 import { setUserInfo } from '@store/slices/userDataProvider';
 import { getAnswers } from '@store/slices/answerProvider';
 
 import { ColumnType } from '@main/util';
 
 const snb = () => {
-  const [isPopupOpen, setPopupOpen] = useState(false);
+  const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
+
+  // const [isInfoPopupOpen, setInfoPopupOpen] = useState(false);
   const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [exData, setExData] = useState<ColumnType[] | null>(null);
@@ -154,16 +159,18 @@ const snb = () => {
       </div>
       <div className="child snb-data-wrapper">
         <div className="examinee-data-wrapper">
-          <div
+          <a
             className="cursor-pointer data-text ml-5"
-            onClick={() => setPopupOpen(!isPopupOpen)}
+            onClick={() => {
+              dispatch(setInfoPopupOpen());
+            }}
           >
-            {isPopupOpen && (
+            {/* {isPopupOpen && (
               <ExamineeInfoPopup onClose={() => setPopupOpen(false)} />
-            )}
+            )} */}
             <img className="float-left mr-5" src={ico_user} alt="user icon" />
             <span className="text-white">피검사자명</span>
-          </div>
+          </a>
           <button
             type="button"
             className="bg-transparent snb-column-child-btn snb-modify-btn"
