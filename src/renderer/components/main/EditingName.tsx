@@ -10,16 +10,16 @@ export default function EditingName() {
   const userData = useAppSelector((state: RootState) => state.userData);
   const dispatch = useAppDispatch();
 
-  const [name, setName] = useState(userData.name);
+  const [userName, setUserName] = useState(userData.user_name);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+    setUserName(event.target.value);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.electron.ipcRenderer.sendMessage('update-user-name', [name]);
+    window.electron.ipcRenderer.sendMessage('update-user-name', [userName]);
 
     setShowSuccessPopup(true);
   };
@@ -43,7 +43,7 @@ export default function EditingName() {
                   <input
                     type="text"
                     className="modal-item-data"
-                    value={name}
+                    value={userName}
                     onChange={handleNameChange}
                   />
                 </li>

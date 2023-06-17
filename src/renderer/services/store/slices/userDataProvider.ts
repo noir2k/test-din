@@ -1,12 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { UserInfo } from '@interfaces';
 
-const initialState: UserInfo = {
-	name: "John Doe",
-	sex: "Male",
-	birth: "1970-01-01",
-	patient: 12345678
-};
+const initialState: UserInfo = {};
 
 const userNameSlice = createSlice({
   name: 'userInfo',
@@ -14,8 +9,8 @@ const userNameSlice = createSlice({
   reducers: {
     setUserInfo: (state, action) => {
       console.log("setUserInfo", action.payload);
-      state.name = action.payload.name;
-      state.sex = action.payload.sex;
+      state.user_name = action.payload.user_name;
+      state.gender = action.payload.gender;
       state.birth = action.payload.birth;
       state.patient = action.payload.patient;
     },

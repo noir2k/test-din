@@ -16,9 +16,7 @@ const ExamineeInfoPopup = () => {
         <button
           type="button"
           className="close-btn"
-          onClick={() => {
-            dispatch(setNoticeOpen());
-          }}
+          onClick={() => dispatch(setNoticeOpen()) }
         >
           <img src={ico_close} alt="close icon" />
         </button>
@@ -32,12 +30,12 @@ const ExamineeInfoPopup = () => {
         <li className="popup-item">
           <p className="popup-item-order-number">01</p>
           <p className="popup-item-subject">이름</p>
-          <p className="popup-item-data">{userData.name}</p>
+          <p className="popup-item-data">{userData.user_name}</p>
         </li>
         <li className="popup-item">
           <p className="popup-item-order-number">02</p>
           <p className="popup-item-subject">성별</p>
-          <p className="popup-item-data">{userData.sex}</p>
+          <p className="popup-item-data">{userData.gender}</p>
         </li>
         <li className="popup-item">
           <p className="popup-item-order-number">03</p>
@@ -47,7 +45,7 @@ const ExamineeInfoPopup = () => {
         <li className="popup-item">
           <p className="popup-item-order-number">04</p>
           <p className="popup-item-subject">피검사자번호</p>
-          <p className="popup-item-data">{userData.patient.toString()}</p>
+          <p className="popup-item-data">{userData.patient?.toString()}</p>
         </li>
       </ul>
     </div>

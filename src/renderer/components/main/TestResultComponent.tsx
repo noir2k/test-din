@@ -6,7 +6,7 @@ import type { RootState } from '@store/index';
 import { ColumnType } from '@main/util';
 
 import ChartComponent from './ChartComponent';
-import { ChartDataProps } from './ChartComponent';
+import { ChartDataProps } from '@interfaces';
 
 // TODO : will be removed
 // test for reload data on changed

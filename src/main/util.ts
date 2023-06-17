@@ -20,8 +20,8 @@ export const defaultConfig: ConfigSchemaType = {
 
 export interface ColumnType {
   id: Number,
-	name: string,
-	sex: string,
+	user_name: string,
+	gender: string,
 	birth: string,
 	patient: Number,
 	direction: string,
@@ -34,10 +34,10 @@ export interface ColumnType {
 	reg_timestamp: Number,
 }
 
-const col = {
+export const ColumnName = {
   id: 'id',
-	user_name: 'name',
-	sex: 'sex',
+	user_name: 'user_name',
+	gender: 'gender',
 	birth: 'birth',
 	patient: 'patient',
 	direction: 'direction',
@@ -146,7 +146,7 @@ export const rowCount = (db: Database) => {
 }
 
 export const findByRegDate = (db: Database, offset?: string) => {
-  let sqlstr = `SELECT * FROM ${tbName} ORDER BY ${col.reg_timestamp} DESC LIMIT 10`;
+  let sqlstr = `SELECT * FROM ${tbName} ORDER BY ${ColumnName.reg_timestamp} DESC LIMIT 10`;
   if (offset === undefined) {
     offset = '0';
   }
@@ -158,13 +158,13 @@ export const findByRegDate = (db: Database, offset?: string) => {
 
 export const getGraphData = (db: Database) => {
   let sqlstr = `SELECT
-    ${col.id},
-    ${col.direction},
-    ${col.scoring},
-    ${col.test_date},
-    ${col.test_result},
-    ${col.reg_timestamp}
-  FROM ${tbName} ORDER BY ${col.reg_timestamp} DESC LIMIT 6`;
+    ${ColumnName.id},
+    ${ColumnName.direction},
+    ${ColumnName.scoring},
+    ${ColumnName.test_date},
+    ${ColumnName.test_result},
+    ${ColumnName.reg_timestamp}
+  FROM ${tbName} ORDER BY ${ColumnName.reg_timestamp} DESC LIMIT 6`;
 
   const res = db.exec(sqlstr);
   return _resultData(res);
@@ -173,23 +173,23 @@ export const getGraphData = (db: Database) => {
 export const insertData = (db: Database, data: ColumnType) => {
   let sqlstr = `BEGIN TRANSACTION;\n`;
   sqlstr += `INSERT INTO ${tbName} (
-    ${col.id},
-    ${col.user_name},
-    ${col.sex},
-    ${col.birth},
-    ${col.patient},
-    ${col.direction},
-    ${col.volume_level},
-    ${col.scoring},
-    ${col.memo},
-    ${col.sound_set},
-    ${col.test_date},
-    ${col.test_result},
-    ${col.reg_timestamp}
+    ${ColumnName.id},
+    ${ColumnName.user_name},
+    ${ColumnName.gender},
+    ${ColumnName.birth},
+    ${ColumnName.patient},
+    ${ColumnName.direction},
+    ${ColumnName.volume_level},
+    ${ColumnName.scoring},
+    ${ColumnName.memo},
+    ${ColumnName.sound_set},
+    ${ColumnName.test_date},
+    ${ColumnName.test_result},
+    ${ColumnName.reg_timestamp}
     ) VALUES (
     ${data.id},
-    ${data.name},
-    ${data.sex},
+    ${data.user_name},
+    ${data.gender},
     ${data.birth},
     ${data.patient},
     ${data.direction},
@@ -209,7 +209,7 @@ export const insertData = (db: Database, data: ColumnType) => {
 
 export const deleteData = (db: Database, id: string) => {
   let sqlstr = `BEGIN TRANSACTION;\n`;
-  sqlstr += `DELETE FROM ${tbName} WHERE ${col.id} = ${id};\n`;
+  sqlstr += `DELETE FROM ${tbName} WHERE ${ColumnName.id} = ${id};\n`;
   sqlstr += `COMMIT;`;
 
   db.run(sqlstr);
@@ -218,9 +218,9 @@ export const deleteData = (db: Database, id: string) => {
 
 export const updateUserName = (db: Database, userName: string) => {
   let sqlstr = `BEGIN TRANSACTION;\n`;
-  sqlstr += `UPDATE ${tbName} SET ${col.user_name} = '${userName}';\n`;
+  sqlstr += `UPDATE ${tbName} SET ${ColumnName.user_name} = '${userName}';\n`;
   sqlstr += `COMMIT;`;
-  // log.log(sqlstr);
+  log.log(sqlstr);
   db.run(sqlstr);
   return findByRegDate(db);
 }
