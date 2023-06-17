@@ -23,7 +23,7 @@ export interface ColumnType {
   user_name: string;
   gender: string;
   birth: string;
-  patient: Number;
+  patient: string;
   direction: string;
   volume_level: Number;
   scoring: string;
