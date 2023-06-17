@@ -183,36 +183,15 @@ const ExamineeInfoForm = () => {
               <option value="List 6">List 6</option>
             </select>
           </li>
-          <li className="flex flex-col flex-start mb-5">
-            <label htmlFor={ColumnName.memo} className="w-48">
-              참고사항
-            </label>
-            <textarea
-              id={ColumnName.memo}
-              className="w-full h-32 border border-gray-300 shadow-md p-2 resize-none"
-              placeholder="메모를 입력하세요."
-            />
-          </li>
-          <div className="refresh-check-wrapper flex justify-between items-center">
-            <a
-              href="#!"
-              className="flex justify-center items-center rounded-full bg-gray-300 w-20 h-20 mx-auto"
-            >
-              <img src={ico_refresh} alt="ico_refresh" className="w-1/2" />
-            </a>
-            <a
-              href="#!"
-              className="flex justify-center items-center rounded-full bg-gray-300 w-20 h-20 mx-auto"
-            >
-              <img src={ico_check} alt="ico_check" className="w-1/2" />
-            </a>
-          </div>
         </ul>
       </div>
 
       <div className="info-memo-wraper">
-        <input
-          type="text"
+        <label htmlFor={ColumnName.memo} className="hidden">
+          참고사항
+        </label>
+        <textarea
+          id={ColumnName.memo}
           className="info-memo-input"
           placeholder="참고사항을 입력해주세요."
         />
