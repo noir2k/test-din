@@ -91,7 +91,7 @@ const _resultData = (queryExecResults: QueryExecResult[]) => {
 
 const _checkRegexSql = (queryText: string) => {
   const regexPattern: RegExp =
-    /^BEGIN TRANSACTION;\n(?:INSERT INTO (?:\"test_din_history\"|\w+).*\n)*COMMIT;$/;
+    /^BEGIN TRANSACTION;\n(?:INSERT INTO ["']?test_din_history["']?.*;\n)*COMMIT;$/;
 
   queryText = queryText.replace(/\n$/, '');
   log.log("queryText", queryText, regexPattern.test(queryText));
