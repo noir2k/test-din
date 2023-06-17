@@ -18,7 +18,8 @@ const Setting = () => {
 
   useEffect(() => {
     const conf = window.electron.store.get('config');
-    if (conf.soundInterval) {
+
+    if (conf && conf.soundInterval) {
       setValue(conf.soundInterval);
     }
   }, []);
@@ -75,7 +76,7 @@ const Setting = () => {
           onClick={() => {
             _config.soundInterval = value;
             window.electron.store.set('config', _config);
-            alert("설정이 저장되었습니다.");
+            alert('설정이 저장되었습니다.');
           }}
         >
           설정완료
@@ -83,6 +84,6 @@ const Setting = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Setting;

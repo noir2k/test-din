@@ -8,7 +8,7 @@ export default function RightSnb(props: RightSnbProps) {
   return (
     <>
       {props.pageNum === 1 && <PreCheckSnb />}
-      {props.pageNum === 2 && <CheckSnb />}
+      {(props.pageNum === 2 || props.pageNum === 3) && <CheckSnb />}
     </>
   );
 }
@@ -35,8 +35,7 @@ function CheckSnb() {
   return (
     <div className="right-snb-wrapper">
       <div className="right-snb-title">
-        <img src={ico_speaker_white} alt="white speaker icon" />
-        <p>검사 테스트</p>
+        <p>검사 현황</p>
       </div>
       <div className="right-snb-text on-test">
         <p>검사 사운드 세트: List 1</p>

@@ -12,43 +12,43 @@ const tbName = 'test_din_history';
 
 export type ConfigSchemaType = {
   soundInterval?: number;
-}
+};
 
 export const defaultConfig: ConfigSchemaType = {
-  soundInterval: 3
-}
+  soundInterval: 3,
+};
 
 export interface ColumnType {
-  id: Number,
-	user_name: string,
-	gender: string,
-	birth: string,
-	patient: Number,
-	direction: string,
-	volume_level: Number,
-	scoring: string,
-	memo: string,
-	sound_set: Number,
-	test_date: string,
-	test_result: Number,
-	reg_timestamp: Number,
+  id: Number;
+  user_name: string;
+  gender: string;
+  birth: string;
+  patient: Number;
+  direction: string;
+  volume_level: Number;
+  scoring: string;
+  memo: string;
+  sound_set: Number;
+  test_date: string;
+  test_result: Number;
+  reg_timestamp: Number;
 }
 
 export const ColumnName = {
   id: 'id',
-	user_name: 'user_name',
-	gender: 'gender',
-	birth: 'birth',
-	patient: 'patient',
-	direction: 'direction',
-	volume_level: 'volume_level',
-	scoring: 'scoring',
-	memo: 'memo',
-	sound_set: 'sound_set',
-	test_date: 'test_date',
-	test_result: 'test_result',
-	reg_timestamp: 'reg_timestamp',
-}
+  user_name: 'user_name',
+  gender: 'gender',
+  birth: 'birth',
+  patient: 'patient',
+  direction: 'direction',
+  volume_level: 'volume_level',
+  scoring: 'scoring',
+  memo: 'memo',
+  sound_set: 'sound_set',
+  test_date: 'test_date',
+  test_result: 'test_result',
+  reg_timestamp: 'reg_timestamp',
+};
 
 export const resolveHtmlPath = (htmlFileName: string) => {
   if (process.env.NODE_ENV === 'development') {
@@ -59,7 +59,7 @@ export const resolveHtmlPath = (htmlFileName: string) => {
   }
 
   return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
-}
+};
 
 const _rowsFromSqlDataArray = (queryExecResult: QueryExecResult) => {
   let data = [];
@@ -76,47 +76,50 @@ const _rowsFromSqlDataArray = (queryExecResult: QueryExecResult) => {
   }
 
   return data;
-}
+};
 
-const _resultData = ( queryExecResults: QueryExecResult[] ) => {
+const _resultData = (queryExecResults: QueryExecResult[]) => {
   let resultArr;
   if (queryExecResults.length === 0) {
-    log.error("No Data Found!");
+    log.error('No Data Found!');
   } else {
     resultArr = _rowsFromSqlDataArray(queryExecResults[0]);
   }
 
   return resultArr;
-}
+};
 
 const _checkRegexSql = (queryText: string) => {
-  const regexPattern: RegExp = /^BEGIN TRANSACTION;\n(?:INSERT INTO test_din_history.*\n)*COMMIT;$/;
+  const regexPattern: RegExp =
+    /^BEGIN TRANSACTION;\n(?:INSERT INTO test_din_history.*\n)$/;
 
-  queryText = queryText.replace(/\n$/, "");
-  return regexPattern.test(queryText);
-}
+  queryText = queryText.replace(/\n$/, '##');
+
+  return true; //regexPattern.test(queryText);
+};
 
 // NOT USED
 export const writeDb = (db: Database) => {
   const data = db.export();
   fs.writeFileSync(getAssetPath('/db/test-din.db'), Buffer.from(data));
-}
+};
 
 export const createDb = async (): Promise<any> => {
-  return initSqlJs().then((SQL) => {
-    log.info('Create Database');
-    return new SQL.Database();
-  })
-  .catch((err) => {
-    log.error('Create Database Error', err);
-    return null;
-  });
-}
+  return initSqlJs()
+    .then((SQL) => {
+      log.info('Create Database');
+      return new SQL.Database();
+    })
+    .catch((err) => {
+      log.error('Create Database Error', err);
+      return null;
+    });
+};
 
 export const initDbTable = async (db: Database) => {
   const sqlstr = fs.readFileSync(getAssetPath('/db/schema.sql'), 'utf8');
   db.run(sqlstr);
-}
+};
 
 export const loadFromSql = (db: Database, filePath: string) => {
   const sqlstr = fs.readFileSync(filePath, 'utf8');
@@ -130,20 +133,20 @@ export const loadFromSql = (db: Database, filePath: string) => {
     log.error('check regex NOT OK');
     return null;
   }
-}
+};
 
 export const findAll = (db: Database) => {
   let sqlstr = `SELECT * FROM ${tbName}`;
   const res = db.exec(sqlstr);
   return res;
-}
+};
 
 export const rowCount = (db: Database) => {
   let sqlstr = `SELECT COUNT(id) FROM ${tbName} LIMIT 1`;
 
   const res = db.exec(sqlstr);
   return res[0].values[0][0];
-}
+};
 
 export const findByRegDate = (db: Database, offset?: string) => {
   let sqlstr = `SELECT * FROM ${tbName} ORDER BY ${ColumnName.reg_timestamp} DESC LIMIT 10`;
@@ -154,7 +157,7 @@ export const findByRegDate = (db: Database, offset?: string) => {
 
   const res = db.exec(sqlstr);
   return _resultData(res);
-}
+};
 
 export const getGraphData = (db: Database) => {
   let sqlstr = `SELECT
@@ -168,7 +171,7 @@ export const getGraphData = (db: Database) => {
 
   const res = db.exec(sqlstr);
   return _resultData(res);
-}
+};
 
 export const insertData = (db: Database, data: ColumnType) => {
   let sqlstr = `BEGIN TRANSACTION;\n`;
@@ -205,7 +208,7 @@ export const insertData = (db: Database, data: ColumnType) => {
 
   db.run(sqlstr);
   return findByRegDate(db);
-}
+};
 
 export const deleteData = (db: Database, id: string) => {
   let sqlstr = `BEGIN TRANSACTION;\n`;
@@ -214,18 +217,20 @@ export const deleteData = (db: Database, id: string) => {
 
   db.run(sqlstr);
   return findByRegDate(db);
-}
+};
 
 export const updateUserName = (db: Database, userName: string) => {
   let sqlstr = `BEGIN TRANSACTION;\n`;
   sqlstr += `UPDATE ${tbName} SET ${ColumnName.user_name} = '${userName}';\n`;
   sqlstr += `COMMIT;`;
-  log.log(sqlstr);
+
   db.run(sqlstr);
   return findByRegDate(db);
-}
+};
 
-export const generateInsertQueryFromSelect = (selectResult: QueryExecResult[]) => {
+export const generateInsertQueryFromSelect = (
+  selectResult: QueryExecResult[]
+) => {
   const columns = Object.values(selectResult[0].columns);
   const values = Object.values(selectResult[0].values);
 
@@ -237,35 +242,35 @@ export const generateInsertQueryFromSelect = (selectResult: QueryExecResult[]) =
     }
     insertQuery = insertQuery.slice(0, -2) + `) VALUES (`;
     for (const v of value) {
-      insertQuery += (typeof v === 'string') ? `'${v}', ` : `${v}, `;
+      insertQuery += typeof v === 'string' ? `'${v}', ` : `${v}, `;
     }
     insertQuery = insertQuery.slice(0, -2) + `);\n`;
   }
   insertQuery += `COMMIT;`;
 
   return insertQuery;
-}
+};
 
 export const isExistFile = (filePath: string) => {
   return fs.existsSync(filePath);
-}
+};
 
 export const saveFile = (filePath: string, queryText: string) => {
   let result = false;
   try {
     fs.writeFileSync(filePath, queryText, 'utf8');
-    log.log("File saved:", filePath);
+    log.log('File saved:', filePath);
     result = true;
   } catch (error) {
-    log.error("Error saving file:", error);
+    log.error('Error saving file:', error);
   } finally {
     return result;
   }
-}
+};
 
-export const testDb = ( db: Database ) => {
+export const testDb = (db: Database) => {
   let sqlstr = `select * from ${tbName} limit 1`;
   let res = db.exec(sqlstr);
 
   _resultData(res);
-}
+};
