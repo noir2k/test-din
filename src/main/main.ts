@@ -26,7 +26,10 @@ import * as Util from './util';
 import type { ConfigSchemaType } from './util';
 
 import type { Database } from 'sql.js';
-import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-assembler';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} from 'electron-devtools-assembler';
 
 // import { autoUpdater } from 'electron-updater';
 // class AppUpdater {
@@ -41,25 +44,25 @@ Store.initRenderer();
 const STORE = new Store();
 
 const RESOURCES_PATH = app.isPackaged
-? path.join(process.resourcesPath, 'assets')
-: path.join(__dirname, '../../assets');
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../../assets');
 
 export const getAssetPath = (...paths: string[]): string => {
   return path.join(RESOURCES_PATH, ...paths);
 };
 
-async function installExtensions(){
+async function installExtensions() {
   // [REACT_DEVELOPER_TOOLS] not work!
-  [REDUX_DEVTOOLS].forEach(extension => {
+  [REDUX_DEVTOOLS].forEach((extension) => {
     log.log(extension);
     installExtension(extension, {
       loadExtensionOptions: {
         allowFileAccess: true,
       },
-      forceDownload: !!process.env.UPGRADE_EXTENSIONS
+      forceDownload: !!process.env.UPGRADE_EXTENSIONS,
     })
-    .then((name) => console.log(`Added Extension: ${name}`))
-    .catch((err) => console.log(`"${extension}" An error occurred: `, err));
+      .then((name) => console.log(`Added Extension: ${name}`))
+      .catch((err) => console.log(`"${extension}" An error occurred: `, err));
   });
 }
 
@@ -82,13 +85,20 @@ if (isDebug) {
 
 const _loadDefaultConfig = () => {
   const config = STORE.get('config') as ConfigSchemaType;
-  if (!config.hasOwnProperty('soundInterval')) {
+  if (config && !config.hasOwnProperty('soundInterval')) {
     config.soundInterval = Util.defaultConfig.soundInterval;
     STORE.set('config', config);
+  } else {
+    STORE.set('config', 0);
   }
-}
+};
 
-const _loadData = (db: Database, channel: string, event: Electron.IpcMainEvent, result:{}[] | null | undefined) => {
+const _loadData = (
+  db: Database,
+  channel: string,
+  event: Electron.IpcMainEvent,
+  result: {}[] | null | undefined
+) => {
   if (result && result.length > 0) {
     const rowCount = Util.rowCount(db);
     STORE.set('rowCount', rowCount);
@@ -97,7 +107,7 @@ const _loadData = (db: Database, channel: string, event: Electron.IpcMainEvent, 
   } else {
     event.sender.send('load-data-failured', 'Empty Data');
   }
-}
+};
 
 const createWindow = async () => {
   if (isDebug) {
@@ -113,8 +123,8 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
-      ? path.join(__dirname, 'preload.js')
-      : path.join(__dirname, '../../.erb/dll/preload.js'),
+        ? path.join(__dirname, 'preload.js')
+        : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
     // resizable: false,
   });
@@ -164,9 +174,7 @@ const createWindow = async () => {
       title: 'Open a file or folder',
       defaultPath: '',
       buttonLabel: 'Open',
-      filters: [
-        { name: 'sql', extensions: ['sql'] }
-      ]
+      filters: [{ name: 'sql', extensions: ['sql'] }],
     };
 
     if (STORE.get('loadFilePath')) {
@@ -189,9 +197,7 @@ const createWindow = async () => {
     const options = {
       title: 'Save Database File',
       buttonLabel: 'Save',
-      filters: [
-        { name: 'sql', extensions: ['sql']}
-      ],
+      filters: [{ name: 'sql', extensions: ['sql'] }],
     };
 
     const filePath = dialog.showSaveDialogSync(options);
@@ -199,16 +205,16 @@ const createWindow = async () => {
     if (filePath) {
       const result = Util.findAll(db);
 
-      if(result && result.length > 0) {
+      if (result && result.length > 0) {
         const sqlstr = Util.generateInsertQueryFromSelect(result);
         Util.saveFile(filePath, sqlstr)
-        ? event.sender.send('save-file-completed', 'File save completed')
-        : event.sender.send('save-file-failured', 'File save Error');
+          ? event.sender.send('save-file-completed', 'File save completed')
+          : event.sender.send('save-file-failured', 'File save Error');
       } else {
         dialog.showMessageBox({
           message: 'No Data Found!',
-          buttons: ['OK']
-        })
+          buttons: ['OK'],
+        });
       }
     } else {
       log.log('No file selected.');
@@ -222,11 +228,11 @@ const createWindow = async () => {
     const currentPage = Number(STORE.get('currentPage'));
     const offset = currentPage * PAGE_COUNT;
 
-    if (rowCount > offset)  {
+    if (rowCount > offset) {
       const result = Util.findByRegDate(db, offset.toString());
       if (result && result.length > 0) {
         event.sender.send('load-more-data', result);
-        STORE.set('currentPage', currentPage+1);
+        STORE.set('currentPage', currentPage + 1);
       } else {
         log.log('No more data(1)');
         event.sender.send('no-more-data', 'No more data(1)');

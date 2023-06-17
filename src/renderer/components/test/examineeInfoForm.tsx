@@ -42,7 +42,8 @@ const ExamineeInfoForm = () => {
             <input
               type="text"
               name="username"
-              id="username"
+              id={ColumnName.user_name}
+              defaultValue={userData?.user_name}
               className="info-input-item-input"
             />
           </li>
