@@ -11,8 +11,8 @@ const userNameSlice = createSlice({
       console.log("setUserInfo", action.payload);
       state.user_name = action.payload.user_name;
       state.gender = action.payload.gender;
-      state.birth = action.payload.birth;
-      state.patient = action.payload.patient;
+      state.birthday = action.payload.birthday;
+      state.patient_no = action.payload.patient_no;
     },
   }
 });

@@ -6,16 +6,16 @@ export interface ChartDataProps {
 export interface UserInfo {
 	user_name?: string,
 	gender?: string,
-	birth?: string,
-	patient?: Number
+	birthday?: string,
+	patient_no?: Number
 }
 
 export const ColumnName = {
   id: 'id',
 	user_name: 'user_name',
 	gender: 'gender',
-	birth: 'birth',
-	patient: 'patient',
+	birthday: 'birthday',
+	patient_no: 'patient_no',
 	direction: 'direction',
 	volume_level: 'volume_level',
 	scoring: 'scoring',

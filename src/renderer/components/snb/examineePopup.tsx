@@ -40,12 +40,12 @@ const ExamineeInfoPopup = () => {
         <li className="popup-item">
           <p className="popup-item-order-number">03</p>
           <p className="popup-item-subject">생년월일</p>
-          <p className="popup-item-data">{userData.birth}</p>
+          <p className="popup-item-data">{userData.birthday}</p>
         </li>
         <li className="popup-item">
           <p className="popup-item-order-number">04</p>
           <p className="popup-item-subject">피검사자번호</p>
-          <p className="popup-item-data">{userData.patient?.toString()}</p>
+          <p className="popup-item-data">{userData.patient_no?.toString()}</p>
         </li>
       </ul>
     </div>

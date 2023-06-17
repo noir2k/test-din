@@ -22,8 +22,8 @@ export interface ColumnType {
   id: Number;
   user_name: string;
   gender: string;
-  birth: string;
-  patient: string;
+  birthday: string;
+  patient_no: string;
   direction: string;
   volume_level: Number;
   scoring: string;
@@ -38,8 +38,8 @@ export const ColumnName = {
   id: 'id',
   user_name: 'user_name',
   gender: 'gender',
-  birth: 'birth',
-  patient: 'patient',
+  birthday: 'birthday',
+  patient_no: 'patient_no',
   direction: 'direction',
   volume_level: 'volume_level',
   scoring: 'scoring',
@@ -179,8 +179,8 @@ export const insertData = (db: Database, data: ColumnType) => {
     ${ColumnName.id},
     ${ColumnName.user_name},
     ${ColumnName.gender},
-    ${ColumnName.birth},
-    ${ColumnName.patient},
+    ${ColumnName.birthday},
+    ${ColumnName.patient_no},
     ${ColumnName.direction},
     ${ColumnName.volume_level},
     ${ColumnName.scoring},
@@ -193,8 +193,8 @@ export const insertData = (db: Database, data: ColumnType) => {
     ${data.id},
     ${data.user_name},
     ${data.gender},
-    ${data.birth},
-    ${data.patient},
+    ${data.birthday},
+    ${data.patient_no},
     ${data.direction},
     ${data.volume_level},
     ${data.scoring},
