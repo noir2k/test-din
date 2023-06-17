@@ -3,6 +3,8 @@ import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
+import hash from "object-hash";
+
 import ico_home from '@assets/images/icons/icon_home.png';
 import ico_settings from '@assets/images/icons/icon_settings.png';
 import ico_user from '@assets/images/icons/icon_user_white.png';
@@ -192,8 +194,8 @@ const snb = () => {
       <div className="child import-success-screen overflow-y-auto">
         <div>
           {exData && exData.map((item) => (
-            <div className={selectedIndex == item.id ? "selected-item" : ""} onClick={() => setSelectedIndex(item.id)}>
-              <ExamineeCard item={item} key={item.id.toFixed()} />
+            <div key={hash(item)} className={selectedIndex == item.id ? "selected-item" : ""} onClick={() => setSelectedIndex(item.id)}>
+              <ExamineeCard item={item} />
             </div>
           ))}
         </div>

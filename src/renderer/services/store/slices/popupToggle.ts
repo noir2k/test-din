@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { DataProps } from '@components/main/examineeCard';
+import { ColumnType } from '@main/util';
 
 interface PopupToggleState {
   isNoticeOpen: boolean;
@@ -9,7 +9,7 @@ interface PopupToggleState {
   isTestStartOpen: boolean;
   isInfoPopupOpen: boolean;
   isEditingName: boolean;
-  chartItemData?: DataProps;
+  chartItemData?: ColumnType;
 }
 
 const initialState: PopupToggleState = {
