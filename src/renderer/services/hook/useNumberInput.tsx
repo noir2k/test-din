@@ -7,7 +7,7 @@ const useNumberInput = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [count, setCount] = useState(1);
   const [error, setError] = useState(false);
-  const totalQuestions = 25;
+  const totalQuestions = 30;
 
   const handleNumberClick = (number: string) => {
     if (currentIndex < 3) {

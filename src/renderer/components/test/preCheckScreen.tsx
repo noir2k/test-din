@@ -15,7 +15,7 @@ export default function PreCheckScreen() {
 
   return (
     <>
-      <RightSnb />
+      <RightSnb pageNum={1} />
       <div className="pre-check-form-title">
         <p>
           이제 <span className="blue">3개의 연속된 숫자</span>가 들리게 됩니다.{' '}
