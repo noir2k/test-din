@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { DataProps } from '@components/main/examineeCard';
+
 interface PopupToggleState {
   isNoticeOpen: boolean;
   isHistoryOpen: boolean;
@@ -7,6 +9,7 @@ interface PopupToggleState {
   isTestStartOpen: boolean;
   isInfoPopupOpen: boolean;
   isEditingName: boolean;
+  chartItemData?: DataProps;
 }
 
 const initialState: PopupToggleState = {
@@ -30,13 +33,14 @@ const popupToggleSlice = createSlice({
       state.isInfoPopupOpen = false;
       state.isEditingName = false;
     },
-    setHistoryOpen: (state) => {
+    setHistoryOpen: (state, actions) => {
       state.isNoticeOpen = false;
       state.isHistoryOpen = true; //!state.isHistoryOpen;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
       state.isEditingName = false;
+      state.chartItemData = actions.payload.chartItemData;
     },
     setSettingOpen: (state) => {
       state.isNoticeOpen = false;

@@ -10,9 +10,10 @@ import {
 } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 
-import type { ChartData, ChartOptions } from 'chart.js';
-
+import type { ChartOptions } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+
+import jsPDF from 'jspdf';
 
 ChartJS.register(
   CategoryScale,
@@ -25,10 +26,10 @@ ChartJS.register(
   annotationPlugin
 );
 
-function fillTextMultiLine(ctx: any, text: string, x: number, y: number) {
-  var lineHeight = ctx.measureText("M").width * 1.2;
-  var lines = text.split("\n");
-  for (var i = 0; i < lines.length; ++i) {
+const fillTextMultiLine = (ctx: any, text: string, x: number, y: number) => {
+  const lineHeight = ctx.measureText("M").width * 1.2;
+  const lines = text.split("\n");
+  for (let i = 0; i < lines.length; ++i) {
     ctx.fillText(lines[i], x, y);
     y += lineHeight;
   }
@@ -41,6 +42,11 @@ const plugins = {
     const yAxis = chart.scales.y;
     const yStart = yAxis.top;
     const yEnd = yAxis.bottom;
+
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+
     const gradient = ctx.createLinearGradient(0, yStart, 0, yEnd);
 
     gradient.addColorStop(1, 'rgba(255, 0, 0, 0.2)');
@@ -49,17 +55,17 @@ const plugins = {
 
     ctx.fillStyle = gradient;
     ctx.fillRect(chart.chartArea.left, yStart, chart.chartArea.right - chart.chartArea.left, yEnd - yStart);
+
   },
   afterDraw: (chart: any, args: any, options: any) => {
     const ctx = chart.ctx;
     const yAxis = chart.scales.y;
     const yStart = yAxis.top;
     const yEnd = yAxis.bottom;
-    var yLabels = yAxis.ticks.map((tick: any) => {
-      console.log(tick);
-      return tick.value;
-    });
-    // 레이블 설정
+    // var yLabels = yAxis.ticks.map((tick: any) => {
+    //   return tick.value;
+    // });
+
     var labelA = 'PROFOUND\n(120-90)';
     var labelB = 'SEVERE\n(90~70)';
     var labelC = 'MODERATELY\nSEVERE\n(55~70)';
@@ -67,7 +73,6 @@ const plugins = {
     var labelE = 'MILD\n(25~40)';
     var labelF = 'NORMAL\n(-10~25)';
 
-    // 레이블 위치 설정
     const labelAStart = 0;
     const labelAEnd = 3;
 
@@ -85,10 +90,6 @@ const plugins = {
 
     const labelFStart = 9.5;
     const labelFEnd = 13;
-
-    // console.log(labelDStart, labelAEnd, labelBStart, labelBEnd, labelCStart, labelCEnd);
-
-    // 레이블 텍스트 스타일 설정
     ctx.fillStyle = 'black';
     ctx.font = '12px Arial';
     ctx.textAlign = 'left';
@@ -98,13 +99,12 @@ const plugins = {
     const margin = 54.5;
     const step = (totalHeight - margin) / 13 / 2;
 
-    // 레이블 출력
-    fillTextMultiLine(ctx, labelA, chart.chartArea.right + 15, totalHeight - ((labelAStart + labelAEnd) * step));
-    fillTextMultiLine(ctx, labelB, chart.chartArea.right + 15, totalHeight - ((labelBStart + labelBEnd) * step));
-    fillTextMultiLine(ctx, labelC, chart.chartArea.right + 15, totalHeight - ((labelCStart + labelCEnd) * step) - 8);
-    fillTextMultiLine(ctx, labelD, chart.chartArea.right + 15, totalHeight - ((labelDStart + labelDEnd) * step));
-    fillTextMultiLine(ctx, labelE, chart.chartArea.right + 15, totalHeight - ((labelEStart + labelEEnd) * step));
-    fillTextMultiLine(ctx, labelF, chart.chartArea.right + 15, totalHeight - ((labelFStart + labelFEnd) * step));
+    fillTextMultiLine(ctx, labelA, chart.chartArea.right + 10, totalHeight - ((labelAStart + labelAEnd) * step));
+    fillTextMultiLine(ctx, labelB, chart.chartArea.right + 10, totalHeight - ((labelBStart + labelBEnd) * step));
+    fillTextMultiLine(ctx, labelC, chart.chartArea.right + 10, totalHeight - ((labelCStart + labelCEnd) * step) - 8);
+    fillTextMultiLine(ctx, labelD, chart.chartArea.right + 10, totalHeight - ((labelDStart + labelDEnd) * step));
+    fillTextMultiLine(ctx, labelE, chart.chartArea.right + 10, totalHeight - ((labelEStart + labelEEnd) * step));
+    fillTextMultiLine(ctx, labelF, chart.chartArea.right + 10, totalHeight - ((labelFStart + labelFEnd) * step));
   }
 }
 
@@ -184,30 +184,39 @@ const options: ChartOptions<'line'> = {
   }
 };
 
-export const data = [
-  { date: "2023-01-01", value: 10 },
-  { date: "2023-02-01", value: 30 },
-  { date: "2023-03-01", value: 50 },
-  { date: "2023-04-01", value: 70 },
-  { date: "2023-05-01", value: 90 },
-  { date: "2023-06-01", value: 110 }
-]
+const downloadPDF = () => {
+  const canvas = document.getElementById('chart') as HTMLCanvasElement;
+  const canvasImage = canvas.toDataURL('image/jpeg', 1.0);
+  const { width, height } = canvas.getBoundingClientRect();
 
+  let pdf = new jsPDF({
+    orientation: 'portrait',
+    unit: 'px',
+    format: 'a4',
+    compress: true,
+  });
 
-const ChartComponent = () => {
-  function parseTime(time: string) {
-    let parts = time.split('-');
-    return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-  }
+  pdf.addImage(canvasImage, 'PNG', 15, 15, width, height);
+  pdf.save('salerecoed.pdf');
+}
 
-  const xLabels = data.map(function(d) { return d.date; });
-  const yValues = data.map(function(d) { return d.value; });
+export interface ChartDataProps {
+  date: string
+  value: number
+}
 
-  const chartData: ChartData<'line'> = {
+const ChartComponent = (props: { data: ChartDataProps[] }) => {
+  // const [exData, setExData] = useState<ColumnType[] | null>(null);
+  // const [cData, setCData] = useState<ChartDataProps | null>(null);
+
+  const xLabels = props.data.map(function(d) { return d.date; });
+  const yValues = props.data.map(function(d) { return d.value; });
+
+  const chartData = {
     labels: xLabels,
     datasets: [
       {
-        label: '데이터',
+        label: 'DataSet',
         data: yValues,
         pointRadius: 4,
         pointBackgroundColor: 'blue',
@@ -216,15 +225,24 @@ const ChartComponent = () => {
         showLine: false
       }
     ]
-  };
+  }
 
   return (
     <div className="chart-component">
       <Line
-      data={chartData}
-      plugins={[plugins]}
-      options={options}
+        id="chart"
+        data={chartData}
+        plugins={[plugins]}
+        options={options}
       />
+      <div className="btn-wrapper">
+        <button
+          type='button'
+          className='download-btn'
+          onClick={() => downloadPDF()}>
+          PDF로 저장
+        </button>
+      </div>
     </div>
   );
 

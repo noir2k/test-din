@@ -8,7 +8,7 @@ import bg_circle_4 from '@assets/images/bg_circle_4.png';
 
 import TestForm from '@components/test/testForm';
 import Notice from '@components/main/notice';
-import History from '@components/main/history';
+import TestResult from '@components/main/TestResultComponent';
 import Setting from '@components/main/SettingComponent';
 import Snb from '@components/snb/snb';
 import ExamineeInfoPopup from '@components/snb/examineePopup';
@@ -24,6 +24,8 @@ const MainPage = () => {
   const isInfoPopupOpen = popupToggle.isInfoPopupOpen;
   const isEditingName = popupToggle.isEditingName;
 
+  // console.log(popupToggle);
+
   return (
     <div>
       <div className="main-container">
@@ -34,10 +36,10 @@ const MainPage = () => {
               id="mainContent"
               className="main-contents flex justify-center items-center"
             >
+              {isNoticeOpen && <Notice />}
               {isInfoPopupOpen && <ExamineeInfoPopup />}
               {isEditingName && <EditingName />}
-              {isNoticeOpen && <Notice />}
-              {isHistoryOpen && <History />}
+              {isHistoryOpen && <TestResult />}
               {isTestStartOpen && <TestForm />}
               {isSettingOpen && <Setting />}
             </div>

@@ -14,6 +14,7 @@ import {
   ipcMain,
   ipcRenderer,
   dialog,
+  OpenDialogSyncOptions,
 } from 'electron';
 
 import Store from 'electron-store';
@@ -159,13 +160,19 @@ const createWindow = async () => {
   });
 
   ipcMain.on('show-open-sql', (event) => {
-    const options = {
+    const options: OpenDialogSyncOptions = {
       title: 'Open a file or folder',
+      defaultPath: '',
       buttonLabel: 'Open',
       filters: [
         { name: 'sql', extensions: ['sql'] }
       ]
     };
+
+    if (STORE.get('loadFilePath')) {
+      const defaultPath = STORE.get('loadFilePath') as string;
+      options.defaultPath = defaultPath;
+    }
 
     const filePaths = dialog.showOpenDialogSync(options);
 
@@ -227,6 +234,16 @@ const createWindow = async () => {
     } else {
       log.log('No more data(2)');
       event.sender.send('no-more-data', 'No more data(2)');
+    }
+  });
+
+  ipcMain.on('graph-data', (event) => {
+    const result = Util.getGraphData(db);
+    log.log(result);
+    if (result && result.length > 0) {
+      event.sender.send('graph-data-result', result);
+    } else {
+      event.sender.send('load-data-failured', 'Empty Data');
     }
   });
 

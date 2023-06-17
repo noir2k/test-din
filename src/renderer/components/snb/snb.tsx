@@ -12,6 +12,7 @@ import useInfiniteScroll from '@hook/useInfiniteScroll';
 import ExamineeCard from '@components/main/examineeCard';
 
 import {
+  setNoticeOpen,
   setEditingName,
   setInfoPopupOpen,
   setSettingOpen,
@@ -23,6 +24,7 @@ import { getAnswers } from '@store/slices/answerProvider';
 import { ColumnType } from '@main/util';
 
 const snb = () => {
+  const [selectedIndex, setSelectedIndex] = useState<any>(0);
   const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [exData, setExData] = useState<ColumnType[] | null>(null);
@@ -100,7 +102,12 @@ const snb = () => {
       <div className="child snb-setting-wrapper">
         <div className="snb-column-container">
           <div className="snb-icons-container">
-            <a href="!#">
+            <a
+              href="!#"
+              onClick={() => {
+                dispatch(setNoticeOpen());
+              }}
+            >
               <img width="26" src={ico_home} alt="icon_home" />
             </a>
             <a
@@ -184,10 +191,11 @@ const snb = () => {
       </div>
       <div className="child import-success-screen overflow-y-auto">
         <div>
-          {exData !== null &&
-            exData.map((item) => (
+          {exData && exData.map((item) => (
+            <div className={selectedIndex == item.id ? "selected-item" : ""} onClick={() => setSelectedIndex(item.id)}>
               <ExamineeCard props={item} key={item.id.toFixed()} />
-            ))}
+            </div>
+          ))}
         </div>
         <div className="scroll-end" ref={setTarget} />
       </div>

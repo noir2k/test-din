@@ -3,7 +3,7 @@ import { setHistoryOpen } from '@store/slices/popupToggle';
 
 import { ColumnType } from '@main/util';
 
-type DataProps = {
+export type DataProps = {
   props : ColumnType
 }
 
@@ -13,8 +13,8 @@ const ExamineeCard = ({props}: DataProps) => {
 
   return (
     <div
-    className="examinee-card cursor-pointer flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300"
-    onClick={() => { dispatch(setHistoryOpen()); }}
+      className="examinee-card cursor-pointer flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300"
+      onClick={() => { dispatch(setHistoryOpen({chartItemData: props}));}}
     >
       <div className="examinee-name">
         {id.toString()}
