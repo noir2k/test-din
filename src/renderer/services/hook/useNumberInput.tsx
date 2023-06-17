@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import ico_check from '@assets/images/icons/icon_check.png';
 
 const useNumberInput = () => {
   const [digits, setDigits] = useState(['', '', '']);
@@ -30,13 +32,27 @@ const useNumberInput = () => {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const number = Number(e.key);
+      if (!isNaN(number) && currentIndex < 3) {
+        handleNumberClick(number.toString());
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [digits]);
+
   const renderButtons = () => {
     const buttons = [];
     for (let i = 1; i <= 9; i++) {
       buttons.push(
-        <div key={i} className="w-1/3 p-1">
+        <div key={i} className="number-btn-wrapper">
           <button
-            className="rounded-full bg-gray-300 w-16 h-16 text-2xl"
+            className="number-btn"
             onClick={() => handleNumberClick(i.toString())}
           >
             {i}
@@ -45,29 +61,23 @@ const useNumberInput = () => {
       );
     }
     buttons.push(
-      <div key={-1} className="w-1/3">
+      <div key={-1} className="number-btn-wrapper remove-margin">
         <button className="hidden" disabled>
           간격 조절용 버튼
         </button>
       </div>
     );
     buttons.push(
-      <div key={0} className="w-1/3">
-        <button
-          className="rounded-full bg-gray-300 w-16 h-16 text-2xl"
-          onClick={() => handleNumberClick('0')}
-        >
+      <div key={0} className="number-btn-wrapper remove-margin">
+        <button className="number-btn" onClick={() => handleNumberClick('0')}>
           0
         </button>
       </div>
     );
     buttons.push(
-      <div key="confirm" className="w-1/3">
-        <button
-          className="rounded-full bg-gray-300 w-16 h-16 text-2xl"
-          onClick={handleCheck}
-        >
-          &#10003;
+      <div key="confirm" className="number-btn-wrapper remove-margin">
+        <button className="number-btn confirm-btn" onClick={handleCheck}>
+          <img src={ico_check} alt="check icon" />
         </button>
       </div>
     );
