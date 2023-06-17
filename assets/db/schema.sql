@@ -2,8 +2,8 @@ BEGIN TRANSACTION;
 DROP TABLE IF EXISTS "test_din_history";
 CREATE TABLE IF NOT EXISTS "test_din_history" (
 	"id" INTEGER NOT NULL UNIQUE,
-	"name" TEXT NOT NULL,
-	"sex"	TEXT NOT NULL,
+	"user_name" TEXT NOT NULL,
+	"gender"	TEXT NOT NULL,
 	"birth"	TEXT NOT NULL,
 	"patient"	INTEGER NOT NULL,
 	"direction"	TEXT NOT NULL,

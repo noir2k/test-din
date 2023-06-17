@@ -3,6 +3,7 @@ import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
+import isEmpty from 'lodash.isempty';
 import hash from "object-hash";
 
 import ico_home from '@assets/images/icons/icon_home.png';
@@ -31,6 +32,8 @@ const snb = () => {
   const [isLoading, setLoading] = useState(false);
   const [exData, setExData] = useState<ColumnType[] | null>(null);
 
+  const userData = useAppSelector((state: RootState) => state.userData);
+
   const dispatch = useAppDispatch();
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
@@ -46,6 +49,7 @@ const snb = () => {
     const colData = data as ColumnType[];
     if (colData !== null) {
       setExData(colData);
+      console.log(colData);
       dispatch(setUserInfo(colData[0]));
       const isNoMore = colData.length < 10;
       setMoreData(!isNoMore);
@@ -174,7 +178,11 @@ const snb = () => {
           <a
             className="cursor-pointer data-text ml-5"
             onClick={() => {
-              dispatch(setInfoPopupOpen());
+              if (isEmpty(userData)) {
+                alert('사용자 검사 정보가 없습니다.')
+              } else {
+                dispatch(setInfoPopupOpen());
+              }
             }}
           >
             <img className="float-left mr-5" src={ico_user} alt="user icon" />
@@ -183,8 +191,11 @@ const snb = () => {
           <button
             type="button"
             className="bg-transparent snb-column-child-btn snb-modify-btn"
+            disabled={isEmpty(userData)}
             onClick={() => {
-              dispatch(setEditingName());
+              if (!isEmpty(userData)) {
+                dispatch(setEditingName());
+              }
             }}
           >
             수정
