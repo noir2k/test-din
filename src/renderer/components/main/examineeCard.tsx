@@ -3,12 +3,8 @@ import { setHistoryOpen } from '@store/slices/popupToggle';
 
 import { ColumnType } from '@main/util';
 
-export type DataProps = {
-  props : ColumnType
-}
-
-const ExamineeCard = ({props}: DataProps) => {
-  const { id,	direction, scoring, memo, sound_set, test_date, test_result, reg_timestamp } = props;
+const ExamineeCard = ({...props}) => {
+  const item: ColumnType = props.item;
   const dispatch = useAppDispatch();
 
   return (
@@ -17,10 +13,10 @@ const ExamineeCard = ({props}: DataProps) => {
       onClick={() => { dispatch(setHistoryOpen({chartItemData: props}));}}
     >
       <div className="examinee-name">
-        {id.toString()}
+        {item.id.toString()}
       </div>
       <div className="examination-date">
-        {test_date}
+        {item.test_date}
       </div>
       <div className="btn-delete">
         <button
@@ -28,7 +24,7 @@ const ExamineeCard = ({props}: DataProps) => {
           className="bg-transparent"
           onClick={() => {
             if (confirm('삭제하시겠습니까?')) {
-              window.electron.ipcRenderer.sendMessage('delete-data', [id]);
+              window.electron.ipcRenderer.sendMessage('delete-data', [item.id]);
             }
           }}
         >

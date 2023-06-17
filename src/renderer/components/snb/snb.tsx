@@ -193,7 +193,7 @@ const snb = () => {
         <div>
           {exData && exData.map((item) => (
             <div className={selectedIndex == item.id ? "selected-item" : ""} onClick={() => setSelectedIndex(item.id)}>
-              <ExamineeCard props={item} key={item.id.toFixed()} />
+              <ExamineeCard item={item} key={item.id.toFixed()} />
             </div>
           ))}
         </div>

@@ -15,6 +15,8 @@ import { Line } from 'react-chartjs-2';
 
 import jsPDF from 'jspdf';
 
+import { ChartDataProps } from '@interfaces';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -200,15 +202,7 @@ const downloadPDF = () => {
   pdf.save('salerecoed.pdf');
 }
 
-export interface ChartDataProps {
-  date: string
-  value: number
-}
-
 const ChartComponent = (props: { data: ChartDataProps[] }) => {
-  // const [exData, setExData] = useState<ColumnType[] | null>(null);
-  // const [cData, setCData] = useState<ChartDataProps | null>(null);
-
   const xLabels = props.data.map(function(d) { return d.date; });
   const yValues = props.data.map(function(d) { return d.value; });
 

@@ -6,6 +6,7 @@
       "@components/*": ["./renderer/components/*"],
       "@hook/*": ["./renderer/services/hook/*"],
       "@store/*": ["./renderer/services/store/*"],
+      "@interfaces": ["./renderer/ts/interfaces/index"],
       "@main/*": ["./main/*"],
     },
     "incremental": true,
