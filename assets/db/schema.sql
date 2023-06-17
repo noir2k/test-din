@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "test_din_history" (
 	"user_name" TEXT NOT NULL,
 	"gender"	TEXT NOT NULL,
 	"birth"	TEXT NOT NULL,
-	"patient"	INTEGER NOT NULL,
+	"patient"	TEXT NOT NULL,
 	"direction"	TEXT NOT NULL,
 	"volume_level"	INTEGER NOT NULL,
 	"scoring"	TEXT NOT NULL,
