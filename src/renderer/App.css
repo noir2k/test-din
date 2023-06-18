@@ -672,6 +672,7 @@ span {
 }
 
 .info-btn-wrapper {
+  margin: 0 auto;
   width: 200px;
   height: 60px;
   display: flex;

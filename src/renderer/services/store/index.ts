@@ -4,11 +4,15 @@ import logger from 'redux-logger';
 import popupToggle from './slices/popupToggle';
 import answerProvider from './slices/answerProvider';
 import userDataProvider from './slices/userDataProvider';
+import testFormProvider from './slices/testFormProvider';
+import testProgressProvider from './slices/testProgressProvider';
 
 const rootReducer = combineReducers({
   popupToggle: popupToggle,
   answer: answerProvider,
   userData: userDataProvider,
+  testForm: testFormProvider,
+  testProgress: testProgressProvider
 });
 
 export const store = configureStore({

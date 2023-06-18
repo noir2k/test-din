@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
-import { ColumnType } from '@main/util';
+import { ColumnType } from '@interfaces';
 
 import ChartComponent from './ChartComponent';
 import { ChartDataProps } from '@interfaces';

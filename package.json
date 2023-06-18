@@ -83,6 +83,7 @@
   "devDependencies": {
     "@electron/notarize": "^1.2.3",
     "@electron/rebuild": "^3.2.10",
+    "@hookform/error-message": "^2.0.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@redux-devtools/extension": "^3.2.5",
     "@svgr/webpack": "^6.5.1",
@@ -145,6 +146,7 @@
     "postcss-loader": "^7.3.0",
     "prettier": "^2.8.4",
     "react-chartjs-2": "^5.2.0",
+    "react-hook-form": "^7.44.3",
     "react-refresh": "^0.14.0",
     "react-test-renderer": "^18.2.0",
     "redux-logger": "^3.0.6",

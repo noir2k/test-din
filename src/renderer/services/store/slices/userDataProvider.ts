@@ -14,11 +14,13 @@ const userNameSlice = createSlice({
       state.birthday = action.payload.birthday;
       state.patient_no = action.payload.patient_no;
     },
+    reset: () => initialState,
   }
 });
 
 export const {
-  setUserInfo
+  setUserInfo,
+  reset
 } = userNameSlice.actions;
 
 export default userNameSlice.reducer;

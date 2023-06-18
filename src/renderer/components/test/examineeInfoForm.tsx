@@ -1,9 +1,22 @@
 import { useEffect, useState } from 'react';
+import { useForm } from "react-hook-form";
 
-import { useAppSelector } from '@hook/index';
+import type { FieldError } from 'react-hook-form';
+
+import { useAppSelector, useAppDispatch } from '@hook/index';
 import type { RootState } from '@store/index';
 
 import { ColumnName } from '@interfaces';
+
+import {
+  setTestForm,
+  resetDefaultForm
+} from '@store/slices/testFormProvider';
+
+import {
+  nextPage,
+  prevPage
+} from '@store/slices/testProgressProvider';
 
 import isEmpty from 'lodash.isempty';
 
@@ -11,10 +24,52 @@ import ico_refresh from '@assets/images/icons/icon_refresh_white.png';
 import ico_check from '@assets/images/icons/icon_check_white.png';
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
+type ErrorMessageType = {
+  [key: string]: FieldError;
+};
+
 const ExamineeInfoForm = () => {
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const [isDisabled, setDisable] = useState(false);
 
   const userData = useAppSelector((state: RootState) => state.userData);
+  const testProgress = useAppSelector((state: RootState) => state.testProgress);
+
+  const dispatch = useAppDispatch();
+
+  const handleReset = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    dispatch(resetDefaultForm());
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+   } = useForm();
+
+  const onSubmit = (data: any) => {
+    dispatch(setTestForm(data));
+    dispatch(nextPage());
+  }
+
+  const onError = (error: any) => {
+    console.log("isEmpty(error)", isEmpty(error));
+    if (!isEmpty(error)) {
+      const err = error as ErrorMessageType;
+      for (const [key, value] of Object.entries(err)) {
+        alert(value.message);
+        return;
+      }
+    }
+  }
 
   useEffect(() => {
     if (!isEmpty(userData)) {
@@ -23,7 +78,7 @@ const ExamineeInfoForm = () => {
   }, [userData]);
 
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit, onError)}>
       <div className="info-form-title">
         <img src={ico_speaker} alt="speaker icon" />
         <p>피검사자 기본 정보를 입력해 주세요.</p>
@@ -41,10 +96,14 @@ const ExamineeInfoForm = () => {
             </label>
             <input
               type="text"
-              name="username"
               id={ColumnName.user_name}
+              disabled={isDisabled}
               defaultValue={userData?.user_name}
               className="info-input-item-input"
+              {...register(
+                `${ColumnName.user_name}`,
+                { required: '이름 항목은 필수입니다.' }
+              )}
             />
           </li>
           <li className="info-input-item">
@@ -58,8 +117,9 @@ const ExamineeInfoForm = () => {
             <select
               id={ColumnName.gender}
               disabled={isDisabled}
-              className="info-input-item-input"
               defaultValue={userData?.gender}
+              className="info-input-item-input"
+              {...register(`${ColumnName.gender}`)}
             >
               <option value="M">남성</option>
               <option value="F">여성</option>
@@ -69,32 +129,43 @@ const ExamineeInfoForm = () => {
           <li className="info-input-item">
             <p className="info-input-item-order-number">03</p>
             <label
-              htmlFor={ColumnName.birth}
+              htmlFor={ColumnName.birthday}
               className="info-input-item-subject"
             >
               생년월일
             </label>
             <input
-              type="text"
+              type="date"
+              id={ColumnName.birthday}
               disabled={isDisabled}
-              id={ColumnName.birth}
-              defaultValue={userData?.birth}
+              defaultValue={userData?.birthday}
               className="info-input-item-input"
+              {...register(
+                `${ColumnName.birthday}`,
+                { required: '생년월일 항목은 필수입니다.' }
+              )}
+              onChange={(e) => {
+                e.target.value = formatDate(e.target.value);
+              }}
             />
           </li>
           <li className="info-input-item">
             <p className="info-input-item-order-number">04</p>
             <label
-              htmlFor={ColumnName.patient}
+              htmlFor={ColumnName.patient_no}
               className="info-input-item-subject"
             >
               피검사자번호
             </label>
             <input
               type="text"
+              id={ColumnName.patient_no}
               disabled={isDisabled}
-              id={ColumnName.patient}
-              defaultValue={userData?.patient?.toString()}
+              defaultValue={userData?.patient_no?.toString()}
+              {...register(
+                `${ColumnName.patient_no}`,
+                { required: '피검사자번호 항목은 필수입니다.' }
+              )}
               className="info-input-item-input"
             />
           </li>
@@ -110,6 +181,7 @@ const ExamineeInfoForm = () => {
               id={ColumnName.direction}
               defaultValue={'LR'}
               className="info-input-item-input"
+              {...register(`${ColumnName.direction}`)}
             >
               <option value="L">좌</option>
               <option value="R">우</option>
@@ -130,6 +202,7 @@ const ExamineeInfoForm = () => {
               id={ColumnName.volume_level}
               defaultValue={'0'}
               className="info-input-item-input"
+              {...register(`${ColumnName.volume_level}`)}
             >
               <option value="-6">-6</option>
               <option value="-5">-5</option>
@@ -138,16 +211,16 @@ const ExamineeInfoForm = () => {
               <option value="-2">-2</option>
               <option value="-1">-1</option>
               <option value="0">0</option>
-              <option value="+1">+1</option>
-              <option value="+2">+2</option>
-              <option value="+3">+3</option>
-              <option value="+4">+4</option>
-              <option value="+5">+5</option>
-              <option value="+6">+6</option>
-              <option value="+7">+7</option>
-              <option value="+8">+8</option>
-              <option value="+9">+9</option>
-              <option value="+10">+10</option>
+              <option value="1">+1</option>
+              <option value="2">+2</option>
+              <option value="3">+3</option>
+              <option value="4">+4</option>
+              <option value="5">+5</option>
+              <option value="6">+6</option>
+              <option value="7">+7</option>
+              <option value="8">+8</option>
+              <option value="9">+9</option>
+              <option value="10">+10</option>
             </select>
           </li>
           <li className="info-input-item">
@@ -162,6 +235,7 @@ const ExamineeInfoForm = () => {
               id={ColumnName.scoring}
               defaultValue={'digit'}
               className="info-input-item-input"
+              {...register(`${ColumnName.scoring}`)}
             >
               <option value="digit">Digit Scoring</option>
               <option value="tripet">Tripet Scoring</option>
@@ -175,13 +249,18 @@ const ExamineeInfoForm = () => {
             >
               사운드세트
             </label>
-            <select id={ColumnName.sound_set} className="info-input-item-input">
-              <option value="List 1">List 1</option>
-              <option value="List 2">List 2</option>
-              <option value="List 3">List 3</option>
-              <option value="List 4">List 4</option>
-              <option value="List 5">List 5</option>
-              <option value="List 6">List 6</option>
+            <select
+              id={ColumnName.sound_set}
+              className="info-input-item-input"
+              defaultValue={'1'}
+              {...register(`${ColumnName.sound_set}`)}
+            >
+              <option value="1">List 1</option>
+              <option value="2">List 2</option>
+              <option value="3">List 3</option>
+              <option value="4">List 4</option>
+              <option value="5">List 5</option>
+              <option value="6">List 6</option>
             </select>
           </li>
         </ul>
@@ -195,18 +274,27 @@ const ExamineeInfoForm = () => {
           id={ColumnName.memo}
           className="info-memo-input"
           placeholder="참고사항을 입력해주세요."
+          {...register(`${ColumnName.memo}`)}
         />
       </div>
 
       <div className="info-btn-wrapper">
-        <button className="info-btn" type="reset">
+        <button
+          className="info-btn"
+          type="reset"
+          onClick={handleReset}
+        >
           <img src={ico_refresh} alt="ico_refresh" />
         </button>
-        <button className="info-btn" type="button">
+        <button
+          className="info-btn"
+          type="submit"
+          disabled={isSubmitting}
+        >
           <img src={ico_check} alt="ico_check" />
         </button>
       </div>
-    </>
+    </form>
   );
 };
 

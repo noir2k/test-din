@@ -1,7 +1,7 @@
 import { useAppDispatch } from '@hook/index';
 import { setHistoryOpen } from '@store/slices/popupToggle';
 
-import { ColumnType } from '@main/util';
+import { ColumnType } from '@interfaces';
 
 import ico_document from '@assets/images/icons/icon_document.png';
 
@@ -18,11 +18,9 @@ const ExamineeCard = ({ ...props }) => {
     >
       <img src={ico_document} alt="document icon" />
       <div className="examinee-card-data">
-        <p>{item.id.toString().padStart(2, '0')}</p>
-        {/* <p>테스트 1</p> */}
+        <p>{item.user_name}({item.patient_no})</p>
         <p>{item.test_date}</p>
       </div>
-
       {/* <div className="examinee-name"></div>
       <div className="examination-date">{item.test_date}</div> */}
       <div className="delete-btn-wrapper">
