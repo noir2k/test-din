@@ -20,14 +20,14 @@ const testFormSlice = createSlice({
       state.birthday = undefined;
       state.patient_no = undefined;
     },
-    reset: () => initialState
+    resetForm: () => initialState
   }
 });
 
 export const {
   setTestForm,
   resetDefaultForm,
-  reset
+  resetForm
 } = testFormSlice.actions;
 
 export default testFormSlice.reducer;

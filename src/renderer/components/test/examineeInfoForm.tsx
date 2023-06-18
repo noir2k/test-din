@@ -14,8 +14,7 @@ import {
 } from '@store/slices/testFormProvider';
 
 import {
-  nextPage,
-  prevPage
+  nextPage
 } from '@store/slices/testProgressProvider';
 
 import isEmpty from 'lodash.isempty';
@@ -40,7 +39,6 @@ const ExamineeInfoForm = () => {
   const [isDisabled, setDisable] = useState(false);
 
   const userData = useAppSelector((state: RootState) => state.userData);
-  const testProgress = useAppSelector((state: RootState) => state.testProgress);
 
   const dispatch = useAppDispatch();
 

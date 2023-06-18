@@ -15,18 +15,28 @@ import useInfiniteScroll from '@hook/useInfiniteScroll';
 import ExamineeCard from '@components/main/examineeCard';
 
 import {
+  resetPage
+} from '@store/slices/testProgressProvider';
+
+import {
   setNoticeOpen,
   setEditingName,
   setInfoPopupOpen,
   setSettingOpen,
   setTestStartOpen,
 } from '@store/slices/popupToggle';
+
 import { setUserInfo } from '@store/slices/userDataProvider';
 import { getAnswers } from '@store/slices/answerProvider';
 
 import { ColumnType } from '@interfaces';
 
 const snb = () => {
+  const testStartOpen = () => {
+    dispatch(resetPage());
+    dispatch(setTestStartOpen());
+  }
+
   const [selectedIndex, setSelectedIndex] = useState<any>(0);
   const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -216,9 +226,7 @@ const snb = () => {
         <button
           type="button"
           className="test-start-btn"
-          onClick={() => {
-            dispatch(setTestStartOpen());
-          }}
+          onClick={testStartOpen}
         >
           검사하기
         </button>

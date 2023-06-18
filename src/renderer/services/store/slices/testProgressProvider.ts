@@ -19,14 +19,14 @@ const testProgressSlice = createSlice({
         state.currentPage--;
       }
     },
-    reset: () => initialState
+    resetPage: () => initialState
   }
 });
 
 export const {
   nextPage,
   prevPage,
-  reset
+  resetPage
 } = testProgressSlice.actions;
 
 export default testProgressSlice.reducer;
