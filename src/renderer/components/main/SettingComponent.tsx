@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useAppDispatch } from '@hook/index';
 import { setNoticeOpen } from '@store/slices/popupToggle';
 
+import ico_speaker from '@assets/images/icons/icon_speaker.png';
+
 const _config = {} as ConfigSchemaType;
 
 const Setting = () => {
@@ -32,10 +34,13 @@ const Setting = () => {
   // }, [value]);
 
   return (
-    <div className="flex flex-col justify-start h-full p-5 w-1/2">
-      <h1 className="text-slate-950 text-center mb-10">설정</h1>
+    <div className="sound-setting-wrapper">
+      <div className="sound-setting-title">
+        <img src={ico_speaker} alt="speaker icon" />
+        <p>설정</p>
+      </div>
 
-      <div className="text-center text-slate-950 mb-10">
+      <div className="sound-setting-text">
         <p>
           각 문제 사운드간 간격을 지정해 주세요. <br />
           0초에서 5초까지 지정 가능합니다.
@@ -60,10 +65,10 @@ const Setting = () => {
         </div>
       </div>
 
-      <div className="flex justify-center text-slate-950 mt-5">
+      <div className="sound-setting-btn-wrapper">
         <button
+          className="exit-btn"
           type="button"
-          className="w-36 h-14 bg-green-200 rounded-full mr-10"
           onClick={() => {
             dispatch(setNoticeOpen());
           }}
@@ -71,12 +76,13 @@ const Setting = () => {
           종료
         </button>
         <button
+          className="test-complete-btn"
           type="button"
-          className="w-36 h-14 bg-green-200 rounded-full"
           onClick={() => {
             _config.soundInterval = value;
             window.electron.store.set('config', _config);
             alert('설정이 저장되었습니다.');
+            dispatch(setNoticeOpen());
           }}
         >
           설정완료
