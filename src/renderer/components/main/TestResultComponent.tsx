@@ -12,19 +12,21 @@ import { ChartDataProps } from '@interfaces';
 // test for reload data on changed
 
 const data_dummy: ChartDataProps[] = [
-  { date: "2023-01-01", value: 10 },
-  { date: "2023-02-01", value: 30 },
-  { date: "2023-03-01", value: 50 },
-  { date: "2023-04-01", value: 70 },
-  { date: "2023-05-01", value: 90 },
-  { date: "2023-06-01", value: 110 }
-]
+  { date: '2023-01-01', value: 10 },
+  { date: '2023-02-01', value: 30 },
+  { date: '2023-03-01', value: 50 },
+  { date: '2023-04-01', value: 70 },
+  { date: '2023-05-01', value: 90 },
+  { date: '2023-06-01', value: 110 },
+];
 
 const TestResult = () => {
   const [toggle, setToggle] = useState(false);
   const [chartData, setChartData] = useState<ChartDataProps[] | null>(null);
 
-  const chartItemData = useAppSelector((state: RootState) => state.popupToggle.chartItemData);
+  const chartItemData = useAppSelector(
+    (state: RootState) => state.popupToggle.chartItemData
+  );
 
   useEffect(() => {
     const channel = 'graph-data';
@@ -37,10 +39,12 @@ const TestResult = () => {
       const colData = data as ColumnType[];
       if (colData !== null) {
         const data: ChartDataProps[] = [];
-        colData.map((item) => {data.push({date: item.test_date, value: Number(item.test_result)})});
+        colData.map((item) => {
+          data.push({ date: item.test_date, value: Number(item.test_result) });
+        });
         // TODO : will be removed
         // test for reload data on changed
-        if(toggle) {
+        if (toggle) {
           setToggle(false);
           setChartData(data_dummy);
         } else {
@@ -55,12 +59,12 @@ const TestResult = () => {
 
   return (
     <div className="chart-wrapper">
-      <h1 id="testText" className="text-slate-950">
+      {/* <h1 id="testText" className="text-slate-950">
         검사 기록입니다.
-      </h1>
-      {chartData && <ChartComponent data={chartData}/>}
+      </h1> */}
+      {chartData && <ChartComponent data={chartData} />}
     </div>
   );
-}
+};
 
 export default TestResult;

@@ -3,25 +3,32 @@ import { setHistoryOpen } from '@store/slices/popupToggle';
 
 import { ColumnType } from '@main/util';
 
-const ExamineeCard = ({...props}) => {
+import ico_document from '@assets/images/icons/icon_document.png';
+
+const ExamineeCard = ({ ...props }) => {
   const item: ColumnType = props.item;
   const dispatch = useAppDispatch();
 
   return (
     <div
-      className="examinee-card cursor-pointer flex items-center justify-center justify-between text-cyan-900 p-5 border-b border-slate-300"
-      onClick={() => { dispatch(setHistoryOpen({chartItemData: props}));}}
+      className="examinee-card"
+      onClick={() => {
+        dispatch(setHistoryOpen({ chartItemData: props }));
+      }}
     >
-      <div className="examinee-name">
-        {item.id.toString()}
+      <img src={ico_document} alt="document icon" />
+      <div className="examinee-card-data">
+        <p>{item.id.toString().padStart(2, '0')}</p>
+        {/* <p>테스트 1</p> */}
+        <p>{item.test_date}</p>
       </div>
-      <div className="examination-date">
-        {item.test_date}
-      </div>
-      <div className="btn-delete">
+
+      {/* <div className="examinee-name"></div>
+      <div className="examination-date">{item.test_date}</div> */}
+      <div className="delete-btn-wrapper">
         <button
           type="button"
-          className="bg-transparent"
+          className="delete-btn bg-transparent"
           onClick={() => {
             if (confirm('삭제하시겠습니까?')) {
               window.electron.ipcRenderer.sendMessage('delete-data', [item.id]);
@@ -33,6 +40,6 @@ const ExamineeCard = ({...props}) => {
       </div>
     </div>
   );
-}
+};
 
 export default ExamineeCard;
