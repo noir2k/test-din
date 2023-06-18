@@ -1,4 +1,10 @@
-import RightSnb from '@components/snb/rightSnb';
+import { useAppDispatch } from '@hook/index';
+
+import {
+  nextPage
+} from '@store/slices/testProgressProvider';
+
+import RightSnb from '@components/snb/RightSnb';
 import useNumberInput from '@hook/useNumberInput';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
@@ -6,9 +12,23 @@ import ico_speaker from '@assets/images/icons/icon_speaker.png';
 export default function CheckScreen() {
   const hooks = useNumberInput(25);
 
+  const startTest = () => {
+    hooks.resetTest();
+    hooks.setTestStart(true);
+  }
+
+  const handleAbort = () => {
+    if(confirm('테스트를 중단하고 처음으로 돌아가겠습니까?')) {
+      hooks.resetTest();
+      hooks.setTestStart(false);
+    }
+  }
+
+  const dispatch = useAppDispatch();
+
   return (
     <>
-      <RightSnb pageNum={2} />
+      <RightSnb />
       <div className="check-form-title">
         <img src={ico_speaker} alt="speaker icon" />
         <p>테스트 진행중</p>
@@ -42,11 +62,15 @@ export default function CheckScreen() {
             : "test-start-btn"}
           disabled={hooks.isTestStart}
           type="button"
-          onClick={() => hooks.setTestStart(true)}
+          onClick={startTest}
         >
           시작
         </button>
-        <button className="test-abort-btn abort-btn" type="button">
+        <button
+          className="test-abort-btn abort-btn"
+          type="button"
+          onClick={handleAbort}
+        >
           중단
         </button>
         <button
@@ -55,6 +79,7 @@ export default function CheckScreen() {
             : "test-complete-btn"}
           type="button"
           disabled={!hooks.isTestComplete}
+          onClick={() => dispatch(nextPage())}
         >
           완료
         </button>

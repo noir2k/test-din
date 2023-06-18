@@ -8,13 +8,14 @@ import {
 
 
 import useNumberInput from '@hook/useNumberInput';
-import RightSnb from '@components/snb/rightSnb';
+import RightSnb from '@components/snb/RightSnb';
 
 export default function PreCheckScreen() {
   const startTest = () => {
     hooks.resetTest();
     hooks.setTestStart(true);
   }
+
   const [value, setValue] = useState(50);
 
   const dispatch = useAppDispatch();
@@ -28,7 +29,7 @@ export default function PreCheckScreen() {
 
   return (
     <>
-      <RightSnb pageNum={1} />
+      <RightSnb />
       <div className="pre-check-form-title">
         <p>
           이제 <span className="blue">3개의 연속된 숫자</span>가 들리게 됩니다.{' '}

@@ -1,19 +1,30 @@
+import { useAppSelector, useAppDispatch } from '@hook/index';
+import type { RootState } from '@store/index';
+
+import {
+  ScoringOptions,
+  SoundSetOptions,
+  DirectionOptions
+} from '@interfaces';
+
 import ico_speaker_white from '@assets/images/icons/icon_speaker_white.png';
 
-type RightSnbProps = {
-  pageNum: number;
-};
+const RightSnb = () => {
+  const testProgress = useAppSelector((state: RootState) => state.testProgress);
 
-export default function RightSnb(props: RightSnbProps) {
+  console.log("currentPage" , testProgress.currentPage);
+
   return (
     <>
-      {props.pageNum === 1 && <PreCheckSnb />}
-      {(props.pageNum === 2 || props.pageNum === 3) && <CheckSnb />}
+      {testProgress.currentPage === 1
+        && <PreCheckSnb />}
+      {(testProgress.currentPage === 2 || testProgress.currentPage === 3)
+        && <CheckSnb />}
     </>
   );
 }
 
-function PreCheckSnb() {
+const PreCheckSnb = () => {
   return (
     <div className="right-snb-wrapper">
       <div className="right-snb-title">
@@ -31,17 +42,25 @@ function PreCheckSnb() {
   );
 }
 
-function CheckSnb() {
+const CheckSnb = () => {
+  const {sound_set, direction, scoring} = useAppSelector((state: RootState) => state.testForm);
+
+  const _soundSet = SoundSetOptions[sound_set?.toString() ?? ''];
+  const _direction = DirectionOptions[direction ?? ''];
+  const _scoring = ScoringOptions[scoring ?? ''];
+
   return (
     <div className="right-snb-wrapper">
       <div className="right-snb-title">
         <p>검사 현황</p>
       </div>
       <div className="right-snb-text on-test">
-        <p>검사 사운드 세트: List 1</p>
-        <p>사운드 제시 방향: Noise Left + Speech Right</p>
-        <p>채점 방식: Digit Scoring</p>
+        <p>검사 사운드 세트: {_soundSet}</p>
+        <p>사운드 제시 방향: {_direction}</p>
+        <p>채점 방식: {_scoring}</p>
       </div>
     </div>
   );
 }
+
+export default RightSnb;

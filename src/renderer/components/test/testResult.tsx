@@ -2,10 +2,10 @@ import { useAppDispatch } from '@hook/index';
 
 import { setNoticeOpen } from '@store/slices/popupToggle';
 
-import RightSnb from '@components/snb/rightSnb';
+import RightSnb from '@components/snb/RightSnb';
+import TestResultPopup from './testResultPopup';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
-import ico_check_circle from '@assets/images/icons/icon_check_circle.png';
 import test_result_img from '@assets/images/test_result_img.png';
 import { useState } from 'react';
 
@@ -16,22 +16,8 @@ export default function TestResult() {
 
   return (
     <>
-      <RightSnb pageNum={3} />
-
-      <div className="score-result-wrapper">
-        <div className="score-result">
-          <img src={ico_check_circle} alt="check circle" />
-          <p className="currect-answer">사운드1: 정답</p>
-        </div>
-        <div className="score-result">
-          <img src={ico_check_circle} alt="check circle" />
-          <p className="currect-answer">사운드2: 정답</p>
-        </div>
-        <div className="score-result">
-          <img src={ico_check_circle} alt="check circle" />
-          <p className="currect-answer">사운드3: 정답</p>
-        </div>
-      </div>
+      <RightSnb />
+      {/* <TestResultPopup /> */}
 
       <div className="result-form-title">
         <img src={ico_speaker} alt="speaker icon" />

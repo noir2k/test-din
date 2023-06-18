@@ -59,3 +59,27 @@ export const ColumnName = {
 	test_result: 'test_result',
 	reg_timestamp: 'reg_timestamp',
 }
+
+type OptionProps = { [key: string]: string };
+
+export const DirectionOptions: OptionProps = {
+  "L": "좌",
+  "R": "우",
+  "LR": "양방향",
+  "LNRS": "좌 노이즈 우 스피치",
+  "LSRN": "우 노이즈 좌 스피치"
+}
+
+export const ScoringOptions: OptionProps = {
+  "digit": "Digit Scoring",
+  "tripet": "Tripet Scoring"
+}
+
+export const SoundSetOptions: OptionProps = {
+  "1": "List 1",
+  "2": "List 2",
+  "3": "List 3",
+  "4": "List 4",
+  "5": "List 5",
+  "6": "List 6"
+}

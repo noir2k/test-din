@@ -1023,7 +1023,7 @@ input[type='range']:active::-webkit-slider-runnable-track {
 }
 
 .result-btn-wrapper > button {
-  width: 160px;
+  width: 320px;
   height: 50px;
   background: #568af0;
   color: white;

@@ -6,7 +6,12 @@ import type { FieldError } from 'react-hook-form';
 import { useAppSelector, useAppDispatch } from '@hook/index';
 import type { RootState } from '@store/index';
 
-import { ColumnName } from '@interfaces';
+import {
+  ColumnName,
+  ScoringOptions,
+  SoundSetOptions,
+  DirectionOptions
+} from '@interfaces';
 
 import {
   setTestForm,
@@ -181,11 +186,10 @@ const ExamineeInfoForm = () => {
               className="info-input-item-input"
               {...register(`${ColumnName.direction}`)}
             >
-              <option value="L">좌</option>
-              <option value="R">우</option>
-              <option value="LR">양방향</option>
-              <option value="LNRS">좌 노이즈 우 스피치</option>
-              <option value="LSRN">우 노이즈 좌 스피치</option>
+              {
+                Object.entries(DirectionOptions)
+                  .map(([k, v]) => <option value={k}>{v}</option>)
+              }
             </select>
           </li>
           <li className="info-input-item">
@@ -235,8 +239,10 @@ const ExamineeInfoForm = () => {
               className="info-input-item-input"
               {...register(`${ColumnName.scoring}`)}
             >
-              <option value="digit">Digit Scoring</option>
-              <option value="tripet">Tripet Scoring</option>
+              {
+                Object.entries(ScoringOptions)
+                  .map(([k, v]) => <option value={k}>{v}</option>)
+              }
             </select>
           </li>
           <li className="info-input-item">
@@ -253,12 +259,10 @@ const ExamineeInfoForm = () => {
               defaultValue={'1'}
               {...register(`${ColumnName.sound_set}`)}
             >
-              <option value="1">List 1</option>
-              <option value="2">List 2</option>
-              <option value="3">List 3</option>
-              <option value="4">List 4</option>
-              <option value="5">List 5</option>
-              <option value="6">List 6</option>
+              {
+                Object.entries(SoundSetOptions)
+                  .map(([k, v]) => <option value={k}>{v}</option>)
+              }
             </select>
           </li>
         </ul>

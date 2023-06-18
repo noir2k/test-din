@@ -19,6 +19,10 @@ import {
 } from '@store/slices/testProgressProvider';
 
 import {
+  resetForm
+} from '@store/slices/testFormProvider';
+
+import {
   setNoticeOpen,
   setEditingName,
   setInfoPopupOpen,
@@ -33,6 +37,7 @@ import { ColumnType } from '@interfaces';
 
 const snb = () => {
   const testStartOpen = () => {
+    dispatch(resetForm());
     dispatch(resetPage());
     dispatch(setTestStartOpen());
   }

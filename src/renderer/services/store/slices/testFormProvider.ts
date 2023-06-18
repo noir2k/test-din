@@ -8,7 +8,7 @@ const testFormSlice = createSlice({
   initialState,
   reducers: {
     setTestForm: (state, action) => {
-      state = action.payload;
+      Object.assign(state, action.payload);
     },
     setTestResult: (state, action) => {
       // state.test_date = action.payload.test_date;
