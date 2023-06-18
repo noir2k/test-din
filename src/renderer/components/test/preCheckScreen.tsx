@@ -4,14 +4,14 @@ import useNumberInput from '@hook/useNumberInput';
 import RightSnb from '@components/snb/rightSnb';
 
 export default function PreCheckScreen() {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(50);
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
     setValue(newValue);
   };
 
-  const hooks = useNumberInput();
+  const hooks = useNumberInput(3);
 
   return (
     <>
@@ -30,18 +30,18 @@ export default function PreCheckScreen() {
 
       <div className="slide-bar-wrapper">
         <div className="slider-bar-inner">
-          <p className="min-value">0dB</p>
+          <p className="min-value">0%</p>
           <input
             type="range"
             min={0}
             max={100}
-            step={5}
+            step={1}
             value={value}
             onChange={handleSliderChange}
           />
-          <p className="max-value">100dB</p>
+          <p className="max-value">100%</p>
         </div>
-        <p className="current-value">{value}dB</p>
+        <p className="current-value">{value}</p>
       </div>
 
       <div className="number-input-wrapper">
@@ -60,10 +60,21 @@ export default function PreCheckScreen() {
       </div>
 
       <div className="test-btn-wrapper">
-        <button className="test-start-btn" type="button">
+        <button
+          className={hooks.isTestStart
+            ? "test-start-btn deactive-btn"
+            : "test-start-btn"}
+          disabled={hooks.isTestStart}
+          type="button"
+          onClick={() => hooks.setTestStart(true)}
+        >
           시작
         </button>
-        <button className="test-complete-btn" type="button">
+        <button
+          className={hooks.isTestComplete
+            ? "test-complete-btn active-btn"
+            : "test-complete-btn"}
+          type="button">
           완료
         </button>
       </div>

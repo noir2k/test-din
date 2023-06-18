@@ -4,7 +4,7 @@ import useNumberInput from '@hook/useNumberInput';
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
 export default function CheckScreen() {
-  const hooks = useNumberInput();
+  const hooks = useNumberInput(25);
 
   return (
     <>
@@ -16,7 +16,7 @@ export default function CheckScreen() {
 
       <div className="question-progress">
         <p>
-          {hooks.count}/{hooks.totalQuestions}
+          {hooks.countTest}/{hooks.totalQuestions}
         </p>
       </div>
 

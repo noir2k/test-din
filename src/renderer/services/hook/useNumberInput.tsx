@@ -1,13 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ico_check from '@assets/images/icons/icon_check.png';
 
-const useNumberInput = () => {
+const useNumberInput = (testMaxCount: number) => {
   const [digits, setDigits] = useState(['', '', '']);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [count, setCount] = useState(1);
+  const [countTest, setCountTest] = useState(1);
   const [error, setError] = useState(false);
-  const totalQuestions = 30;
+
+  const [isTestStart, setTestStart] = useState(false);
+  const [isTestComplete, setTestComplete] = useState(false);
+
+  const totalQuestions = testMaxCount;
 
   const handleNumberClick = (number: string) => {
     if (currentIndex < 3) {
@@ -19,12 +23,18 @@ const useNumberInput = () => {
   };
 
   const handleCheck = () => {
+    if (!isTestStart) {
+      alert('시작 버튼을 눌러서 시작해주세요');
+      return;
+    }
     if (currentIndex === 3) {
-      if (count < totalQuestions) {
-        setCount(count + 1);
+      if (countTest < totalQuestions) {
+        setCountTest(countTest + 1);
         setDigits(['', '', '']);
         setCurrentIndex(0);
         setError(false);
+      } else {
+        setTestComplete(true);
       }
     } else {
       setError(true);
@@ -37,6 +47,13 @@ const useNumberInput = () => {
       const number = Number(e.key);
       if (!isNaN(number) && currentIndex < 3) {
         handleNumberClick(number.toString());
+      } else if (e.key === 'Backspace' || e.key === 'Delete') {
+        if (currentIndex >= 1) {
+          const updatedDigits = [...digits];
+          updatedDigits[currentIndex - 1] = '';
+          setDigits(updatedDigits);
+          setCurrentIndex(currentIndex - 1);
+        }
       }
     };
 
@@ -87,9 +104,12 @@ const useNumberInput = () => {
   return {
     digits,
     currentIndex,
-    count,
+    countTest,
     error,
     totalQuestions,
+    isTestComplete,
+    isTestStart,
+    setTestStart,
     handleNumberClick,
     handleCheck,
     renderButtons,
