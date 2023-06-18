@@ -35,9 +35,28 @@ export default function CheckScreen() {
         <div className="render-number-wrapper">{hooks.renderButtons()}</div>
       </div>
 
-      <div className="abort-btn-wrapper">
-        <button className="abort-btn" type="button">
-          중단하기
+      <div className="test-btn-wrapper">
+        <button
+          className={hooks.isTestStart
+            ? "test-start-btn deactive-btn"
+            : "test-start-btn"}
+          disabled={hooks.isTestStart}
+          type="button"
+          onClick={() => hooks.setTestStart(true)}
+        >
+          시작
+        </button>
+        <button className="test-abort-btn abort-btn" type="button">
+          중단
+        </button>
+        <button
+          className={hooks.isTestComplete
+            ? "test-complete-btn active-btn"
+            : "test-complete-btn"}
+          type="button"
+          disabled={!hooks.isTestComplete}
+        >
+          완료
         </button>
       </div>
     </>

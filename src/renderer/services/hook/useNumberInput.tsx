@@ -13,6 +13,12 @@ const useNumberInput = (testMaxCount: number) => {
 
   const totalQuestions = testMaxCount;
 
+  const resetTest = () => {
+    setCountTest(1);
+    setDigits(['', '', '']);
+    setCurrentIndex(0);
+  }
+
   const handleNumberClick = (number: string) => {
     if (currentIndex < 3) {
       const updatedDigits = [...digits];
@@ -44,6 +50,8 @@ const useNumberInput = (testMaxCount: number) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      e.preventDefault();
+
       const number = Number(e.key);
       if (!isNaN(number) && currentIndex < 3) {
         handleNumberClick(number.toString());
@@ -54,6 +62,10 @@ const useNumberInput = (testMaxCount: number) => {
           setDigits(updatedDigits);
           setCurrentIndex(currentIndex - 1);
         }
+      } else if (e.key === 'Enter') {
+        const target = e.currentTarget as HTMLInputElement;
+        if (target) target.blur();
+        handleCheck();
       }
     };
 
@@ -109,6 +121,7 @@ const useNumberInput = (testMaxCount: number) => {
     totalQuestions,
     isTestComplete,
     isTestStart,
+    resetTest,
     setTestStart,
     handleNumberClick,
     handleCheck,

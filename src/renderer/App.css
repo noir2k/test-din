@@ -200,6 +200,7 @@ a:hover {
 }
 
 .test-start-btn,
+.test-abort-btn,
 .download-btn {
   width: 100%;
   height: 58px;
@@ -839,12 +840,17 @@ input[type='range']:active::-webkit-slider-runnable-track {
 }
 
 .test-btn-wrapper > .test-start-btn,
+.test-btn-wrapper > .test-abort-btn,
 .sound-setting-btn-wrapper > .exit-btn {
   background-color: #568af0;
   margin: 0px 30px 0px 0px;
 }
 
 /* useNumberInput.tsx */
+.abort-btn {
+  background-color: #f05656 !important;
+}
+
 .active-btn {
   background-color: #568af0 !important;
   color: white !important;
@@ -911,14 +917,6 @@ input[type='range']:active::-webkit-slider-runnable-track {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.abort-btn {
-  width: 154px;
-  height: 50px;
-  background: #568af0;
-  color: white;
-  border-radius: 20px;
 }
 
 /* rightSNB.tsx */

@@ -1,10 +1,23 @@
 import { useState } from 'react';
 
+import { useAppDispatch } from '@hook/index';
+
+import {
+  nextPage
+} from '@store/slices/testProgressProvider';
+
+
 import useNumberInput from '@hook/useNumberInput';
 import RightSnb from '@components/snb/rightSnb';
 
 export default function PreCheckScreen() {
+  const startTest = () => {
+    hooks.resetTest();
+    hooks.setTestStart(true);
+  }
   const [value, setValue] = useState(50);
+
+  const dispatch = useAppDispatch();
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
@@ -66,7 +79,7 @@ export default function PreCheckScreen() {
             : "test-start-btn"}
           disabled={hooks.isTestStart}
           type="button"
-          onClick={() => hooks.setTestStart(true)}
+          onClick={startTest}
         >
           시작
         </button>
@@ -74,7 +87,10 @@ export default function PreCheckScreen() {
           className={hooks.isTestComplete
             ? "test-complete-btn active-btn"
             : "test-complete-btn"}
-          type="button">
+          type="button"
+          disabled={!hooks.isTestComplete}
+          onClick={() => dispatch(nextPage())}
+        >
           완료
         </button>
       </div>
