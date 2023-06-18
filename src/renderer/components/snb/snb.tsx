@@ -24,7 +24,7 @@ import {
 import { setUserInfo } from '@store/slices/userDataProvider';
 import { getAnswers } from '@store/slices/answerProvider';
 
-import { ColumnType } from '@main/util';
+import { ColumnType } from '@interfaces';
 
 const snb = () => {
   const [selectedIndex, setSelectedIndex] = useState<any>(0);

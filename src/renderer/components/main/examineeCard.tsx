@@ -1,7 +1,7 @@
 import { useAppDispatch } from '@hook/index';
 import { setHistoryOpen } from '@store/slices/popupToggle';
 
-import { ColumnType } from '@main/util';
+import { ColumnType } from '@interfaces';
 
 const ExamineeCard = ({...props}) => {
   const item: ColumnType = props.item;
@@ -13,7 +13,7 @@ const ExamineeCard = ({...props}) => {
       onClick={() => { dispatch(setHistoryOpen({chartItemData: props}));}}
     >
       <div className="examinee-name">
-        {item.id.toString()}
+        {item.user_name}({item.patient_no})
       </div>
       <div className="examination-date">
         {item.test_date}

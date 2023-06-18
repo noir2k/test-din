@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ColumnType } from '@main/util';
+import { ColumnType } from '@interfaces';
 
 interface PopupToggleState {
   isNoticeOpen: boolean;

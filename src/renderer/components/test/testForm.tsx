@@ -1,4 +1,10 @@
-import { useState } from 'react';
+import { useAppSelector, useAppDispatch } from '@hook/index';
+import type { RootState } from '@store/index';
+
+import {
+  nextPage,
+  prevPage
+} from '@store/slices/testProgressProvider';
 
 import ico_angle_left from '@assets/images/icons/icon_angle_left.png';
 import ico_angle_right from '@assets/images/icons/icon_angle_right.png';
@@ -9,13 +15,26 @@ import CheckScreen from './checkScreen';
 import TestResult from './testResult';
 
 export default function TestForm() {
-  let [currentPage, setCurrentPage] = useState(0);
+  const createPages = (length: number): number[] => {
+    const array: number[] = [];
+    for (let i = 0; i < length; i++) {
+      array.push(i);
+    }
+    return array;
+  }
+
+  const testProgress = useAppSelector((state: RootState) => state.testProgress);
+
+  const dispatch = useAppDispatch();
+
+  const currentPage = testProgress.currentPage;
+  const pages = createPages(testProgress.lastPage);
 
   return (
     <div className="test-form-wrapper">
       <div className="test-form-inner">
         <div className="progress-bar">
-          {[0, 1, 2, 3].map(function (a, i) {
+          {pages.map(function (a, i) {
             return (
               <div key={i} className={currentPage === i ? 'dot active' : 'dot'}>
                 <p className="hidden">진행 단계 표시</p>
@@ -29,9 +48,7 @@ export default function TestForm() {
             disabled={currentPage === 0 ? true : false}
             type="button"
             className="progress-btn prev-btn"
-            onClick={() => {
-              setCurrentPage(--currentPage);
-            }}
+            onClick={() => dispatch(prevPage())}
           >
             <img
               src={ico_angle_left}
@@ -43,9 +60,7 @@ export default function TestForm() {
             disabled={currentPage === 3 ? true : false}
             type="button"
             className="progress-btn next-btn"
-            onClick={() => {
-              setCurrentPage(++currentPage);
-            }}
+            onClick={() => dispatch(nextPage())}
           >
             <img
               src={ico_angle_right}

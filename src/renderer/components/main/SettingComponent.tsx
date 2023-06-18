@@ -1,4 +1,4 @@
-import type { ConfigSchemaType } from '@main/util';
+import type { ConfigSchemaType } from '@interfaces';
 import { useState, useEffect } from 'react';
 
 import { useAppDispatch } from '@hook/index';
