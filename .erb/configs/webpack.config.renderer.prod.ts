@@ -92,9 +92,12 @@ const configuration: webpack.Configuration = {
       // mp3, ogg
       {
         test: /\.(mp3|ogg)$/,
-        loader: 'file-loader',
+        loader: 'url-loader',
         options: {
-           name: "assets/media/[name].[ext]?[hash]"
+          name: "assets/media/[name].[ext]?[hash]",
+          outputPath: "/",
+          publicPath: "/src/assets/images",
+          esModule: false,
         }
       },
     ],

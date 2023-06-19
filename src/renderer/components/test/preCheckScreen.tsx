@@ -8,9 +8,12 @@ import {
 import useNumberInput from '@hook/useNumberInput';
 import RightSnb from '@components/snb/RightSnb';
 import PlaySound from '@hook/playSound';
-import testAudioPaths from '@lib/testAudioPaths';
+// import testAudioPaths from '@lib/testAudioPaths';
 
 const PreCheckScreen = () => {
+  const ext = '.mp3';
+  const fileNames = ['1', '7', '25'];
+  const filePath = 'static://sounds/TEST/';
   const hooks = useNumberInput(3);
 
   const [volume, setVolume] = useState(50);
@@ -45,7 +48,8 @@ const PreCheckScreen = () => {
 
   useEffect(() => {
     const index = hooks.countTest - 1;
-    setSoundFile(testAudioPaths['paths'][index].default);
+    // setSoundFile(testAudioPaths['paths'][index].default);
+    setSoundFile(filePath + fileNames[index] + ext);
     if(index > 0 ) {
       setPlay(true);
     }

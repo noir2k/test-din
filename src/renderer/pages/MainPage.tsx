@@ -24,15 +24,10 @@ const MainPage = () => {
   const isInfoPopupOpen = popupToggle.isInfoPopupOpen;
   const isEditingName = popupToggle.isEditingName;
 
-  // console.log(popupToggle);
-  // const src = 'file://assets/images/bg_circle_1.png';
-  // console.log("___SRC___", src);
-
   return (
     <div>
       <div className="main-container">
         <Snb />
-        {/* <img src={src} alt="background decoration" /> */}
         <div id="contents" className="contents-area">
           <main className="h-screen">
             <div

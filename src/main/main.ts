@@ -14,6 +14,7 @@ import {
   shell,
   ipcMain,
   dialog,
+  protocol, net,
   OpenDialogSyncOptions,
 } from 'electron';
 
@@ -292,6 +293,9 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(() => {
+    protocol.handle('static', (request) => {
+      return net.fetch('file://' + getAssetPath(request.url.slice('static://'.length)))
+    })
     createWindow();
     // log.info('ts', new Date().getTime());
     app.on('activate', () => {
