@@ -5,8 +5,8 @@ import { getAssetPath } from './main';
 
 import log from 'electron-log';
 
-import initSqlJs from 'sql.js';
 import type { Database, QueryExecResult } from 'sql.js';
+const initSqlJs = require('sql.js');
 
 const tbName = 'test_din_history';
 
@@ -105,12 +105,14 @@ export const writeDb = (db: Database) => {
 };
 
 export const createDb = async (): Promise<any> => {
+  const SQL = await initSqlJs();
+  // return new SQL.Database();
   return initSqlJs()
-    .then((SQL) => {
+    .then((SQL: any) => {
       log.info('Create Database');
       return new SQL.Database();
     })
-    .catch((err) => {
+    .catch((err: any) => {
       log.error('Create Database Error', err);
       return null;
     });

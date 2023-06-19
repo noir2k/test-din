@@ -6,6 +6,7 @@ import webpack from 'webpack';
 import TsconfigPathsPlugins from 'tsconfig-paths-webpack-plugin';
 import webpackPaths from './webpack.paths';
 import { dependencies as externals } from '../../release/app/package.json';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const configuration: webpack.Configuration = {
   externals: [...Object.keys(externals || {})],
@@ -13,6 +14,7 @@ const configuration: webpack.Configuration = {
   stats: 'errors-only',
 
   module: {
+    noParse: /node_modules\/sql\.js\/dist\/sql-wasm\.js$/,
     rules: [
       {
         test: /\.[jt]sx?$/,
@@ -55,6 +57,11 @@ const configuration: webpack.Configuration = {
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
+    }),
+    new CopyPlugin({  // Copy the binaries required by the SQLite database
+      patterns: [{
+        from: './node_modules/sql.js/dist/sql-wasm.wasm'
+      }]
     }),
   ],
 };

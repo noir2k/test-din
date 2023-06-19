@@ -95,9 +95,6 @@ const configuration: webpack.Configuration = {
         loader: 'url-loader',
         options: {
           name: "assets/media/[name].[ext]?[hash]",
-          outputPath: "/",
-          publicPath: "/src/assets/images",
-          esModule: false,
         }
       },
     ],

@@ -32,8 +32,6 @@ import installExtension, {
   REDUX_DEVTOOLS,
 } from 'electron-devtools-assembler';
 
-import { getAllFiles, getAllFilesSync } from 'get-all-files';
-
 // import { autoUpdater } from 'electron-updater';
 // class AppUpdater {
 //   constructor() {
@@ -125,6 +123,7 @@ const createWindow = async () => {
     minWidth: 1024,
     icon: getAssetPath('icon.png'),
     webPreferences: {
+      devTools: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),

@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useAppDispatch } from '@hook/index';
+import { useAppSelector, useAppDispatch } from '@hook/index';
+
+import type { RootState } from '@store/index';
 
 import {
-  nextPage
+  nextPage,
+  setVolume,
 } from '@store/slices/testProgressProvider';
 
-import useNumberInput from '@hook/useNumberInput';
 import RightSnb from '@components/snb/RightSnb';
+import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
 // import testAudioPaths from '@lib/testAudioPaths';
 
@@ -16,11 +19,10 @@ const PreCheckScreen = () => {
   const filePath = 'static://sounds/TEST/';
   const hooks = useNumberInput(3);
 
-  const [volume, setVolume] = useState(50);
-  const [delay, setDelay] = useState(0.5);
   const [play, setPlay] = useState(false);
-
   const [soundFile, setSoundFile] = useState('');
+
+  const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
 
   const dispatch = useAppDispatch();
 
@@ -34,13 +36,6 @@ const PreCheckScreen = () => {
     const newValue = Number(e.target.value);
     setVolume(newValue);
   };
-
-  useEffect(() => {
-    const conf = window.electron.store.get('config');
-    if (conf && conf.soundInterval) {
-      setDelay(conf.soundInterval);
-    }
-  }, []);
 
   // useEffect(() => {
   //   console.log('play', play);
@@ -59,7 +54,11 @@ const PreCheckScreen = () => {
     <>
       <RightSnb />
       { play &&
-        <PlaySound mp3={soundFile} volume={volume} delay={delay} onEnd={() => setPlay(false)}/>
+        <PlaySound
+          mp3={soundFile}
+          volume={volume}
+          delay={delay}
+          onEnd={() => setPlay(false)}/>
       }
       <div className="pre-check-form-title">
         <p>
@@ -121,7 +120,10 @@ const PreCheckScreen = () => {
             : "test-complete-btn"}
           type="button"
           disabled={!hooks.isTestComplete}
-          onClick={() => dispatch(nextPage())}
+          onClick={() => {
+            dispatch(setVolume(volume));
+            dispatch(nextPage());
+          }}
         >
           완료
         </button>

@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
+
 import { useAppSelector, useAppDispatch } from '@hook/index';
 import type { RootState } from '@store/index';
 
 import {
   nextPage,
-  prevPage
+  prevPage,
+  setDelay,
 } from '@store/slices/testProgressProvider';
 
 import ico_angle_left from '@assets/images/icons/icon_angle_left.png';
@@ -27,6 +30,13 @@ const TestForm = () => {
   const testProgress = useAppSelector((state: RootState) => state.testProgress);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const conf = window.electron.store.get('config');
+    if (conf && conf.soundInterval) {
+      setDelay(conf.soundInterval);
+    }
+  }, []);
 
   const currentPage = testProgress.currentPage;
   const pages = createPages(testProgress.lastPage);

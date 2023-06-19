@@ -15,7 +15,7 @@ import useInfiniteScroll from '@hook/useInfiniteScroll';
 import ExamineeCard from '@components/main/examineeCard';
 
 import {
-  resetPage
+  resetProgress
 } from '@store/slices/testProgressProvider';
 
 import {
@@ -38,7 +38,7 @@ import { ColumnType } from '@interfaces';
 const snb = () => {
   const testStartOpen = () => {
     dispatch(resetForm());
-    dispatch(resetPage());
+    dispatch(resetProgress());
     dispatch(setTestStartOpen());
   }
 

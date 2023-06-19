@@ -1,20 +1,36 @@
-import { useAppDispatch } from '@hook/index';
+import { useState, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '@hook/index';
+
+import type { RootState } from '@store/index';
 
 import {
-  nextPage
+  nextPage,
 } from '@store/slices/testProgressProvider';
 
 import RightSnb from '@components/snb/RightSnb';
 import useNumberInput from '@hook/useNumberInput';
+import PlaySound from '@hook/playSound';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
 export default function CheckScreen() {
+  const ext = '.mp3';
+  const fileNames = ['NFLR[0]1', 'NFLR[0]2', 'NFLR[0]3'];
+  const filePath = 'static://sounds/NFLR/';
   const hooks = useNumberInput(3);
+
+  const [play, setPlay] = useState(false);
+  const [soundFile, setSoundFile] = useState('');
+
+  const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
+  const { volume_level, direction, sound_set } = useAppSelector((state: RootState) => state.testForm);
+
+  const dispatch = useAppDispatch();
 
   const startTest = () => {
     hooks.resetTest();
     hooks.setTestStart(true);
+    setPlay(true);
   }
 
   const handleAbort = () => {
@@ -24,11 +40,25 @@ export default function CheckScreen() {
     }
   }
 
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const index = hooks.countTest - 1;
+    // setSoundFile(testAudioPaths['paths'][index].default);
+    setSoundFile(filePath + fileNames[index] + ext);
+    if(index > 0 ) {
+      setPlay(true);
+    }
+  }, [hooks.countTest]);
 
   return (
     <>
       <RightSnb />
+      { play &&
+        <PlaySound
+          mp3={soundFile}
+          volume={volume}
+          delay={delay}
+          onEnd={() => setPlay(false)}/>
+      }
       <div className="check-form-title">
         <img src={ico_speaker} alt="speaker icon" />
         <p>테스트 진행중</p>
