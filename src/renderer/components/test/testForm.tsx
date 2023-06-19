@@ -14,7 +14,8 @@ import PreCheckScreen from './preCheckScreen';
 import CheckScreen from './checkScreen';
 import TestResult from './testResult';
 
-export default function TestForm() {
+const TestForm = () => {
+
   const createPages = (length: number): number[] => {
     const array: number[] = [];
     for (let i = 0; i < length; i++) {
@@ -80,3 +81,5 @@ export default function TestForm() {
     </div>
   );
 }
+
+export default TestForm;

@@ -7,12 +7,12 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
+
 import {
   app,
   BrowserWindow,
   shell,
   ipcMain,
-  ipcRenderer,
   dialog,
   OpenDialogSyncOptions,
 } from 'electron';
@@ -30,6 +30,8 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
 } from 'electron-devtools-assembler';
+
+import { getAllFiles, getAllFilesSync } from 'get-all-files';
 
 // import { autoUpdater } from 'electron-updater';
 // class AppUpdater {

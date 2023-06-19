@@ -10,7 +10,7 @@ import useNumberInput from '@hook/useNumberInput';
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
 export default function CheckScreen() {
-  const hooks = useNumberInput(25);
+  const hooks = useNumberInput(3);
 
   const startTest = () => {
     hooks.resetTest();

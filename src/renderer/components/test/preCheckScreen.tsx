@@ -1,35 +1,62 @@
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
 import { useAppDispatch } from '@hook/index';
 
 import {
   nextPage
 } from '@store/slices/testProgressProvider';
 
-
 import useNumberInput from '@hook/useNumberInput';
 import RightSnb from '@components/snb/RightSnb';
+import PlaySound from '@hook/playSound';
+import testAudioPaths from '@lib/testAudioPaths';
 
-export default function PreCheckScreen() {
-  const startTest = () => {
-    hooks.resetTest();
-    hooks.setTestStart(true);
-  }
+const PreCheckScreen = () => {
+  const hooks = useNumberInput(3);
 
-  const [value, setValue] = useState(50);
+  const [volume, setVolume] = useState(50);
+  const [delay, setDelay] = useState(0.5);
+  const [play, setPlay] = useState(false);
+
+  const [soundFile, setSoundFile] = useState('');
 
   const dispatch = useAppDispatch();
 
+  const startTest = () => {
+    hooks.resetTest();
+    hooks.setTestStart(true);
+    setPlay(true);
+  }
+
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(e.target.value);
-    setValue(newValue);
+    const newValue = Number(e.target.value);
+    setVolume(newValue);
   };
 
-  const hooks = useNumberInput(3);
+  useEffect(() => {
+    const conf = window.electron.store.get('config');
+    if (conf && conf.soundInterval) {
+      setDelay(conf.soundInterval);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   console.log('play', play);
+  // }, [play]);
+
+  useEffect(() => {
+    const index = hooks.countTest - 1;
+    setSoundFile(testAudioPaths['paths'][index].default);
+    if(index > 0 ) {
+      setPlay(true);
+    }
+  }, [hooks.countTest]);
 
   return (
     <>
       <RightSnb />
+      { play &&
+        <PlaySound mp3={soundFile} volume={volume} delay={delay} onEnd={() => setPlay(false)}/>
+      }
       <div className="pre-check-form-title">
         <p>
           이제 <span className="blue">3개의 연속된 숫자</span>가 들리게 됩니다.{' '}
@@ -50,12 +77,12 @@ export default function PreCheckScreen() {
             min={0}
             max={100}
             step={1}
-            value={value}
+            value={volume}
             onChange={handleSliderChange}
           />
           <p className="max-value">100%</p>
         </div>
-        <p className="current-value">{value}</p>
+        <p className="current-value">{volume}</p>
       </div>
 
       <div className="number-input-wrapper">
@@ -98,3 +125,5 @@ export default function PreCheckScreen() {
     </>
   );
 }
+
+export default PreCheckScreen;

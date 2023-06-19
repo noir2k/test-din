@@ -188,7 +188,7 @@ const ExamineeInfoForm = () => {
             >
               {
                 Object.entries(DirectionOptions)
-                  .map(([k, v]) => <option value={k}>{v}</option>)
+                  .map(([k, v]) => <option key={k} value={k}>{v}</option>)
               }
             </select>
           </li>
@@ -241,7 +241,7 @@ const ExamineeInfoForm = () => {
             >
               {
                 Object.entries(ScoringOptions)
-                  .map(([k, v]) => <option value={k}>{v}</option>)
+                  .map(([k, v]) => <option key={k} value={k}>{v}</option>)
               }
             </select>
           </li>
@@ -261,7 +261,7 @@ const ExamineeInfoForm = () => {
             >
               {
                 Object.entries(SoundSetOptions)
-                  .map(([k, v]) => <option value={k}>{v}</option>)
+                  .map(([k, v]) => <option key={k} value={k}>{v}</option>)
               }
             </select>
           </li>

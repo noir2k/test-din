@@ -12,7 +12,7 @@ import ico_speaker_white from '@assets/images/icons/icon_speaker_white.png';
 const RightSnb = () => {
   const testProgress = useAppSelector((state: RootState) => state.testProgress);
 
-  console.log("currentPage" , testProgress.currentPage);
+  // console.log("currentPage" , testProgress.currentPage);
 
   return (
     <>

@@ -1,20 +1,34 @@
 import { useEffect } from 'react';
-import { Howl, Howler } from 'howler';
+import { Howl } from 'howler';
+import { getAssetPath } from '@main/main';
 
-type SoundFileProps = {
+export type PlayProps = {
   mp3: string;
+  volume: number;
+  delay: number;
+  onEnd: () => void;
 };
 
-const PlaySound = (props: SoundFileProps) => {
-  const { mp3 } = props;
+const PlaySound = (props: PlayProps) => {
+  const { mp3, volume, delay, onEnd } = props;
+  const vol = volume / 100;
 
   useEffect(() => {
-    const sound = new Howl({
+    let howl = new Howl({
+      preload: true,
+      volume: vol,
       src: [mp3],
+      onend: () => {
+        onEnd();
+      },
     });
-    sound.play();
+
+    setTimeout(() => {
+      howl.play();
+    }, (delay * 1000));
+
     return () => {
-      sound.stop();
+      howl.stop();
     };
   }, [mp3]);
 

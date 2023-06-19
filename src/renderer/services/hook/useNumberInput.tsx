@@ -34,13 +34,15 @@ const useNumberInput = (testMaxCount: number) => {
       return;
     }
     if (currentIndex === 3) {
+      const nextCount = countTest + 1;
       if (countTest < totalQuestions) {
-        setCountTest(countTest + 1);
+        setCountTest(nextCount);
         setDigits(['', '', '']);
         setCurrentIndex(0);
         setError(false);
       } else {
         setTestComplete(true);
+        alert('검사 테스트가 완료되었습니다. 완료버튼을 눌러 다음으로 진행하세요.')
       }
     } else {
       setError(true);
