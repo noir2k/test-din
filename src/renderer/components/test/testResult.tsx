@@ -3,7 +3,9 @@ import { useAppDispatch } from '@hook/index';
 import { setNoticeOpen } from '@store/slices/popupToggle';
 
 import RightSnb from '@components/snb/RightSnb';
-import TestResultPopup from './testResultPopup';
+import TestResultComponent from '@components/main/TestResultComponent';
+
+// import TestResultPopup from './testResultPopup';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 import test_result_img from '@assets/images/test_result_img.png';
@@ -12,7 +14,7 @@ import { useState } from 'react';
 export default function TestResult() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   return (
     <>
@@ -25,13 +27,11 @@ export default function TestResult() {
       </div>
 
       <div className="graph-wrapper">
-        {/* TODO: 그래프 삽입하기 */}
-        <img src={test_result_img} alt="test result image" />
+        <TestResultComponent />
       </div>
 
       <div className="result-btn-wrapper">
         <button type="button">내 결과 오버레이</button>
-        <button type="button">PDF로 저장</button>
         <button
           type="button"
           onClick={() => {

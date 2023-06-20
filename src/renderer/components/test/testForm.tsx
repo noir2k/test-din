@@ -18,7 +18,6 @@ import CheckScreen from './checkScreen';
 import TestResult from './testResult';
 
 const TestForm = () => {
-
   const createPages = (length: number): number[] => {
     const array: number[] = [];
     for (let i = 0; i < length; i++) {

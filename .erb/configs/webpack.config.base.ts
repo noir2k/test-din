@@ -14,7 +14,7 @@ const configuration: webpack.Configuration = {
   stats: 'errors-only',
 
   module: {
-    noParse: /node_modules\/sql\.js\/dist\/sql-wasm\.js$/,
+    noParse: /sql.js/,
     rules: [
       {
         test: /\.[jt]sx?$/,

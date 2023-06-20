@@ -7,23 +7,23 @@ export interface UserInfo {
 	user_name?: string,
 	gender?: string,
 	birthday?: string,
-	patient_no?: Number
+	patient_no?: number
 }
 
 export interface ColumnType {
-  id: Number;
+  id: number;
   user_name: string;
   gender: string;
   birthday: string;
   patient_no: string;
   direction: string;
-  volume_level: Number;
+  volume_level: number;
   scoring: string;
   memo: string;
-  sound_set: Number;
+  sound_set: number;
   test_date: string;
-  test_result: Number;
-  reg_timestamp: Number;
+  test_result: number;
+  reg_timestamp: number;
 }
 
 export interface TestForm {
@@ -32,12 +32,12 @@ export interface TestForm {
   birthday?: Date;
   patient_no?: string;
   direction?: string;
-  volume_level?: Number;
+  volume_level?: number;
   scoring?: string;
   memo?: string;
-  sound_set?: Number;
+  sound_set?: number;
   test_date?: string;
-  test_result?: Number;
+  test_result?: number;
 }
 
 export type ConfigSchemaType = {

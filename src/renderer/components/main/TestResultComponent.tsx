@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAppSelector, useAppDispatch } from '@hook/index';
+import { useAppSelector } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
@@ -12,12 +12,12 @@ import { ChartDataProps } from '@interfaces';
 // test for reload data on changed
 
 const data_dummy: ChartDataProps[] = [
-  { date: '2023-01-01', value: 10 },
-  { date: '2023-02-01', value: 30 },
-  { date: '2023-03-01', value: 50 },
-  { date: '2023-04-01', value: 70 },
-  { date: '2023-05-01', value: 90 },
   { date: '2023-06-01', value: 110 },
+  { date: '2023-05-01', value: 90 },
+  { date: '2023-04-01', value: 70 },
+  { date: '2023-03-01', value: 50 },
+  { date: '2023-02-01', value: 30 },
+  { date: '2023-01-01', value: 10 },
 ];
 
 const TestResult = () => {
@@ -59,9 +59,6 @@ const TestResult = () => {
 
   return (
     <div className="chart-wrapper">
-      {/* <h1 id="testText" className="text-slate-950">
-        검사 기록입니다.
-      </h1> */}
       {chartData && <ChartComponent data={chartData} />}
     </div>
   );

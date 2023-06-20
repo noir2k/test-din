@@ -13,17 +13,54 @@ import PlaySound from '@hook/playSound';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
-export default function CheckScreen() {
-  const ext = '.mp3';
-  const fileNames = ['NFLR[0]1', 'NFLR[0]2', 'NFLR[0]3'];
-  const filePath = 'static://sounds/NFLR/';
-  const hooks = useNumberInput(3);
+const ext = '.mp3';
+const preType = 'NF';
+const filePath = 'static://sounds/';
+const maxCount = 3;
+const soundSetGroupSize = 30;
+const minVolumeLevel = -18;
+const maxVolumeLevel = 12;
 
+const getType = (direction: string) => {
+   return preType + direction;
+}
+
+const getSound = (_count: number,
+    volume_level: number,
+    direction: string,
+    sound_set: number,
+    _correction?: number) => {
+  // console.log("getSound__", _count, volume_level, direction, sound_set, _correction);
+  let type = getType(direction);
+
+  let volumeLevel = volume_level;
+  if (_correction) {
+    const temp = volumeLevel + _correction;
+    if (temp >= minVolumeLevel && temp <= maxVolumeLevel) {
+      volumeLevel = temp;
+    }
+  }
+
+  const soundSetGroup = (soundSetGroupSize * (sound_set - 1));
+  const count = _count + soundSetGroup;
+
+  let fileName = filePath + type + '/' + type + '[' + volumeLevel + ']' + count + ext;
+  // console.log("getSound__filename", fileName);
+
+  return fileName;
+}
+
+const CheckScreen = () => {
+  const hooks = useNumberInput(maxCount);
+
+  const [currentLevel, setCurrentLevel] = useState(0);
   const [play, setPlay] = useState(false);
   const [soundFile, setSoundFile] = useState('');
 
   const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
   const { volume_level, direction, sound_set } = useAppSelector((state: RootState) => state.testForm);
+
+  console.log(volume_level, direction, sound_set);
 
   const dispatch = useAppDispatch();
 
@@ -41,10 +78,16 @@ export default function CheckScreen() {
   }
 
   useEffect(() => {
-    const index = hooks.countTest - 1;
-    // setSoundFile(testAudioPaths['paths'][index].default);
-    setSoundFile(filePath + fileNames[index] + ext);
-    if(index > 0 ) {
+    if (hooks.countTest !== undefined) {
+      const mp3 = getSound(hooks.countTest, volume_level || 0, direction || '', sound_set || 0);
+      setSoundFile(mp3);
+    }
+  }, []);
+
+  useEffect(() => {
+    const mp3 = getSound(hooks.countTest, volume_level || 0, direction || '', sound_set || 0);
+    setSoundFile(mp3);
+    if(hooks.countTest > 1 ) {
       setPlay(true);
     }
   }, [hooks.countTest]);
@@ -117,3 +160,5 @@ export default function CheckScreen() {
     </>
   );
 }
+
+export default CheckScreen;

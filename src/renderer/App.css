@@ -225,8 +225,18 @@ a:hover {
 
 .chart-wrapper {
   align-self: baseline;
-  margin-top: 20vh;
+  margin-top: 150px;
 }
+
+.graph-wrapper > .chart-wrapper {
+  margin-top: 0 !important;
+}
+
+.chart-btn {
+  align-items: center;
+  margin-top: 52px;
+}
+
 .chart-component {
   width: 420px;
   height: 500px;
@@ -1010,11 +1020,7 @@ input[type='range']:active::-webkit-slider-runnable-track {
 }
 
 .graph-wrapper {
-  width: 396px;
-  height: 392px;
-  /* border: 2px solid black;
-  box-sizing: border-box; */
-  margin: 50px 0px;
+  margin-bottom: 116px;
 }
 
 .result-btn-wrapper {
@@ -1034,6 +1040,8 @@ input[type='range']:active::-webkit-slider-runnable-track {
 .result-btn-wrapper > button:last-child {
   margin: 0px;
 }
+
+
 
 .popup-wrapper {
   width: 1440px;

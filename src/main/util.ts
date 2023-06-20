@@ -106,16 +106,17 @@ export const writeDb = (db: Database) => {
 
 export const createDb = async (): Promise<any> => {
   const SQL = await initSqlJs();
-  // return new SQL.Database();
-  return initSqlJs()
-    .then((SQL: any) => {
-      log.info('Create Database');
-      return new SQL.Database();
-    })
-    .catch((err: any) => {
-      log.error('Create Database Error', err);
-      return null;
-    });
+
+  return new SQL.Database();
+  // return initSqlJs()
+  //   .then((SQL: any) => {
+  //     log.info('Create Database');
+  //     return new SQL.Database();
+  //   })
+  //   .catch((err: any) => {
+  //     log.error('Create Database Error', err);
+  //     return null;
+  //   });
 };
 
 export const initDbTable = async (db: Database) => {

@@ -199,12 +199,13 @@ const downloadPDF = () => {
   });
 
   pdf.addImage(canvasImage, 'PNG', 15, 15, width, height);
-  pdf.save('salerecoed.pdf');
+  pdf.save('test_result.pdf');
 }
 
 const ChartComponent = (props: { data: ChartDataProps[] }) => {
-  const xLabels = props.data.map(function(d) { return d.date; });
-  const yValues = props.data.map(function(d) { return d.value; });
+  const data = props.data.reverse();
+  const xLabels = data.map(function(d) { return d.date; });
+  const yValues = data.map(function(d) { return d.value; });
 
   const chartData = {
     labels: xLabels,
@@ -229,7 +230,7 @@ const ChartComponent = (props: { data: ChartDataProps[] }) => {
         plugins={[plugins]}
         options={options}
       />
-      <div className="btn-wrapper">
+      <div className="result-btn-wrapper chart-btn">
         <button
           type='button'
           className='download-btn'
