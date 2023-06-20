@@ -21,6 +21,7 @@ const PreCheckScreen = () => {
   const hooks = useNumberInput(maxCount);
 
   const [play, setPlay] = useState(false);
+  const [sliderVolume, setSliderVolume] = useState(50);
   const [soundFile, setSoundFile] = useState('');
 
   const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
@@ -35,6 +36,7 @@ const PreCheckScreen = () => {
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
+    setSliderVolume(newValue);
     setVolume(newValue);
   };
 
@@ -52,7 +54,7 @@ const PreCheckScreen = () => {
       { play &&
         <PlaySound
           mp3={soundFile}
-          volume={volume}
+          volume={sliderVolume}
           delay={delay}
           onEnd={() => setPlay(false)}/>
       }
@@ -76,7 +78,7 @@ const PreCheckScreen = () => {
             min={0}
             max={100}
             step={1}
-            value={volume}
+            value={sliderVolume}
             onChange={handleSliderChange}
           />
           <p className="max-value">100%</p>

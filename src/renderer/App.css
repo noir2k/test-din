@@ -111,6 +111,10 @@ a:hover {
   align-items: center;
 }
 
+.snb-icons-container > div {
+  margin: 10px;
+}
+
 .snb-icons-container > a {
   margin: 10px;
 }

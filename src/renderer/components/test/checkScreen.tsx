@@ -16,21 +16,21 @@ import ico_speaker from '@assets/images/icons/icon_speaker.png';
 const ext = '.mp3';
 const preType = 'NF';
 const filePath = 'static://sounds/';
-const maxCount = 3;
+const maxCount = 6;
 const soundSetGroupSize = 30;
 const minVolumeLevel = -18;
 const maxVolumeLevel = 12;
 
 const getType = (direction: string) => {
-   return preType + direction;
-}
+  return 'NFLR';
+  // return (preType + direction).toUpperCase()
+};
 
 const getSound = (_count: number,
     volume_level: number,
     direction: string,
     sound_set: number,
     _correction?: number) => {
-  // console.log("getSound__", _count, volume_level, direction, sound_set, _correction);
   let type = getType(direction);
 
   let volumeLevel = volume_level;
@@ -45,8 +45,7 @@ const getSound = (_count: number,
   const count = _count + soundSetGroup;
 
   let fileName = filePath + type + '/' + type + '[' + volumeLevel + ']' + count + ext;
-  // console.log("getSound__filename", fileName);
-
+  console.log(fileName);
   return fileName;
 }
 
@@ -59,8 +58,6 @@ const CheckScreen = () => {
 
   const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
   const { volume_level, direction, sound_set } = useAppSelector((state: RootState) => state.testForm);
-
-  console.log(volume_level, direction, sound_set);
 
   const dispatch = useAppDispatch();
 

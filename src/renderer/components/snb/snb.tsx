@@ -123,22 +123,18 @@ const snb = () => {
       <div className="child snb-setting-wrapper">
         <div className="snb-column-container">
           <div className="snb-icons-container">
-            <a
-              href="!#"
-              onClick={() => {
-                dispatch(setNoticeOpen());
-              }}
+            <div
+              className="cursor-pointer"
+              onClick={() => { dispatch(setNoticeOpen()); }}
             >
               <img width="26" src={ico_home} alt="icon_home" />
-            </a>
-            <a
-              href="!#"
-              onClick={() => {
-                dispatch(setSettingOpen());
-              }}
+            </div>
+            <div
+              className="cursor-pointer"
+              onClick={() => { dispatch(setSettingOpen()); }}
             >
               <img width="26" src={ico_settings} alt="icon_home" />
-            </a>
+            </div>
           </div>
           <div className="snb-btn-container">
             <div className="snb-column-child-container">
