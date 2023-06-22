@@ -31,7 +31,6 @@ export default function TestResult() {
       </div>
 
       <div className="result-btn-wrapper">
-        <button type="button">내 결과 오버레이</button>
         <button
           type="button"
           onClick={() => {

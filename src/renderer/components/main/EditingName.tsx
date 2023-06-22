@@ -32,14 +32,14 @@ export default function EditingName() {
         <div className="editing-name-wrapper">
           <div className="editing-name-title">
             <img src={ico_speaker_white} alt="white speaker icon" />
-            <p>수정할 피검사자의 이름을 입력해 주세요.</p>
+            <p>수정할 환자의 이름을 입력해 주세요.</p>
           </div>
           <div className="editing-name-modal">
             <form onSubmit={handleSubmit}>
               <ul className="modal-item-wrapper">
                 <li>
                   <img src={ico_user_blue} alt="blue user icon" />
-                  <p className="modal-item-subject">피검사자 이름</p>
+                  <p className="modal-item-subject">환자 이름</p>
                   <input
                     type="text"
                     className="modal-item-data"

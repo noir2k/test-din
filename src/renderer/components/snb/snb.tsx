@@ -31,7 +31,6 @@ import {
 } from '@store/slices/popupToggle';
 
 import { setUserInfo } from '@store/slices/userDataProvider';
-import { getAnswers } from '@store/slices/answerProvider';
 
 import { ColumnType } from '@interfaces';
 
@@ -142,11 +141,10 @@ const snb = () => {
                 type="button"
                 className="snb-column-child-btn btn-blue"
                 onClick={() => {
-                  console.log('getAnswer');
-                  console.log(getAnswers(2));
+                  console.log('onClick btn-blue');
                 }}
               >
-                피검사자
+                환자
               </button>
             </div>
             <div className="snb-column-child-container">
@@ -197,7 +195,7 @@ const snb = () => {
             }}
           >
             <img className="float-left mr-5" src={ico_user} alt="user icon" />
-            <span className="text-white">피검사자명</span>
+            <span className="text-white">환자명</span>
           </a>
           <button
             type="button"

@@ -7,63 +7,42 @@ import {
   nextPage,
 } from '@store/slices/testProgressProvider';
 
+import {
+  setTestResult,
+} from '@store/slices/testFormProvider';
+
+import {
+  setScoreConfig,
+  setScoreItem,
+  resetScore,
+} from '@store/slices/scoreProvider';
+
 import RightSnb from '@components/snb/RightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
-const ext = '.mp3';
-const preType = 'NF';
-const filePath = 'static://sounds/';
-const maxCount = 6;
-const soundSetGroupSize = 30;
+const maxCount = 30;
 const minVolumeLevel = -18;
 const maxVolumeLevel = 12;
-
-const getType = (direction: string) => {
-  return 'NFLR';
-  // return (preType + direction).toUpperCase()
-};
-
-const getSound = (_count: number,
-    volume_level: number,
-    direction: string,
-    sound_set: number,
-    _correction?: number) => {
-  let type = getType(direction);
-
-  let volumeLevel = volume_level;
-  if (_correction) {
-    const temp = volumeLevel + _correction;
-    if (temp >= minVolumeLevel && temp <= maxVolumeLevel) {
-      volumeLevel = temp;
-    }
-  }
-
-  const soundSetGroup = (soundSetGroupSize * (sound_set - 1));
-  const count = _count + soundSetGroup;
-
-  let fileName = filePath + type + '/' + type + '[' + volumeLevel + ']' + count + ext;
-  console.log(fileName);
-  return fileName;
-}
 
 const CheckScreen = () => {
   const hooks = useNumberInput(maxCount);
 
-  const [currentLevel, setCurrentLevel] = useState(0);
   const [play, setPlay] = useState(false);
   const [soundFile, setSoundFile] = useState('');
 
   const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
-  const { volume_level, direction, sound_set } = useAppSelector((state: RootState) => state.testForm);
+  const { volume_level, direction, sound_set, scoring } = useAppSelector((state: RootState) => state.testForm);
+  const scoreData = useAppSelector((state: RootState) => state.scoreData);
 
   const dispatch = useAppDispatch();
 
   const startTest = () => {
     hooks.resetTest();
     hooks.setTestStart(true);
+    hooks.setTestComplete(false);
     setPlay(true);
   }
 
@@ -71,19 +50,69 @@ const CheckScreen = () => {
     if(confirm('테스트를 중단하고 처음으로 돌아가겠습니까?')) {
       hooks.resetTest();
       hooks.setTestStart(false);
+      hooks.setTestComplete(false);
+      dispatch(resetScore());
+      dispatch(setScoreConfig({
+        volume_level: volume_level,
+        direction: direction,
+        sound_set: sound_set,
+        scoring: scoring,
+        max_count: maxCount,
+      }));
     }
   }
 
   useEffect(() => {
-    if (hooks.countTest !== undefined) {
-      const mp3 = getSound(hooks.countTest, volume_level || 0, direction || '', sound_set || 0);
-      setSoundFile(mp3);
-    }
+    dispatch(setScoreConfig({
+      volume_level: volume_level,
+      direction: direction,
+      sound_set: sound_set,
+      scoring: scoring,
+      max_count: maxCount,
+    }));
+
+    return () => {
+      dispatch(resetScore());
+    };
   }, []);
 
   useEffect(() => {
-    const mp3 = getSound(hooks.countTest, volume_level || 0, direction || '', sound_set || 0);
-    setSoundFile(mp3);
+    if (scoreData.scoreItems.length > 0 ) {
+      const index = hooks.countTest - 1;
+      const mp3 = scoreData.scoreItems[index].fileName;
+      setSoundFile(mp3);
+    }
+  }, [scoreData.scoreItems.length])
+
+  useEffect(() => {
+    console.log('hooks.isTestComplete', hooks.isTestComplete);
+    if (hooks.isTestComplete) {
+      console.log("TEST COMPLETE");
+      dispatch(setTestResult(scoreData.scoreItems));
+    }
+  }, [hooks.isTestComplete]);
+
+
+  // useEffect(() => {
+  //   console.log('hooks.digits', hooks.digits);
+  // }, [hooks.digits]);
+
+  useEffect(() => {
+    const index = hooks.countTest - 1;
+    let bias = undefined;
+    if (scoreData.scoreItems.length > 0) {
+      const beforeIndex = index - 1;
+      if (scoreData.scoreItems[beforeIndex].isPass) {
+        const _bias = scoreData.scoreItems[beforeIndex].volume_level - 2;
+        bias = _bias < minVolumeLevel ? minVolumeLevel : _bias;
+      } else {
+        const _bias = scoreData.scoreItems[beforeIndex].volume_level + 2;
+        bias = _bias > maxVolumeLevel ? maxVolumeLevel : _bias;
+      }
+    }
+
+    dispatch(setScoreItem({index: index, volume_level: bias}));
+
     if(hooks.countTest > 1 ) {
       setPlay(true);
     }
@@ -106,7 +135,7 @@ const CheckScreen = () => {
 
       <div className="question-progress">
         <p>
-          {hooks.countTest}/{hooks.totalQuestions}
+          {hooks.countTest}/{hooks.testMaxCount}
         </p>
       </div>
 
@@ -122,7 +151,9 @@ const CheckScreen = () => {
             />
           ))}
         </div>
-        <div className="render-number-wrapper">{hooks.renderButtons()}</div>
+        <div className="render-number-wrapper">
+          {hooks.renderButtons()}
+        </div>
       </div>
 
       <div className="test-btn-wrapper">

@@ -25,7 +25,7 @@ const ExamineeInfoPopup = () => {
       <ul className="popup-contents">
         <li className="popup-title">
           <img src={ico_speaker} alt="speaker icon" />
-          <span>피검사자 정보</span>
+          <span>환자 정보</span>
         </li>
         <li className="popup-item">
           <p className="popup-item-order-number">01</p>
@@ -44,7 +44,7 @@ const ExamineeInfoPopup = () => {
         </li>
         <li className="popup-item">
           <p className="popup-item-order-number">04</p>
-          <p className="popup-item-subject">피검사자번호</p>
+          <p className="popup-item-subject">환자번호</p>
           <p className="popup-item-data">{userData.patient_no?.toString()}</p>
         </li>
       </ul>

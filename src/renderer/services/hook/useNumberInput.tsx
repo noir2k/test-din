@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 
+import { useAppDispatch } from '@hook/index';
+
+import {
+  setScoreItemResult,
+} from '@store/slices/scoreProvider';
+
 import ico_check from '@assets/images/icons/icon_check.png';
 
-const useNumberInput = (testMaxCount: number) => {
+const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => {
   const [digits, setDigits] = useState(['', '', '']);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [countTest, setCountTest] = useState(1);
@@ -11,7 +17,7 @@ const useNumberInput = (testMaxCount: number) => {
   const [isTestStart, setTestStart] = useState(false);
   const [isTestComplete, setTestComplete] = useState(false);
 
-  const totalQuestions = testMaxCount;
+  const dispatch = useAppDispatch();
 
   const resetTest = () => {
     setCountTest(1);
@@ -20,33 +26,43 @@ const useNumberInput = (testMaxCount: number) => {
   }
 
   const handleNumberClick = (number: string) => {
-    if (currentIndex < 3) {
-      const updatedDigits = [...digits];
-      updatedDigits[currentIndex] = number;
-      setDigits(updatedDigits);
-      setCurrentIndex(currentIndex + 1);
+    if (isTestStart) {
+      setError(false);
+      if (currentIndex < 3) {
+        const updatedDigits = [...digits];
+        updatedDigits[currentIndex] = number;
+        setDigits(updatedDigits);
+        setCurrentIndex(currentIndex + 1);
+      }
+    } else {
+      setError(true);
+      alert('시작 버튼을 눌러서 시작해주세요');
     }
   };
 
   const handleCheck = () => {
-    if (!isTestStart) {
-      alert('시작 버튼을 눌러서 시작해주세요');
-      return;
-    }
-    if (currentIndex === 3) {
-      const nextCount = countTest + 1;
-      if (countTest < totalQuestions) {
-        setCountTest(nextCount);
-        setDigits(['', '', '']);
-        setCurrentIndex(0);
+    if (isTestStart) {
+      if (currentIndex === 3) {
         setError(false);
+        if (!isPreChecked) {
+          dispatch(setScoreItemResult({countTest, digits}));
+        }
+        const nextCount = countTest + 1;
+        if (countTest < testMaxCount) {
+          setCountTest(nextCount);
+          setDigits(['', '', '']);
+          setCurrentIndex(0);
+        } else {
+          setTestComplete(true);
+          alert('검사 테스트가 완료되었습니다. 완료버튼을 눌러 다음으로 진행하세요.')
+        }
       } else {
-        setTestComplete(true);
-        alert('검사 테스트가 완료되었습니다. 완료버튼을 눌러 다음으로 진행하세요.')
+        setError(true);
+        alert('모든 숫자가 입력되지 않았습니다.');
       }
     } else {
       setError(true);
-      alert('모든 숫자가 입력되지 않았습니다.');
+      alert('시작 버튼을 눌러서 시작해주세요');
     }
   };
 
@@ -120,11 +136,12 @@ const useNumberInput = (testMaxCount: number) => {
     currentIndex,
     countTest,
     error,
-    totalQuestions,
+    testMaxCount,
     isTestComplete,
     isTestStart,
     resetTest,
     setTestStart,
+    setTestComplete,
     handleNumberClick,
     handleCheck,
     renderButtons,

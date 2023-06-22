@@ -26,7 +26,6 @@ import isEmpty from 'lodash.isempty';
 
 import ico_refresh from '@assets/images/icons/icon_refresh_white.png';
 import ico_check from '@assets/images/icons/icon_check_white.png';
-import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
 type ErrorMessageType = {
   [key: string]: FieldError;
@@ -83,8 +82,7 @@ const ExamineeInfoForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
       <div className="info-form-title">
-        <img src={ico_speaker} alt="speaker icon" />
-        <p>피검사자 기본 정보를 입력해 주세요.</p>
+        <p>환자 기본 정보를 입력해 주세요.</p>
       </div>
 
       <div className="info-input-wrapper">
@@ -158,7 +156,7 @@ const ExamineeInfoForm = () => {
               htmlFor={ColumnName.patient_no}
               className="info-input-item-subject"
             >
-              피검사자번호
+              환자번호
             </label>
             <input
               type="text"
@@ -167,7 +165,7 @@ const ExamineeInfoForm = () => {
               defaultValue={userData?.patient_no?.toString()}
               {...register(
                 `${ColumnName.patient_no}`,
-                { required: '피검사자번호 항목은 필수입니다.' }
+                { required: '환자번호 항목은 필수입니다.' }
               )}
               className="info-input-item-input"
             />
@@ -250,7 +248,7 @@ const ExamineeInfoForm = () => {
               htmlFor={ColumnName.sound_set}
               className="info-input-item-subject"
             >
-              사운드세트
+              검사목록
             </label>
             <select
               id={ColumnName.sound_set}

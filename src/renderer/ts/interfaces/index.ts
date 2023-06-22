@@ -72,7 +72,7 @@ export const DirectionOptions: OptionProps = {
 
 export const ScoringOptions: OptionProps = {
   "digit": "Digit Scoring",
-  "tripet": "Tripet Scoring"
+  "triplet": "Triplet Scoring"
 }
 
 export const SoundSetOptions: OptionProps = {

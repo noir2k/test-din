@@ -43,7 +43,7 @@ const PreCheckSnb = () => {
 }
 
 const CheckSnb = () => {
-  const {sound_set, direction, scoring} = useAppSelector((state: RootState) => state.testForm);
+  const {sound_set, direction, scoring, test_date, test_result} = useAppSelector((state: RootState) => state.testForm);
 
   const _soundSet = SoundSetOptions[sound_set?.toString() ?? ''];
   const _direction = DirectionOptions[direction ?? ''];
@@ -58,6 +58,8 @@ const CheckSnb = () => {
         <p>검사 사운드 세트: {_soundSet}</p>
         <p>사운드 제시 방향: {_direction}</p>
         <p>채점 방식: {_scoring}</p>
+        {test_date && <p>날짜 : {test_date}</p>}
+        {test_result && <p>점수 : {test_result}</p>}
       </div>
     </div>
   );

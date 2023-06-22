@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { TestForm } from '@interfaces';
 
-const initialState: TestForm = {};
+import type { ScoreItemType } from './scoreProvider';
+
+const initialState = {} as TestForm;
 
 const testFormSlice = createSlice({
   name: 'testForm',
@@ -11,9 +13,10 @@ const testFormSlice = createSlice({
       Object.assign(state, action.payload);
     },
     setTestResult: (state, action) => {
-      // state.test_date = action.payload.test_date;
-      // state.test_result = action.payload.test_result;
-      return state;
+      const testDate = (new Date()).toISOString().split('T')[0];
+      const res = calculateResult(action.payload);
+      state.test_date = testDate;
+      state.test_result = res;
     },
     resetDefaultForm: (state) => {
       state.user_name = undefined;
@@ -24,8 +27,26 @@ const testFormSlice = createSlice({
   }
 });
 
+const calculateResult = (results: ScoreItemType[]): number => {
+  let total = 0;
+  const skip = 6;
+  let _results = results;
+  if (results.length > 12) {
+    _results = results.slice(0, -skip).slice(skip);
+  }
+
+  _results.forEach((result) => {
+    console.log("result", result);
+    total += result.volume_level;
+  });
+
+  const res = parseFloat((total / results.length).toFixed(2));
+  return res;
+}
+
 export const {
   setTestForm,
+  setTestResult,
   resetDefaultForm,
   resetForm
 } = testFormSlice.actions;

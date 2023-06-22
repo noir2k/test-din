@@ -18,7 +18,7 @@ const filePath = 'static://sounds/TEST/';
 const maxCount = 3;
 
 const PreCheckScreen = () => {
-  const hooks = useNumberInput(maxCount);
+  const hooks = useNumberInput(maxCount, true);
 
   const [play, setPlay] = useState(false);
   const [sliderVolume, setSliderVolume] = useState(50);
@@ -60,13 +60,13 @@ const PreCheckScreen = () => {
       }
       <div className="pre-check-form-title">
         <p>
-          이제 <span className="blue">3개의 연속된 숫자</span>가 들리게 됩니다.{' '}
-          <br />
+          이제 <span className="blue">3개의 연속된 숫자</span>가 들리게 됩니다.<br />
+          검사자는 연습 문항 실시하면서 환자의 MCL 레벨을 찾아내세요.<br />
           숫자를 다 듣고 해당 숫자를 순서대로 말하세요.
         </p>
         <p>
-          <span>반드시 3개의 숫자</span>가 다 제시된 후 말하세요. <br />잘 듣지
-          못한 경우 추측해서 <span>숫자 3개 모두</span>를 말해야 합니다.
+          <span>반드시 3개의 숫자</span>가 다 제시된 후 말하세요. <br />
+          정확히 듣지 못한 숫자가 있는 경우 추측해서 입력하세요.
         </p>
       </div>
 
@@ -110,7 +110,7 @@ const PreCheckScreen = () => {
           type="button"
           onClick={startTest}
         >
-          시작
+          테스트시작
         </button>
         <button
           className={hooks.isTestComplete
@@ -123,7 +123,7 @@ const PreCheckScreen = () => {
             dispatch(nextPage());
           }}
         >
-          완료
+          검사완료
         </button>
       </div>
     </>
