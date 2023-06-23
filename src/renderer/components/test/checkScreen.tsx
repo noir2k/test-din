@@ -130,7 +130,7 @@ const CheckScreen = () => {
       }
       <div className="check-form-title">
         <img src={ico_speaker} alt="speaker icon" />
-        <p>테스트 진행중</p>
+        <p>이제 본 테스트를 실시합니다. 시작 버튼을 누르고 검사를 실시하세요</p>
       </div>
 
       <div className="question-progress">

@@ -6,8 +6,6 @@ import {
   setScoreItemResult,
 } from '@store/slices/scoreProvider';
 
-import ico_check from '@assets/images/icons/icon_check.png';
-
 const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => {
   const [digits, setDigits] = useState(['', '', '']);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -53,8 +51,9 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
           setDigits(['', '', '']);
           setCurrentIndex(0);
         } else {
+          setDigits(['', '', '']);
           setTestComplete(true);
-          alert('검사 테스트가 완료되었습니다. 완료버튼을 눌러 다음으로 진행하세요.')
+          alert('검사가 종료되었습니다. 완료버튼을 눌러 다음으로 진행하세요.')
         }
       } else {
         setError(true);
@@ -124,7 +123,7 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
     buttons.push(
       <div key="confirm" className="number-btn-wrapper remove-margin">
         <button className="number-btn confirm-btn" onClick={handleCheck}>
-          <img src={ico_check} alt="check icon" />
+          확인
         </button>
       </div>
     );

@@ -19,35 +19,41 @@ export const defaultConfig: ConfigSchemaType = {
 };
 
 export interface ColumnType {
-  id: Number;
+  id: number;
   user_name: string;
   gender: string;
   birthday: string;
   patient_no: string;
+  tester_name: string;
+  reciever: string;
+  fixed_type: string;
   direction: string;
-  volume_level: Number;
+  volume_level: number;
   scoring: string;
   memo: string;
-  sound_set: Number;
+  sound_set: number;
   test_date: string;
-  test_result: Number;
-  reg_timestamp: Number;
+  test_result: number;
+  reg_timestamp: number;
 }
 
 export const ColumnName = {
   id: 'id',
-  user_name: 'user_name',
-  gender: 'gender',
-  birthday: 'birthday',
-  patient_no: 'patient_no',
-  direction: 'direction',
-  volume_level: 'volume_level',
-  scoring: 'scoring',
-  memo: 'memo',
-  sound_set: 'sound_set',
-  test_date: 'test_date',
-  test_result: 'test_result',
-  reg_timestamp: 'reg_timestamp',
+	user_name: 'user_name',
+	gender: 'gender',
+	birthday: 'birthday',
+	patient_no: 'patient_no',
+  tester_name: 'tester_name',
+  reciever: 'reciever',
+  fixed_type: 'fixed_type',
+	direction: 'direction',
+	volume_level: 'volume_level',
+	scoring: 'scoring',
+	memo: 'memo',
+	sound_set: 'sound_set',
+	test_date: 'test_date',
+	test_result: 'test_result',
+	reg_timestamp: 'reg_timestamp',
 };
 
 export const resolveHtmlPath = (htmlFileName: string) => {
@@ -95,7 +101,7 @@ const _checkRegexSql = (queryText: string) => {
 
   queryText = queryText.replace(/\n$/, '');
   log.log("queryText", queryText, regexPattern.test(queryText));
-  return true; //regexPattern.test(queryText);
+  return regexPattern.test(queryText);
 };
 
 // NOT USED

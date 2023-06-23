@@ -16,6 +16,9 @@ export interface ColumnType {
   gender: string;
   birthday: string;
   patient_no: string;
+  tester_name: string;
+  reciever: string;
+  fixed_type: string;
   direction: string;
   volume_level: number;
   scoring: string;
@@ -31,6 +34,9 @@ export interface TestForm {
   gender?: string;
   birthday?: Date;
   patient_no?: string;
+  tester_name?: string;
+  reciever?: string;
+  fixed_type?: string,
   direction?: string;
   volume_level?: number;
   scoring?: string;
@@ -50,6 +56,9 @@ export const ColumnName = {
 	gender: 'gender',
 	birthday: 'birthday',
 	patient_no: 'patient_no',
+  tester_name: 'tester_name',
+  reciever: 'reciever',
+  fixed_type: 'fixed_type',
 	direction: 'direction',
 	volume_level: 'volume_level',
 	scoring: 'scoring',
@@ -62,12 +71,17 @@ export const ColumnName = {
 
 type OptionProps = { [key: string]: string };
 
+export const FixedTypeOptions: OptionProps = {
+  "NF": "Noise Fixed",
+  "SF": "Signal Fixed",
+}
+
 export const DirectionOptions: OptionProps = {
-  "L": "좌",
-  "R": "우",
-  "LR": "양방향",
-  "LNRS": "좌 노이즈 우 스피치",
-  "LSRN": "우 노이즈 좌 스피치"
+  "L": "좌(L)",
+  "R": "우(R)",
+  "LR": "양방향(LR)",
+  "LNRS": "좌 노이즈 우 스피치(LNRS)",
+  "LSRN": "우 노이즈 좌 스피치(LSRN)"
 }
 
 export const ScoringOptions: OptionProps = {

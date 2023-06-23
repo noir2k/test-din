@@ -14,6 +14,8 @@ import Snb from '@components/snb/snb';
 import ExamineeInfoPopup from '@components/snb/examineePopup';
 import EditingName from '@components/main/EditingName';
 
+import AlertModal from '@hook/AlertModal';
+
 const MainPage = () => {
   const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
 
@@ -63,6 +65,7 @@ const MainPage = () => {
                 alt="background decoration"
               />
             </div>
+            <AlertModal />
           </main>
         </div>
       </div>

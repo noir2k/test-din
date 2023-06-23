@@ -2,6 +2,38 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
+@font-face {
+  font-family: 'LINESeed';
+  src: url(../../assets/fonts/LINESeedKR-Bd.ttf) format('truetype');
+  unicode-range: U+AC00-D7A3;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'LINESeed';
+  src: url(../../assets/fonts/LINESeedKR-Rg.ttf) format('truetype');
+  unicode-range: U+AC00-D7A3;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'FiraSans';
+  src: url(../../assets/fonts/FiraSans-Black.ttf) format('truetype');
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'FiraSans';
+  src: url(../../assets/fonts/FiraSans-Bold.ttf) format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'FiraSans';
+  src: url(../../assets/fonts/FiraSans-Regular.ttf) format('truetype');
+  font-weight: 400;
+}
+
 body {
   background: linear-gradient(
     180deg,
@@ -9,7 +41,7 @@ body {
     rgba(207, 216, 234, 0.72) 100%
   );
   color: black;
-  font-family: sans-serif;
+  font-family: 'LINESeed', 'FiraSans', sans-serif;
   overflow: hidden;
 }
 
@@ -19,6 +51,7 @@ button {
   border: none;
   appearance: none;
   font-size: 1rem; */
+  font-weight: 700;
   transition: all ease-in 0.1s;
   cursor: pointer;
   /* opacity: 0.9; */
@@ -167,7 +200,7 @@ a:hover {
   border-radius: 8px;
   padding: 0;
   margin: 0px 10px;
-  font-weight: 400;
+  font-weight: 700;
   font-size: 12px;
   text-align: center;
 }
@@ -182,11 +215,6 @@ a:hover {
 .snb-column-child-btn.btn-blue {
   background-color: #568af0;
   color: white;
-}
-
-.snb-column-child-btn.btn-backup,
-.snb-column-child-btn.btn-import {
-  /* margin-left: auto; */
 }
 
 .snb-modify-btn.snb-modify-btn,
@@ -386,6 +414,10 @@ a:hover {
   line-height: 64px;
 }
 
+.notice-text > span {
+  float: none;
+}
+
 /* MainPage.tsx */
 
 .contents-area {
@@ -493,10 +525,15 @@ span {
 .info-input-item > .info-input-item-subject {
   width: 100px;
   height: 20px;
-  margin: 0px 28px 0px 0px;
+  margin: 0px 20px 0px 0px;
   text-align: left;
   display: flex;
   justify-content: flex-start;
+}
+
+.info-input-item > .info-input-item-subject {
+  align-items: center;
+  font-weight: 700;
 }
 
 .popup-item > .popup-item-data {
@@ -616,11 +653,11 @@ span {
 /* examineeInfoForm.tsx */
 .info-form-title {
   width: 100%;
-  height: 123px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 12px;
 }
 
 .info-form-title > img {
@@ -630,12 +667,11 @@ span {
 
 .info-form-title > p {
   font-size: 24px;
-  margin: 0px 0px 34px 0px;
 }
 
 .info-input-wrapper {
-  width: 446px;
-  height: 516px;
+  width: 100%;
+  height: 624px;
   background: #f3f3f3;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
@@ -659,7 +695,7 @@ span {
 }
 
 .info-input-item > .info-input-item-input {
-  width: 197px;
+  width: 236px;
   height: 46px;
   background: #e2e2e2;
   border-radius: 10px;
@@ -669,13 +705,13 @@ span {
 }
 
 .info-memo-wraper {
-  width: 446px;
+  width: 100%;
   height: 84px;
   box-sizing: border-box;
   background: #f6f6f6;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 7px;
-  margin: 40px 0px;
+  margin-top: 16px;
 }
 
 .info-memo-input {
@@ -687,26 +723,16 @@ span {
 }
 
 .info-btn-wrapper {
-  margin: 0 auto;
-  width: 200px;
+  margin: 16px auto;
+  width: 100%;
   height: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.info-btn-wrapper > .info-btn {
-  width: 58px;
-  height: 58px;
-  background-color: #568af0;
-  border-radius: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.info-btn-wrapper > .info-btn > img {
-  width: 35%;
+.info-btn-wrapper button:last-child{
+  margin: 0!important;
 }
 
 /* preCheckScreen.tsx */
@@ -738,6 +764,7 @@ span {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-left: 18px;
 }
 
 .slider-bar-inner {
@@ -844,6 +871,7 @@ input[type='range']:active::-webkit-slider-runnable-track {
   margin: 54px 0px 0px 0px;
 }
 
+.info-btn-wrapper > button,
 .test-btn-wrapper > button,
 .sound-setting-btn-wrapper > button {
   width: 154px;
@@ -853,14 +881,22 @@ input[type='range']:active::-webkit-slider-runnable-track {
   float: left;
 }
 
+.info-btn-wrapper > .info-btn,
 .test-btn-wrapper > .test-start-btn,
+.test-btn-wrapper > .test-skip-btn,
 .test-btn-wrapper > .test-abort-btn,
 .sound-setting-btn-wrapper > .exit-btn {
   background-color: #568af0;
   margin: 0px 30px 0px 0px;
 }
 
+.test-skip-btn,
+.info-btn {
+  color: white;
+}
+
 /* useNumberInput.tsx */
+.test-skip-btn,
 .abort-btn {
   background-color: #f05656 !important;
 }
@@ -881,24 +917,27 @@ input[type='range']:active::-webkit-slider-runnable-track {
   margin: 0px 0px 14px 0px;
 }
 
-.number-btn-wrapper.remove-margin {
+.number-btn-wrapper .remove-margin {
   margin: 0px;
 }
 
-.number-btn-wrapper > .number-btn.confirm-btn {
-  background-color: #568af0;
+.number-btn-wrapper > .number-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.number-btn {
   width: 100%;
   height: 100%;
   background-color: #d9d9d9;
-  font-size: 22px;
+  font-size: 36px;
   border-radius: 100%;
 }
+
+.number-btn-wrapper > .confirm-btn {
+  background-color: #568af0 !important;
+  color: white !important;
+  font-size: 24px;
+}
+
 
 /* checkScreen.tsx */
 .check-form-title,
@@ -917,8 +956,7 @@ input[type='range']:active::-webkit-slider-runnable-track {
 }
 
 .check-form-title > p,
-.result-form-title > p,
-.sound-setting-title > p {
+.result-form-title > p {
   font-weight: 600;
   font-size: 23px;
 }
@@ -1104,12 +1142,12 @@ input[type='range']:active::-webkit-slider-runnable-track {
 }
 
 .examinee-card-data p:first-child {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .examinee-card-data p:last-child {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .delete-btn-wrapper > .delete-btn {
@@ -1131,4 +1169,14 @@ input[type='range']:active::-webkit-slider-runnable-track {
 
 .exit-btn {
   color: white;
+}
+
+.modal-position {
+  position: absolute;
+  top: 33%;
+  left: 48.4%;
+}
+
+.modal-dim {
+  background-color: #f0f8ffad;
 }

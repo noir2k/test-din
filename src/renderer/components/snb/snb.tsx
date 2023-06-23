@@ -184,8 +184,7 @@ const snb = () => {
       </div>
       <div className="child snb-data-wrapper">
         <div className="examinee-data-wrapper">
-          <a
-            className="cursor-pointer data-text ml-5"
+          <div className="cursor-pointer data-text ml-5"
             onClick={() => {
               if (isEmpty(userData)) {
                 alert('사용자 검사 정보가 없습니다.')
@@ -195,8 +194,8 @@ const snb = () => {
             }}
           >
             <img className="float-left mr-5" src={ico_user} alt="user icon" />
-            <span className="text-white">환자명</span>
-          </a>
+            <span className="text-white text-lg font-bold">환자명</span>
+          </div>
           <button
             type="button"
             className="bg-transparent snb-column-child-btn snb-modify-btn"
@@ -227,7 +226,7 @@ const snb = () => {
           className="test-start-btn"
           onClick={testStartOpen}
         >
-          검사하기
+          시작하기
         </button>
       </div>
     </div>

@@ -11,6 +11,7 @@ import {
 import RightSnb from '@components/snb/RightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
+import { count } from 'console';
 
 const ext = '.mp3';
 const fileNames = ['1', '7', '25'];
@@ -31,6 +32,7 @@ const PreCheckScreen = () => {
   const startTest = () => {
     hooks.resetTest();
     hooks.setTestStart(true);
+    console.log("start_play?", play);
     setPlay(true);
   }
 
@@ -40,13 +42,38 @@ const PreCheckScreen = () => {
     setVolume(newValue);
   };
 
+  const stop = () => {
+    if (hooks.countTest === fileNames.length) {
+      console.log("last_play1", play);
+      console.log("last_play2", soundFile);
+      // hooks.resetTest();
+    }
+    console.log("stop_sound?", play);
+    setPlay(false);
+  }
+
   useEffect(() => {
     const index = hooks.countTest - 1;
+    console.log("countTest", index);
+    console.log("play_sound?_1", play);
     setSoundFile(filePath + fileNames[index] + ext);
     if(index > 0 ) {
+      console.log("play_sound?_2", play);
       setPlay(true);
     }
   }, [hooks.countTest]);
+
+  useEffect(() => {
+    if (hooks.isTestComplete) {
+      console.log("TEST COMPLETE");
+      setPlay(false);
+      setSoundFile('');
+    }
+  }, [hooks.isTestComplete]);
+
+  useEffect(() => {
+    // hooks.resetTest();
+  }, []);
 
   return (
     <>
@@ -56,17 +83,17 @@ const PreCheckScreen = () => {
           mp3={soundFile}
           volume={sliderVolume}
           delay={delay}
-          onEnd={() => setPlay(false)}/>
+          onEnd={stop}/>
       }
       <div className="pre-check-form-title">
         <p>
           이제 <span className="blue">3개의 연속된 숫자</span>가 들리게 됩니다.<br />
-          검사자는 연습 문항 실시하면서 환자의 MCL 레벨을 찾아내세요.<br />
           숫자를 다 듣고 해당 숫자를 순서대로 말하세요.
         </p>
         <p>
           <span>반드시 3개의 숫자</span>가 다 제시된 후 말하세요. <br />
           정확히 듣지 못한 숫자가 있는 경우 추측해서 입력하세요.
+          검사자는 연습 문항 실시하면서 환자의 MCL 레벨을 찾아내세요.<br />
         </p>
       </div>
 
@@ -83,7 +110,7 @@ const PreCheckScreen = () => {
           />
           <p className="max-value">100%</p>
         </div>
-        <p className="current-value">{volume}</p>
+        <p className="current-value">{sliderVolume}</p>
       </div>
 
       <div className="number-input-wrapper">
@@ -103,14 +130,23 @@ const PreCheckScreen = () => {
 
       <div className="test-btn-wrapper">
         <button
-          className={hooks.isTestStart
-            ? "test-start-btn deactive-btn"
-            : "test-start-btn"}
-          disabled={hooks.isTestStart}
+          className={!hooks.isTestStart || (hooks.isTestStart && hooks.isTestComplete)
+            ? "test-start-btn" : "test-start-btn deactive-btn" }
+          disabled={!(!hooks.isTestStart || (hooks.isTestStart && hooks.isTestComplete)) }
           type="button"
           onClick={startTest}
         >
-          테스트시작
+          {(hooks.isTestStart && hooks.isTestComplete) ? "다시시작" : "테스트시작"}
+        </button>
+        <button
+          className="test-skip-btn"
+          type="button"
+          onClick={() => {
+            dispatch(setVolume(volume));
+            dispatch(nextPage());
+          }}
+        >
+          테스트건너뛰기
         </button>
         <button
           className={hooks.isTestComplete
@@ -123,7 +159,7 @@ const PreCheckScreen = () => {
             dispatch(nextPage());
           }}
         >
-          검사완료
+          테스트완료
         </button>
       </div>
     </>

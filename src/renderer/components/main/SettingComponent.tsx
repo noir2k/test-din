@@ -37,11 +37,11 @@ const Setting = () => {
     <div className="sound-setting-wrapper">
       <div className="sound-setting-title">
         <img src={ico_speaker} alt="speaker icon" />
-        <p>설정</p>
+        <p className="text-3xl font-bold">설정</p>
       </div>
 
       <div className="sound-setting-text">
-        <p>
+        <p className="text-xl">
           각 문제 사운드간 간격을 지정해 주세요. <br />
           0초에서 5초까지 지정 가능합니다.
         </p>
