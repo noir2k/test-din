@@ -12,4 +12,3 @@ INSERT INTO test_din_history ("user_name","gender","birthday","patient_no","test
 INSERT INTO test_din_history ("user_name","gender","birthday","patient_no","tester_name","reciever","fixed_type","direction","volume_level","scoring","memo","sound_set","test_date","test_result","reg_timestamp") VALUES ('bong','M','1980-01-01','12345678','TESTER','speaker','NF','LR',0,'digit',NULL,5,'2023-05-11',80,1685600533811);
 INSERT INTO test_din_history ("user_name","gender","birthday","patient_no","tester_name","reciever","fixed_type","direction","volume_level","scoring","memo","sound_set","test_date","test_result","reg_timestamp") VALUES ('bong','M','1980-01-01','12345678','TESTER','speaker','NF','LR',0,'digit',NULL,6,'2023-05-12',120,1685600533812);
 COMMIT;
-"tester_name","reciever","fixed_type",
