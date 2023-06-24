@@ -25,7 +25,7 @@ export interface ColumnType {
   birthday: string;
   patient_no: string;
   tester_name: string;
-  reciever: string;
+  receiver: string;
   fixed_type: string;
   direction: string;
   volume_level: number;
@@ -44,7 +44,7 @@ export const ColumnName = {
 	birthday: 'birthday',
 	patient_no: 'patient_no',
   tester_name: 'tester_name',
-  reciever: 'reciever',
+  receiver: 'receiver',
   fixed_type: 'fixed_type',
 	direction: 'direction',
 	volume_level: 'volume_level',

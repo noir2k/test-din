@@ -1,10 +1,10 @@
 {
-  "name": "test-din",
+  "name": "ihab-din-test",
   "version": "0.0.1",
   "private": true,
   "main": "./src/main/main.ts",
   "homepage": "./",
-  "description": "TEST DIN",
+  "description": "iHab DIN test pro desktop apps",
   "license": "MIT",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",

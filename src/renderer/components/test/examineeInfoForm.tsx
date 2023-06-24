@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 
 import type { FieldError } from 'react-hook-form';
+import isEmpty from 'lodash.isempty';
 
 import { useAppSelector, useAppDispatch } from '@hook/index';
 import type { RootState } from '@store/index';
@@ -27,8 +28,6 @@ import {
   setAlertModal,
 } from '@store/slices/alertModalProvider';
 
-import isEmpty from 'lodash.isempty';
-
 type ErrorMessageType = {
   [key: string]: FieldError;
 };
@@ -40,21 +39,42 @@ const ExamineeInfoForm = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleReset = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    dispatch(resetDefaultForm());
-  }
-
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
+    setValue,
     setFocus,
    } = useForm();
 
   const onSubmit = (data: any) => {
     dispatch(setTestForm(data));
     dispatch(nextPage());
+  }
+
+  const defaultValue = () => {
+    setValue(ColumnName.tester_name, '');
+    setValue(ColumnName.receiver, '');
+    setValue(ColumnName.fixed_type, 'NF');
+    setValue(ColumnName.direction, 'LR');
+    setValue(ColumnName.volume_level, 0);
+    setValue(ColumnName.scoring, 'digit');
+    setValue(ColumnName.sound_set, '1');
+    setValue(ColumnName.memo, '');
+    setFocus(ColumnName.tester_name);
+  }
+
+  const handleReset = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    dispatch(resetDefaultForm());
+    defaultValue();
+    if (isEmpty(userData)) {
+      setValue(ColumnName.user_name, '');
+      setValue(ColumnName.gender, 'M');
+      setValue(ColumnName.birthday, '');
+      setValue(ColumnName.patient_no, '');
+      setFocus(ColumnName.user_name);
+    }
   }
 
   const onError = (error: any) => {
@@ -222,7 +242,6 @@ const ExamineeInfoForm = () => {
               <input
                 type="text"
                 id={ColumnName.tester_name}
-                disabled={isDisabled}
                 defaultValue={''}
                 {...register(
                   `${ColumnName.tester_name}`,
@@ -234,18 +253,17 @@ const ExamineeInfoForm = () => {
             <li className="info-input-item">
               <p className="info-input-item-order-number">06</p>
               <label
-                htmlFor={ColumnName.reciever}
+                htmlFor={ColumnName.receiver}
                 className="info-input-item-subject"
               >
                 리시버
               </label>
               <input
                 type="text"
-                id={ColumnName.reciever}
-                disabled={isDisabled}
+                id={ColumnName.receiver}
                 defaultValue={''}
                 {...register(
-                  `${ColumnName.reciever}`,
+                  `${ColumnName.receiver}`,
                   { required: '리시버 항목은 필수입니다.' }
                 )}
                 className="info-input-item-input"
@@ -383,7 +401,8 @@ const ExamineeInfoForm = () => {
             className="info-btn"
             type="reset"
             onClick={handleReset}
-          > 새로고침
+          >
+            입력초기화
           </button>
           <button
             className="info-btn"

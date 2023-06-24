@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 type AlertModalType = {
   isShow: boolean,
   title: string,
-  message: string
+  message: string,
+  callback?: () => void,
 }
 
 const initialState: AlertModalType = {
@@ -21,6 +22,9 @@ const userNameSlice = createSlice({
       state.isShow = action.payload.isShow;
       state.title = action.payload.title;
       state.message = action.payload.message;
+      if (action.payload.callback) {
+        state.callback = action.payload.callback;
+      }
     },
     resetAlertModal: () => initialState,
   }

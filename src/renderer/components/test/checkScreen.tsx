@@ -3,8 +3,11 @@ import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
+import isEmpty from 'lodash.isempty';
+
 import {
   nextPage,
+  resetProgress,
 } from '@store/slices/testProgressProvider';
 
 import {
@@ -17,13 +20,17 @@ import {
   resetScore,
 } from '@store/slices/scoreProvider';
 
+import {
+  setAlertModal,
+} from '@store/slices/alertModalProvider';
+
 import RightSnb from '@components/snb/RightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
-const maxCount = 30;
+const maxCount = 6;
 const minVolumeLevel = -18;
 const maxVolumeLevel = 12;
 
@@ -32,9 +39,10 @@ const CheckScreen = () => {
 
   const [play, setPlay] = useState(false);
   const [soundFile, setSoundFile] = useState('');
+  const [testTitle, setTestTitle] = useState('테스트 진행중');
 
   const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
-  const { volume_level, direction, sound_set, scoring } = useAppSelector((state: RootState) => state.testForm);
+  const testForm = useAppSelector((state: RootState) => state.testForm);
   const scoreData = useAppSelector((state: RootState) => state.scoreData);
 
   const dispatch = useAppDispatch();
@@ -42,39 +50,74 @@ const CheckScreen = () => {
   const startTest = () => {
     hooks.resetTest();
     hooks.setTestStart(true);
-    hooks.setTestComplete(false);
     setPlay(true);
   }
 
   const handleAbort = () => {
     if(confirm('테스트를 중단하고 처음으로 돌아가겠습니까?')) {
       hooks.resetTest();
-      hooks.setTestStart(false);
-      hooks.setTestComplete(false);
       dispatch(resetScore());
       dispatch(setScoreConfig({
-        volume_level: volume_level,
-        direction: direction,
-        sound_set: sound_set,
-        scoring: scoring,
+        volume_level: testForm.volume_level,
+        direction: testForm.direction,
+        sound_set: testForm.sound_set,
+        scoring: testForm.scoring,
         max_count: maxCount,
       }));
+      setPlay(false);
     }
   }
 
   useEffect(() => {
-    dispatch(setScoreConfig({
-      volume_level: volume_level,
-      direction: direction,
-      sound_set: sound_set,
-      scoring: scoring,
-      max_count: maxCount,
-    }));
+    console.log("useEffect MOUNT", testForm, maxCount);
+    if (isEmpty(testForm)) {
+      dispatch(
+        setAlertModal({
+          isShow: true,
+          title:'기본 정보 오류',
+          message: `입력 정보 중 오류 내용이 있습니다.
+기본 정보 입력 화면으로 돌아갑니다.`,
+          callback: dispatch(resetProgress())
+        })
+      );
+    } else {
+      dispatch(setScoreConfig({
+        volume_level: testForm.volume_level,
+        direction: testForm.direction,
+        sound_set: testForm.sound_set,
+        scoring: testForm.scoring,
+        max_count: maxCount,
+      }));
+    }
 
     return () => {
+      hooks.resetTest();
       dispatch(resetScore());
     };
   }, []);
+
+  useEffect(() => {
+    const title = hooks.isTestStart
+      ? '테스트 진행중'
+      : `본 테스트를 실시합니다.
+아래의 시작 버튼을 눌러서 검사를 실시하세요`;
+    setTestTitle(title);
+  }, [hooks.isTestStart]);
+
+  useEffect(() => {
+    if (hooks.isTestComplete) {
+      dispatch(setTestResult(scoreData.scoreItems));
+      dispatch(
+        setAlertModal({
+          isShow: true,
+          title:'검사 완료',
+          message: `본 테스트가 완료되었습니다.
+결과 화면으로 진행합니다.`,
+          callback: dispatch(nextPage())
+        })
+      );
+    }
+  }, [hooks.isTestComplete]);
 
   useEffect(() => {
     if (scoreData.scoreItems.length > 0 ) {
@@ -85,21 +128,10 @@ const CheckScreen = () => {
   }, [scoreData.scoreItems.length])
 
   useEffect(() => {
-    console.log('hooks.isTestComplete', hooks.isTestComplete);
-    if (hooks.isTestComplete) {
-      console.log("TEST COMPLETE");
-      dispatch(setTestResult(scoreData.scoreItems));
-    }
-  }, [hooks.isTestComplete]);
-
-
-  // useEffect(() => {
-  //   console.log('hooks.digits', hooks.digits);
-  // }, [hooks.digits]);
-
-  useEffect(() => {
     const index = hooks.countTest - 1;
-    let bias = undefined;
+    console.log("scoreData.scoreConfig", scoreData.scoreConfig);
+    console.log("scoreData.scoreItems", scoreData.scoreItems);
+    let bias = testForm.volume_level;
     if (scoreData.scoreItems.length > 0) {
       const beforeIndex = index - 1;
       if (scoreData.scoreItems[beforeIndex].isPass) {
@@ -112,11 +144,14 @@ const CheckScreen = () => {
     }
 
     dispatch(setScoreItem({index: index, volume_level: bias}));
+  }, [hooks.countTest]);
 
-    if(hooks.countTest > 1 ) {
+  useEffect(() => {
+    const index = hooks.countTest - 1;
+    if(index > 0 && soundFile !== undefined && soundFile.length > 0) {
       setPlay(true);
     }
-  }, [hooks.countTest]);
+  }, [soundFile]);
 
   return (
     <>
@@ -130,7 +165,7 @@ const CheckScreen = () => {
       }
       <div className="check-form-title">
         <img src={ico_speaker} alt="speaker icon" />
-        <p>이제 본 테스트를 실시합니다. 시작 버튼을 누르고 검사를 실시하세요</p>
+        <p style={{whiteSpace: "pre"}}>{testTitle}</p>
       </div>
 
       <div className="question-progress">
@@ -174,7 +209,7 @@ const CheckScreen = () => {
         >
           중단
         </button>
-        <button
+        {/* <button
           className={hooks.isTestComplete
             ? "test-complete-btn active-btn"
             : "test-complete-btn"}
@@ -183,7 +218,7 @@ const CheckScreen = () => {
           onClick={() => dispatch(nextPage())}
         >
           완료
-        </button>
+        </button> */}
       </div>
     </>
   );

@@ -66,7 +66,7 @@ const Setting = () => {
       </div>
 
       <div className="sound-setting-btn-wrapper">
-        <button
+        {/* <button
           className="exit-btn"
           type="button"
           onClick={() => {
@@ -74,7 +74,7 @@ const Setting = () => {
           }}
         >
           종료
-        </button>
+        </button> */}
         <button
           className="test-complete-btn"
           type="button"

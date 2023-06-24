@@ -1,7 +1,7 @@
 {
-  "name": "TEST-DIN",
+  "name": "ihab-din-test",
   "version": "0.0.1",
-  "description": "TEST-din desktop apps",
+  "description": "iHab DIN test pro desktop apps",
   "license": "MIT",
   "author": {
     "name": "metasai.io",

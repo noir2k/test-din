@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import answerData from '@assets/resources/answer.json';
 
 type AnswerDataType = typeof answerData;
@@ -67,13 +67,12 @@ const answerSlice = createSlice({
       const scoreItem = state.scoreItems[index];
       const itemNo = scoreItem.itemNo;
       const answer = getAnswers(itemNo);
+      const result = resultScore(state.scoreConfig.scoring, answer, digits);
 
-      const result = resultScore(state.scoreConfig.scoring, itemNo, answer, digits);
-
+      console.log("setScoreItemResult", result, answer, digits);
       scoreItem.isPass = result;
       scoreItem.answer = answer;
       scoreItem.userAnswer = digits;
-      console.log("setScoreItemResult", current(state.scoreItems));
     },
     resetScore: () => initialState
   }
@@ -95,7 +94,7 @@ const getType = (direction: string) => {
   // return (preType + direction).toUpperCase()
 };
 
-const resultScore = (scoring: string, itemNo: number, answer: number[], digits: number[]): boolean => {
+const resultScore = (scoring: string, answer: number[], digits: number[]): boolean => {
   let ansCount = 0;
   answer.forEach((a, idx) => {
     if (a === Number(digits[idx])) {
@@ -122,7 +121,8 @@ export const getSound = (
   const count = _count + soundSetGroup;
 
   let fileName = filePath + type + '/' + type + '[' + volume_level + ']' + count + ext;
-  // console.log(fileName);
+
+  console.log("getSound", fileName);
   return fileName;
 }
 

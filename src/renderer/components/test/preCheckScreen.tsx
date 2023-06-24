@@ -8,6 +8,10 @@ import {
   setVolume,
 } from '@store/slices/testProgressProvider';
 
+import {
+  setAlertModal,
+} from '@store/slices/alertModalProvider';
+
 import RightSnb from '@components/snb/RightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
@@ -21,8 +25,10 @@ const PreCheckScreen = () => {
   const hooks = useNumberInput(maxCount, true);
 
   const [play, setPlay] = useState(false);
-  const [sliderVolume, setSliderVolume] = useState(50);
   const [soundFile, setSoundFile] = useState('');
+  const [sliderVolume, setSliderVolume] = useState(50);
+  const [btnText, setBtnText] = useState('테스트시작');
+  const [isBtnDisable, setBtnDisable] = useState(false);
 
   const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
 
@@ -31,7 +37,6 @@ const PreCheckScreen = () => {
   const startTest = () => {
     hooks.resetTest();
     hooks.setTestStart(true);
-    console.log("start_play?", play);
     setPlay(true);
   }
 
@@ -41,38 +46,42 @@ const PreCheckScreen = () => {
     setVolume(newValue);
   };
 
-  const stop = () => {
-    if (hooks.countTest === fileNames.length) {
-      console.log("last_play1", play);
-      console.log("last_play2", soundFile);
-      // hooks.resetTest();
+  useEffect(() => {
+    if (hooks.isTestComplete) {
+      dispatch(
+        setAlertModal({
+          isShow: true,
+          title:'검사 완료',
+          message: `사전 테스트가 완료되었습니다.
+테스트완료 버튼을 클릭하여 본 테스트로 진행하세요.`,
+          // callback: dispatch(nextPage())
+        })
+      );
     }
-    console.log("stop_sound?", play);
-    setPlay(false);
-  }
+    if (hooks.isTestStart && !hooks.isTestComplete) {
+      setBtnText('테스트진행중');
+      setBtnDisable(true);
+    } else if (hooks.isTestStart && hooks.isTestComplete) {
+      setBtnText('다시시작');
+      setBtnDisable(false);
+    } else if (!hooks.isTestStart && !hooks.isTestComplete) {
+      setBtnText('테스트시작');
+      setBtnDisable(false);
+    }
+  }, [hooks.isTestStart, hooks.isTestComplete]);
 
   useEffect(() => {
     const index = hooks.countTest - 1;
-    console.log("countTest", index);
-    console.log("play_sound?_1", play);
-    setSoundFile(filePath + fileNames[index] + ext);
-    if(index > 0 ) {
-      console.log("play_sound?_2", play);
-      setPlay(true);
-    }
+    const fileName = filePath + fileNames[index] + ext;
+    setSoundFile(fileName);
   }, [hooks.countTest]);
 
   useEffect(() => {
-    if (hooks.isTestComplete) {
-      console.log("TEST COMPLETE");
-      setPlay(false);
-      setSoundFile('');
+    const index = hooks.countTest - 1;
+    if(index > 0 && soundFile !== undefined && soundFile.length > 0) {
+      setPlay(true);
     }
-  }, [hooks.isTestComplete]);
-
-  useEffect(() => {
-    // hooks.resetTest();
-  }, []);
+  }, [soundFile]);
 
   return (
     <>
@@ -82,7 +91,7 @@ const PreCheckScreen = () => {
           mp3={soundFile}
           volume={sliderVolume}
           delay={delay}
-          onEnd={stop}/>
+        />
       }
       <div className="pre-check-form-title">
         <p>
@@ -92,7 +101,6 @@ const PreCheckScreen = () => {
         <p>
           <span>반드시 3개의 숫자</span>가 다 제시된 후 말하세요. <br />
           정확히 듣지 못한 숫자가 있는 경우 추측해서 입력하세요.
-          검사자는 연습 문항 실시하면서 환자의 MCL 레벨을 찾아내세요.<br />
         </p>
       </div>
 
@@ -110,6 +118,7 @@ const PreCheckScreen = () => {
           <p className="max-value">100%</p>
         </div>
         <p className="current-value">{sliderVolume}</p>
+        <p className="text-sm">검사자는 연습 문항 실시하면서 환자의 MCL 레벨을 찾아내세요.</p>
       </div>
 
       <div className="number-input-wrapper">
@@ -129,13 +138,12 @@ const PreCheckScreen = () => {
 
       <div className="test-btn-wrapper">
         <button
-          className={!hooks.isTestStart || (hooks.isTestStart && hooks.isTestComplete)
-            ? "test-start-btn" : "test-start-btn deactive-btn" }
-          disabled={!(!hooks.isTestStart || (hooks.isTestStart && hooks.isTestComplete)) }
+          className={isBtnDisable ? "test-start-btn deactive-btn" : "test-start-btn"}
+          disabled={isBtnDisable}
           type="button"
           onClick={startTest}
         >
-          {(hooks.isTestStart && hooks.isTestComplete) ? "다시시작" : "테스트시작"}
+          {btnText}
         </button>
         <button
           className="test-skip-btn"

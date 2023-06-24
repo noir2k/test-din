@@ -244,4 +244,3 @@ const ChartComponent = (props: { data: ChartDataProps[] }) => {
 }
 
 export default ChartComponent;
-

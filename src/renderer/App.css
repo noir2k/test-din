@@ -747,7 +747,7 @@ span {
 .pre-check-form-title > p {
   text-align: center;
   font-weight: 600;
-  line-height: 32px;
+  line-height: 28px;
 }
 
 .pre-check-form-title > p:first-child {
@@ -785,14 +785,14 @@ span {
 }
 
 input[type='range'] {
-  width: 437px;
-  -webkit-appearance: none;
+  width: 440px;
+  appearance: none;
   background-color: transparent;
   position: relative;
 }
 
 input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
+  appearance: none;
   background: #568af0;
   cursor: pointer;
   height: 18px;
@@ -885,12 +885,14 @@ input[type='range']:active::-webkit-slider-runnable-track {
 .test-btn-wrapper > .test-start-btn,
 .test-btn-wrapper > .test-skip-btn,
 .test-btn-wrapper > .test-abort-btn,
-.sound-setting-btn-wrapper > .exit-btn {
+.sound-setting-btn-wrapper > .exit-btn,
+.sound-setting-btn-wrapper > .test-complete-btn {
   background-color: #568af0;
   margin: 0px 30px 0px 0px;
 }
 
 .test-skip-btn,
+.test-complete-btn,
 .info-btn {
   color: white;
 }
@@ -908,7 +910,7 @@ input[type='range']:active::-webkit-slider-runnable-track {
 
 .deactive-btn {
   background-color: #d9d9d9 !important;
-  color: black !important;
+  /* color: black !important; */
 }
 
 .number-btn-wrapper {

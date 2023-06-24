@@ -12,13 +12,22 @@ const AlertModal = () => {
   const alertModal = useAppSelector((state: RootState) => state.alertModal);
   const dispatch = useAppDispatch();
 
+  const onCLose = () => {
+    const { callback } = alertModal;
+    if ((typeof callback === 'function') && (callback.length === 1))
+    {
+      callback();
+    }
+    dispatch(resetAlertModal());
+  }
+
   return (
     <>
       <Transition appear show={alertModal.isShow} as={Fragment}>
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto"
-          onClose={() => dispatch(resetAlertModal())}
+          onClose={onCLose}
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
@@ -57,16 +66,17 @@ const AlertModal = () => {
                 </Dialog.Title>
                 }
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500 border-t pt-2">
+                  <p className="text-sm text-gray-500 border-t pt-2"
+                    style={{whiteSpace: 'pre'}}
+                  >
                     {alertModal.message}
                   </p>
                 </div>
-
                 <div className="mt-4">
                   <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-md hover:bg-red-200 duration-300"
-                    onClick={() => dispatch(resetAlertModal())}
+                    onClick={onCLose}
                   >
                     닫기
                   </button>

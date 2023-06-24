@@ -31,7 +31,8 @@ const calculateResult = (results: ScoreItemType[]): number => {
   let total = 0;
   const skip = 6;
   let _results = results;
-  if (results.length > 12) {
+
+  if (_results.length > 12) {
     _results = results.slice(0, -skip).slice(skip);
   }
 

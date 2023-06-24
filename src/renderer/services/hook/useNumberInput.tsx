@@ -21,6 +21,8 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
     setCountTest(1);
     setDigits(['', '', '']);
     setCurrentIndex(0);
+    setTestStart(false);
+    setTestComplete(false);
   }
 
   const handleNumberClick = (number: string) => {
@@ -53,7 +55,6 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
         } else {
           setDigits(['', '', '']);
           setTestComplete(true);
-          alert('검사가 종료되었습니다. 완료버튼을 눌러 다음으로 진행하세요.')
         }
       } else {
         setError(true);

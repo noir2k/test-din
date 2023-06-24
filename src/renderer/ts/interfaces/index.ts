@@ -17,7 +17,7 @@ export interface ColumnType {
   birthday: string;
   patient_no: string;
   tester_name: string;
-  reciever: string;
+  receiver: string;
   fixed_type: string;
   direction: string;
   volume_level: number;
@@ -35,7 +35,7 @@ export interface TestForm {
   birthday?: Date;
   patient_no?: string;
   tester_name?: string;
-  reciever?: string;
+  receiver?: string;
   fixed_type?: string,
   direction?: string;
   volume_level?: number;
@@ -57,7 +57,7 @@ export const ColumnName = {
 	birthday: 'birthday',
 	patient_no: 'patient_no',
   tester_name: 'tester_name',
-  reciever: 'reciever',
+  receiver: 'receiver',
   fixed_type: 'fixed_type',
 	direction: 'direction',
 	volume_level: 'volume_level',
@@ -67,6 +67,13 @@ export const ColumnName = {
 	test_date: 'test_date',
 	test_result: 'test_result',
 	reg_timestamp: 'reg_timestamp',
+}
+
+export const DataRange = {
+  "Normal": [-18, -5.28],
+  "Mild": [-5.27, 0.27],
+  "Moderate": [0.28, 0.68],
+  "Severe": [0.69, 12],
 }
 
 type OptionProps = { [key: string]: string };

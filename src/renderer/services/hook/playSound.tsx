@@ -5,22 +5,21 @@ export type PlayProps = {
   mp3: string;
   volume: number;
   delay: number;
-  onEnd: () => void;
+  onEnd?: () => void;
 };
 
 const PlaySound = (props: PlayProps) => {
   const { mp3, volume, delay, onEnd } = props;
   const vol = volume / 100;
-
+  const option = {
+    volume: vol,
+    src: [mp3],
+    onend: () => {
+      if ((typeof onEnd === 'function') && (onEnd.length === 1)) onEnd();
+    }
+  }
   useEffect(() => {
-    let howl = new Howl({
-      volume: vol,
-      src: [mp3],
-      onend: () => {
-        console.log('Finished!');
-        onEnd();
-      },
-    });
+    let howl = new Howl(option);
 
     setTimeout(() => {
       howl.play();
