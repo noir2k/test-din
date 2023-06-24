@@ -54,7 +54,7 @@ export const getAssetPath = (...paths: string[]): string => {
 
 async function installExtensions() {
   // [REACT_DEVELOPER_TOOLS] not work!
-  [REDUX_DEVTOOLS].forEach((extension) => {
+  [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
     log.log(extension);
     installExtension(extension, {
       loadExtensionOptions: {
@@ -62,8 +62,8 @@ async function installExtensions() {
       },
       forceDownload: !!process.env.UPGRADE_EXTENSIONS,
     })
-      .then((name) => console.log(`Added Extension: ${name}`))
-      .catch((err) => console.log(`"${extension}" An error occurred: `, err));
+    .then((name) => console.log(`Added Extension: ${name}`))
+    .catch((err) => console.log(`"${extension}" An error occurred: `, err));
   });
 }
 

@@ -11,7 +11,6 @@ import {
 import RightSnb from '@components/snb/RightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
-import { count } from 'console';
 
 const ext = '.mp3';
 const fileNames = ['1', '7', '25'];
