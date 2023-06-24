@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+
 import annotationPlugin from 'chartjs-plugin-annotation';
 
 import type { ChartOptions } from 'chart.js';
@@ -15,7 +16,8 @@ import { Line } from 'react-chartjs-2';
 
 import jsPDF from 'jspdf';
 
-import { ChartDataProps } from '@interfaces';
+
+import { DataRange, ChartDataProps } from '@interfaces';
 
 ChartJS.register(
   CategoryScale,
@@ -68,17 +70,19 @@ const plugins = {
     //   return tick.value;
     // });
 
-    var labelA = 'PROFOUND\n(120-90)';
-    var labelB = 'SEVERE\n(90~70)';
-    var labelC = 'MODERATELY\nSEVERE\n(55~70)';
-    var labelD = 'MODERATE\n(40~55)';
-    var labelE = 'MILD\n(25~40)';
-    var labelF = 'NORMAL\n(-10~25)';
 
-    const labelAStart = 0;
-    const labelAEnd = 3;
+    // "Normal": [-18, -5.28],
+    // "Mild": [-5.27, 0.27],
+    // "Moderate": [0.28, 0.68],
+    // "Severe": [0.69, 12],
 
-    const labelBStart = 3;
+    const labelB = 'SEVERE\n(?? ~ 12)';
+    const labelC = 'MODERATE to\nSEVERE\n(0.69 ~ ??)';
+    const labelD = 'MODERATE\n(0.28 ~ 0.68)';
+    const labelE = 'MILD\n(-5.27 ~ 0.27)';
+    const labelF = 'NORMAL\n(-18 ~ -5.28)';
+
+    const labelBStart = 0;
     const labelBEnd = 5;
 
     const labelCStart = 5;
@@ -91,7 +95,7 @@ const plugins = {
     const labelEEnd = 9.5;
 
     const labelFStart = 9.5;
-    const labelFEnd = 13;
+    const labelFEnd = 11;
     ctx.fillStyle = 'black';
     ctx.font = '12px Arial';
     ctx.textAlign = 'left';
@@ -99,9 +103,8 @@ const plugins = {
 
     const totalHeight = yStart + (yEnd - yStart);
     const margin = 54.5;
-    const step = (totalHeight - margin) / 13 / 2;
+    const step = (totalHeight - margin) / 11 / 2;
 
-    fillTextMultiLine(ctx, labelA, chart.chartArea.right + 10, totalHeight - ((labelAStart + labelAEnd) * step));
     fillTextMultiLine(ctx, labelB, chart.chartArea.right + 10, totalHeight - ((labelBStart + labelBEnd) * step));
     fillTextMultiLine(ctx, labelC, chart.chartArea.right + 10, totalHeight - ((labelCStart + labelCEnd) * step) - 8);
     fillTextMultiLine(ctx, labelD, chart.chartArea.right + 10, totalHeight - ((labelDStart + labelDEnd) * step));
@@ -123,60 +126,53 @@ const options: ChartOptions<'line'> = {
     },
     annotation: {
       annotations: {
-        line1: {
-          type: 'line',
-          yMin: 90,
-          yMax: 90,
-          borderColor: 'rgb(255, 99, 132)',
-          borderWidth: 1,
-        },
+        // line1: {
+        //   type: 'line',
+        //   yMin: 0.69,
+        //   yMax: 0.69,
+        //   borderColor: 'rgb(255, 99, 132)',
+        //   borderWidth: 1,
+        // },
         line2: {
           type: 'line',
-          yMin: 70,
-          yMax: 70,
+          yMin: 0.68,
+          yMax: 0.68,
           borderColor: 'rgb(255, 99, 132)',
           borderWidth: 1,
         },
         line3: {
           type: 'line',
-          yMin: 55,
-          yMax: 55,
+          yMin: 0.27,
+          yMax: 0.27,
           borderColor: 'rgb(255, 99, 132)',
           borderWidth: 1,
         },
         line4: {
           type: 'line',
-          yMin: 40,
-          yMax: 40,
+          yMin: -5.28,
+          yMax: -5.28,
           borderColor: 'rgb(255, 99, 132)',
           borderWidth: 1,
         },
-        line5: {
-          type: 'line',
-          yMin: 25,
-          yMax: 25,
-          borderColor: 'rgb(255, 99, 132)',
-          borderWidth: 1,
-        }
       }
     }
   },
   scales: {
     y: {
-      suggestedMin: -10,
-      suggestedMax: 120,
+      suggestedMin: -18,
+      suggestedMax: 12,
       ticks: {
-        stepSize: 10
+        stepSize: 0.5
       },
       reverse: true
     },
     y1: {
       position: 'right',
       display: false,
-      suggestedMin: -10,
-      suggestedMax: 120,
+      suggestedMin: -18,
+      suggestedMax: 12,
       ticks: {
-        stepSize: 10
+        stepSize: 0.5
       },
       reverse: true,
       afterFit(scale) {
@@ -188,7 +184,7 @@ const options: ChartOptions<'line'> = {
 
 const downloadPDF = () => {
   const canvas = document.getElementById('chart') as HTMLCanvasElement;
-  const canvasImage = canvas.toDataURL('image/jpeg', 1.0);
+  const canvasImage = canvas.toDataURL('image/png', 1.0);
   const { width, height } = canvas.getBoundingClientRect();
 
   let pdf = new jsPDF({
@@ -204,8 +200,8 @@ const downloadPDF = () => {
 
 const ChartComponent = (props: { data: ChartDataProps[] }) => {
   const data = props.data.reverse();
-  const xLabels = data.map(function(d) { return d.date; });
-  const yValues = data.map(function(d) { return d.value; });
+  const xLabels = data.map((d) => d.date);
+  const yValues = data.map((d) => d.value);
 
   const chartData = {
     labels: xLabels,

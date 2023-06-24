@@ -9,8 +9,8 @@ export default function Welcome() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <img width="250" alt="icon" src={sm_logo} />
-      <img width="738" height="100" alt="icon" src={lg_logo} />
+      <img width="192" alt="icon" src={sm_logo} />
+      <img width="640" height="100" alt="icon" src={lg_logo} />
       <h2 className="my-10 text-4xl font-semibold">아이해브 청력 테스트 Pro</h2>
       <button
         type="button"

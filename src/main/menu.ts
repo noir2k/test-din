@@ -40,7 +40,6 @@ export default class MenuBuilder {
   setupDevelopmentEnvironment(): void {
     this.mainWindow.webContents.on('context-menu', (_, props) => {
       const { x, y } = props;
-
       Menu.buildFromTemplate([
         {
           label: 'Inspect element',
@@ -169,7 +168,9 @@ export default class MenuBuilder {
         ? subMenuViewDev
         : subMenuViewProd;
 
-    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
+
+    return [];
+    // return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
   }
 
   buildDefaultTemplate() {
@@ -245,6 +246,7 @@ export default class MenuBuilder {
       },
     ];
 
-    return templateDefault;
+    return [];
+    // return templateDefault;
   }
 }

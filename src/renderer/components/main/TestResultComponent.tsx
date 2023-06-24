@@ -12,12 +12,12 @@ import { ChartDataProps } from '@interfaces';
 // test for reload data on changed
 
 const data_dummy: ChartDataProps[] = [
-  { date: '2023-06-01', value: 110 },
-  { date: '2023-05-01', value: 90 },
-  { date: '2023-04-01', value: 70 },
-  { date: '2023-03-01', value: 50 },
-  { date: '2023-02-01', value: 30 },
-  { date: '2023-01-01', value: 10 },
+  { date: '2023-06-01', value: -18 },
+  { date: '2023-05-01', value: -12 },
+  { date: '2023-04-01', value: -6 },
+  { date: '2023-03-01', value: 0 },
+  { date: '2023-02-01', value: 6 },
+  { date: '2023-01-01', value: 12 },
 ];
 
 const TestResult = () => {
