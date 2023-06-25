@@ -36,6 +36,7 @@ const ExamineeInfoForm = () => {
   const [isDisabled, setDisable] = useState(false);
 
   const userData = useAppSelector((state: RootState) => state.userData);
+  const testForm = useAppSelector((state: RootState) => state.testForm);
 
   const dispatch = useAppDispatch();
 
@@ -242,7 +243,7 @@ const ExamineeInfoForm = () => {
               <input
                 type="text"
                 id={ColumnName.tester_name}
-                defaultValue={''}
+                defaultValue={testForm?.tester_name}
                 {...register(
                   `${ColumnName.tester_name}`,
                   { required: '검사자명 항목은 필수입니다.' }
@@ -261,7 +262,7 @@ const ExamineeInfoForm = () => {
               <input
                 type="text"
                 id={ColumnName.receiver}
-                defaultValue={''}
+                defaultValue={testForm?.receiver}
                 {...register(
                   `${ColumnName.receiver}`,
                   { required: '리시버 항목은 필수입니다.' }

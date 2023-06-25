@@ -74,6 +74,11 @@ const CheckScreen = () => {
     dispatch(resetScore());
   }
 
+  const handleTestComplete = () => {
+    dispatch(setTestResult(scoreData.scoreItems));
+    dispatch(nextPage());
+  }
+
   useEffect(() => {
     if (isEmpty(testForm)) {
       dispatch(
@@ -93,10 +98,10 @@ const CheckScreen = () => {
         scoring: testForm.scoring,
         max_count: maxCount,
       }));
-      dispatch(clearScoreItems());
     }
 
     return () => {
+      dispatch(clearScoreItems());
       hooks.resetTest();
     };
   }, []);
@@ -111,14 +116,13 @@ const CheckScreen = () => {
 
   useEffect(() => {
     if (hooks.isTestComplete) {
-      dispatch(setTestResult(scoreData.scoreItems));
       dispatch(
         setAlertModal({
           isShow: true,
           title:'검사 완료',
           message: `본 테스트가 완료되었습니다.
 결과 화면으로 진행합니다.`,
-          callback: dispatch(nextPage())
+          callback: () => handleTestComplete()
         })
       );
     }
