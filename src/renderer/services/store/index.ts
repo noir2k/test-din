@@ -7,6 +7,7 @@ import scoreProvider from './slices/scoreProvider';
 import userDataProvider from './slices/userDataProvider';
 import testFormProvider from './slices/testFormProvider';
 import testProgressProvider from './slices/testProgressProvider';
+import testResultProvider from './slices/testResultProvider';
 
 const rootReducer = combineReducers({
   popupToggle: popupToggle,
@@ -14,12 +15,15 @@ const rootReducer = combineReducers({
   scoreData: scoreProvider,
   userData: userDataProvider,
   testForm: testFormProvider,
-  testProgress: testProgressProvider
+  testProgress: testProgressProvider,
+  testResult: testResultProvider,
 });
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(logger),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(
+    { serializableCheck: false }
+  ).concat(logger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

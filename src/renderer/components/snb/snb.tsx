@@ -15,12 +15,19 @@ import useInfiniteScroll from '@hook/useInfiniteScroll';
 import ExamineeCard from '@components/main/examineeCard';
 
 import {
+  resetForm
+} from '@store/slices/testFormProvider';
+
+import {
   resetProgress
 } from '@store/slices/testProgressProvider';
 
+
 import {
-  resetForm
-} from '@store/slices/testFormProvider';
+  setTestResult,
+  setMergeResult,
+  resetTestResult,
+} from '@store/slices/testResultProvider';
 
 import {
   setNoticeOpen,
@@ -45,9 +52,9 @@ const snb = () => {
   const [selectedIndex, setSelectedIndex] = useState<any>(0);
   const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [exData, setExData] = useState<ColumnType[] | null>(null);
 
   const userData = useAppSelector((state: RootState) => state.userData);
+  const testResult = useAppSelector((state: RootState) => state.testResult);
 
   const dispatch = useAppDispatch();
 
@@ -80,7 +87,7 @@ const snb = () => {
     if (isConfirm) {
       setMoreData(false);
       setSelectedIndex(0);
-      setExData(null);
+      dispatch(resetTestResult());
       dispatch(resetUserInfo());
       dispatch(setUserRegister(true));
     }
@@ -97,8 +104,9 @@ const snb = () => {
 
   const onLoadData = (data: unknown) => {
     const colData = data as ColumnType[];
+    console.log("onLoadData", colData);
     if (colData !== null) {
-      setExData(colData);
+      dispatch(setTestResult(colData));
       dispatch(setUserInfo(colData[0]));
       const isNoMore = colData.length < 10;
       setMoreData(!isNoMore);
@@ -129,8 +137,9 @@ const snb = () => {
     const channel = 'load-more-data';
     window.electron.ipcRenderer.on(channel, (data) => {
       const colData = data as ColumnType[];
-      if (colData !== null && exData !== null) {
-        setExData([...exData, ...colData]);
+      console.log("moreLoadData", colData);
+      if (colData !== null && testResult.data !== null) {
+        dispatch(setMergeResult(colData))
         const isNoMore = colData.length < 10;
         setMoreData(!isNoMore);
       }
@@ -243,7 +252,7 @@ const snb = () => {
       </div>
       <div className="child import-success-screen overflow-y-auto">
         <div>
-          {exData && exData.map((item) => (
+          {!isEmpty(testResult.data) && testResult.data.map((item) => (
             <div key={hash(item)} className={selectedIndex == item.id ? "selected-item" : ""} onClick={() => setSelectedIndex(item.id)}>
               <ExamineeCard item={item} />
             </div>

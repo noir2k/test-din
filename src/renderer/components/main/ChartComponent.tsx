@@ -19,6 +19,15 @@ import jsPDF from 'jspdf';
 
 import { DataRange, ChartDataProps } from '@interfaces';
 
+const data_dummy: ChartDataProps[] = [
+  { date: '2023-06-01', value: -18 },
+  { date: '2023-05-01', value: -12 },
+  { date: '2023-04-01', value: -6 },
+  { date: '2023-03-01', value: 0 },
+  { date: '2023-02-01', value: 6 },
+  { date: '2023-01-01', value: 12 },
+];
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
