@@ -1,15 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ColumnType } from '@interfaces';
-
 interface PopupToggleState {
   isNoticeOpen: boolean;
   isHistoryOpen: boolean;
   isSettingOpen: boolean;
   isTestStartOpen: boolean;
   isInfoPopupOpen: boolean;
-  isEditingName: boolean;
-  chartItemData?: ColumnType;
+  isUserRegister: boolean;
+  isRegister: boolean;
 }
 
 const initialState: PopupToggleState = {
@@ -18,7 +16,8 @@ const initialState: PopupToggleState = {
   isSettingOpen: false,
   isTestStartOpen: false,
   isInfoPopupOpen: false,
-  isEditingName: false,
+  isUserRegister: false,
+  isRegister: true,
 };
 
 const popupToggleSlice = createSlice({
@@ -31,16 +30,15 @@ const popupToggleSlice = createSlice({
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
-      state.isEditingName = false;
+      state.isUserRegister = false;
     },
-    setHistoryOpen: (state, actions) => {
+    setHistoryOpen: (state) => {
       state.isNoticeOpen = false;
       state.isHistoryOpen = true; //!state.isHistoryOpen;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
-      state.isEditingName = false;
-      state.chartItemData = actions.payload.chartItemData;
+      state.isUserRegister = false;
     },
     setSettingOpen: (state) => {
       state.isNoticeOpen = false;
@@ -48,7 +46,7 @@ const popupToggleSlice = createSlice({
       state.isSettingOpen = true; //!state.isSettingOpen;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
-      state.isEditingName = false;
+      state.isUserRegister = false;
     },
     setTestStartOpen: (state) => {
       state.isNoticeOpen = false;
@@ -56,7 +54,7 @@ const popupToggleSlice = createSlice({
       state.isSettingOpen = false;
       state.isTestStartOpen = true; //!state.isTestStartOpen;
       state.isInfoPopupOpen = false;
-      state.isEditingName = false;
+      state.isUserRegister = false;
     },
     setInfoPopupOpen: (state) => {
       state.isNoticeOpen = false;
@@ -64,15 +62,16 @@ const popupToggleSlice = createSlice({
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = true; //!state.isInfoPopupOpen;
-      state.isEditingName = false;
+      state.isUserRegister = false;
     },
-    setEditingName: (state) => {
+    setUserRegister: (state, actions) => {
       state.isNoticeOpen = false;
       state.isHistoryOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
-      state.isEditingName = true; //!state.isEditingName;
+      state.isUserRegister = true; //!state.isEditingName;
+      state.isRegister = actions.payload;
     },
   },
 });
@@ -83,7 +82,7 @@ export const {
   setSettingOpen,
   setTestStartOpen,
   setInfoPopupOpen,
-  setEditingName,
+  setUserRegister,
 } = popupToggleSlice.actions;
 
 export default popupToggleSlice.reducer;

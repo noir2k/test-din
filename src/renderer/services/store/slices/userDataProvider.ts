@@ -3,7 +3,7 @@ import { UserInfo } from '@interfaces';
 
 const initialState: UserInfo = {};
 
-const userNameSlice = createSlice({
+const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState,
   reducers: {
@@ -21,6 +21,6 @@ const userNameSlice = createSlice({
 export const {
   setUserInfo,
   resetUserInfo
-} = userNameSlice.actions;
+} = userInfoSlice.actions;
 
-export default userNameSlice.reducer;
+export default userInfoSlice.reducer;

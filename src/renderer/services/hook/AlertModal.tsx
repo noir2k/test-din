@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '@hook/index';
 import { RootState } from '@store/index';
 
 import {
+  setShow,
   resetAlertModal,
 } from '@store/slices/alertModalProvider';
 
@@ -13,8 +14,12 @@ const AlertModal = () => {
   const dispatch = useAppDispatch();
 
   const onCLose = () => {
+    dispatch(setShow(false));
+  }
+
+  const afterLeave = () => {
     const { callback } = alertModal;
-    if ((typeof callback === 'function') && (callback.length === 1))
+    if (typeof callback === 'function')
     {
       callback();
     }
@@ -23,7 +28,11 @@ const AlertModal = () => {
 
   return (
     <>
-      <Transition appear show={alertModal.isShow} as={Fragment}>
+      <Transition appear
+        show={alertModal.isShow}
+        as={Fragment}
+        afterLeave={afterLeave}
+      >
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto"

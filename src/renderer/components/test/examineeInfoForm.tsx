@@ -45,7 +45,7 @@ const ExamineeInfoForm = () => {
     formState: { isSubmitting },
     setValue,
     setFocus,
-   } = useForm();
+  } = useForm();
 
   const onSubmit = (data: any) => {
     dispatch(setTestForm(data));

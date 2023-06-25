@@ -24,23 +24,24 @@ import {
 
 import {
   setNoticeOpen,
-  setEditingName,
+  setUserRegister,
   setInfoPopupOpen,
   setSettingOpen,
   setTestStartOpen,
 } from '@store/slices/popupToggle';
 
-import { setUserInfo } from '@store/slices/userDataProvider';
+import {
+  setAlertModal,
+} from '@store/slices/alertModalProvider';
+
+import {
+  setUserInfo,
+  resetUserInfo,
+} from '@store/slices/userDataProvider';
 
 import { ColumnType } from '@interfaces';
 
 const snb = () => {
-  const testStartOpen = () => {
-    dispatch(resetForm());
-    dispatch(resetProgress());
-    dispatch(setTestStartOpen());
-  }
-
   const [selectedIndex, setSelectedIndex] = useState<any>(0);
   const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -49,6 +50,41 @@ const snb = () => {
   const userData = useAppSelector((state: RootState) => state.userData);
 
   const dispatch = useAppDispatch();
+
+  const testStartOpen = () => {
+    if (isEmpty(userData)) {
+      dispatch(
+        setAlertModal({
+          isShow: true,
+          title:'환자 정보 오류',
+          message: `등록된 환자정보가 없습니다.
+먼저 환자정보를 등록해주세요.`
+        })
+      );
+    } else {
+      dispatch(resetForm());
+      dispatch(resetProgress());
+      dispatch(setTestStartOpen());
+    }
+  }
+
+  const userRegister = () => {
+    let isConfirm = true;
+    if (!isEmpty(userData)) {
+      isConfirm = confirm(`이미 등록된 환자 정보가 있습니다.
+신규 환자를 등록하시면 기존의 검사정보는 초기화 됩니다.
+
+새로 등록하시겠습니까?`);
+    }
+
+    if (isConfirm) {
+      setMoreData(false);
+      setSelectedIndex(0);
+      setExData(null);
+      dispatch(resetUserInfo());
+      dispatch(setUserRegister(true));
+    }
+  }
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     if (isIntersecting && isMoreData && !isLoading) {
@@ -63,20 +99,13 @@ const snb = () => {
     const colData = data as ColumnType[];
     if (colData !== null) {
       setExData(colData);
-      console.log(colData);
       dispatch(setUserInfo(colData[0]));
       const isNoMore = colData.length < 10;
       setMoreData(!isNoMore);
     }
     setLoading(false);
+    dispatch(setNoticeOpen());
   };
-
-  // TODO: will be removed
-  // const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
-  // console.log(popupToggle);
-  // const answerProvider = useAppSelector((state: RootState) => state.answer);
-  // console.log(answerProvider);
-  // TODO: will be removed END
 
   useEffect(() => {
     const channel = 'sql-file-selected';
@@ -140,11 +169,9 @@ const snb = () => {
               <button
                 type="button"
                 className="snb-column-child-btn btn-blue"
-                onClick={() => {
-                  console.log('onClick btn-blue');
-                }}
+                onClick={userRegister}
               >
-                환자
+                신규환자등록
               </button>
             </div>
             <div className="snb-column-child-container">
@@ -159,7 +186,7 @@ const snb = () => {
                     );
                   }}
                 >
-                  백업하기
+                  저장하기
                 </button>
               </label>
             </div>
@@ -175,7 +202,7 @@ const snb = () => {
                     );
                   }}
                 >
-                  가져오기
+                  불러오기
                 </button>
               </label>
             </div>
@@ -186,15 +213,19 @@ const snb = () => {
         <div className="examinee-data-wrapper">
           <div className="cursor-pointer data-text ml-5"
             onClick={() => {
-              if (isEmpty(userData)) {
-                alert('사용자 검사 정보가 없습니다.')
-              } else {
+              if (!isEmpty(userData)) {
                 dispatch(setInfoPopupOpen());
               }
             }}
           >
             <img className="float-left mr-5" src={ico_user} alt="user icon" />
-            <span className="text-white text-lg font-bold">환자명</span>
+            <span className="text-white text-lg font-bold">
+              {
+                isEmpty(userData)
+                  ? '환자명 (환자번호)'
+                  : <p>{userData.user_name} ({userData.patient_no})</p>
+              }
+            </span>
           </div>
           <button
             type="button"
@@ -202,7 +233,7 @@ const snb = () => {
             disabled={isEmpty(userData)}
             onClick={() => {
               if (!isEmpty(userData)) {
-                dispatch(setEditingName());
+                dispatch(setUserRegister(false));
               }
             }}
           >
@@ -223,7 +254,7 @@ const snb = () => {
       <div className="child btn-wrapper">
         <button
           type="button"
-          className="test-start-btn"
+          className="test-start-btn text-xl"
           onClick={testStartOpen}
         >
           시작하기

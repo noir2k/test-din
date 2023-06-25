@@ -13,16 +13,14 @@ const ExamineeCard = ({ ...props }) => {
     <div
       className="examinee-card"
       onClick={() => {
-        dispatch(setHistoryOpen({ chartItemData: props }));
+        dispatch(setHistoryOpen());
       }}
     >
       <img src={ico_document} alt="document icon" />
       <div className="examinee-card-data">
-        <p>{item.user_name}({item.patient_no})</p>
+        <p>{item.fixed_type}{item.direction}({item.scoring}) </p>
         <p>{item.test_date}</p>
       </div>
-      {/* <div className="examinee-name"></div>
-      <div className="examination-date">{item.test_date}</div> */}
       <div className="delete-btn-wrapper">
         <button
           type="button"

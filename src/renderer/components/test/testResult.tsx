@@ -1,4 +1,7 @@
-import { useAppDispatch } from '@hook/index';
+import { useState } from 'react';
+import { useAppSelector, useAppDispatch } from '@hook/index';
+
+import type { RootState } from '@store/index';
 
 import { setNoticeOpen } from '@store/slices/popupToggle';
 
@@ -8,11 +11,11 @@ import TestResultComponent from '@components/main/TestResultComponent';
 // import TestResultPopup from './testResultPopup';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
-import test_result_img from '@assets/images/test_result_img.png';
-import { useState } from 'react';
 
 export default function TestResult() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+
+  const testForm = useAppSelector((state: RootState) => state.testForm);
 
   // const dispatch = useAppDispatch();
 

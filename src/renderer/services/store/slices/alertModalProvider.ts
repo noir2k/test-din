@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type AlertModalType = {
   isShow: boolean,
@@ -11,9 +11,10 @@ const initialState: AlertModalType = {
   isShow: false,
   title: '',
   message: '',
+  callback: undefined
 };
 
-const userNameSlice = createSlice({
+const alertModalSlice = createSlice({
   name: 'alertModal',
   initialState,
   reducers: {
@@ -22,9 +23,10 @@ const userNameSlice = createSlice({
       state.isShow = action.payload.isShow;
       state.title = action.payload.title;
       state.message = action.payload.message;
-      if (action.payload.callback) {
-        state.callback = action.payload.callback;
-      }
+      state.callback = action.payload.callback;
+    },
+    setShow: (state, action) => {
+      state.isShow = action.payload;
     },
     resetAlertModal: () => initialState,
   }
@@ -32,7 +34,8 @@ const userNameSlice = createSlice({
 
 export const {
   setAlertModal,
+  setShow,
   resetAlertModal,
-} = userNameSlice.actions;
+} = alertModalSlice.actions;
 
-export default userNameSlice.reducer;
+export default alertModalSlice.reducer;

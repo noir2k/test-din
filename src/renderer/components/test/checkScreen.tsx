@@ -17,6 +17,7 @@ import {
 import {
   setScoreConfig,
   setScoreItem,
+  clearScoreItems,
   resetScore,
 } from '@store/slices/scoreProvider';
 
@@ -68,8 +69,12 @@ const CheckScreen = () => {
     }
   }
 
+  const handleTestFormError = () => {
+    dispatch(resetProgress());
+    dispatch(resetScore());
+  }
+
   useEffect(() => {
-    console.log("useEffect MOUNT", testForm, maxCount);
     if (isEmpty(testForm)) {
       dispatch(
         setAlertModal({
@@ -77,7 +82,7 @@ const CheckScreen = () => {
           title:'기본 정보 오류',
           message: `입력 정보 중 오류 내용이 있습니다.
 기본 정보 입력 화면으로 돌아갑니다.`,
-          callback: dispatch(resetProgress())
+          callback: () => handleTestFormError()
         })
       );
     } else {
@@ -88,11 +93,11 @@ const CheckScreen = () => {
         scoring: testForm.scoring,
         max_count: maxCount,
       }));
+      dispatch(clearScoreItems());
     }
 
     return () => {
       hooks.resetTest();
-      dispatch(resetScore());
     };
   }, []);
 
@@ -129,10 +134,8 @@ const CheckScreen = () => {
 
   useEffect(() => {
     const index = hooks.countTest - 1;
-    console.log("scoreData.scoreConfig", scoreData.scoreConfig);
-    console.log("scoreData.scoreItems", scoreData.scoreItems);
     let bias = testForm.volume_level;
-    if (scoreData.scoreItems.length > 0) {
+    if (scoreData.scoreItems.length > 1) {
       const beforeIndex = index - 1;
       if (scoreData.scoreItems[beforeIndex].isPass) {
         const _bias = scoreData.scoreItems[beforeIndex].volume_level - 2;

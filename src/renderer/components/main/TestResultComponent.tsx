@@ -24,14 +24,14 @@ const TestResult = () => {
   const [toggle, setToggle] = useState(false);
   const [chartData, setChartData] = useState<ChartDataProps[] | null>(null);
 
-  const chartItemData = useAppSelector(
-    (state: RootState) => state.popupToggle.chartItemData
-  );
+  // const chartItemData = useAppSelector(
+  //   (state: RootState) => state.popupToggle.chartItemData
+  // );
 
-  useEffect(() => {
-    const channel = 'graph-data';
-    window.electron.ipcRenderer.sendMessage(channel, []);
-  }, [chartItemData]);
+  // useEffect(() => {
+  //   const channel = 'graph-data';
+  //   window.electron.ipcRenderer.sendMessage(channel, []);
+  // }, [chartItemData]);
 
   useEffect(() => {
     const channel = 'graph-data-result';
@@ -59,7 +59,7 @@ const TestResult = () => {
 
   return (
     <div className="chart-wrapper">
-      {chartData && <ChartComponent data={chartData} />}
+      {/* {chartData && <ChartComponent data={chartData} />} */}
     </div>
   );
 };

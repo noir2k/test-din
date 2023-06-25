@@ -74,6 +74,9 @@ const answerSlice = createSlice({
       scoreItem.answer = answer;
       scoreItem.userAnswer = digits;
     },
+    clearScoreItems: (state) => {
+      state.scoreItems = [];
+    },
     resetScore: () => initialState
   }
 });
@@ -130,6 +133,7 @@ export const {
   setScoreConfig,
   setScoreItem,
   setScoreItemResult,
+  clearScoreItems,
   resetScore,
 } = answerSlice.actions;
 

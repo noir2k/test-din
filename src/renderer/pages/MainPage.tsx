@@ -7,12 +7,12 @@ import bg_circle_3 from '@assets/images/bg_circle_3.png';
 import bg_circle_4 from '@assets/images/bg_circle_4.png';
 
 import TestForm from '@components/test/testForm';
-import Notice from '@components/main/notice';
+import Notice from '@components/main/Notice';
 import TestResult from '@components/main/TestResultComponent';
 import Setting from '@components/main/SettingComponent';
 import Snb from '@components/snb/snb';
 import ExamineeInfoPopup from '@components/snb/examineePopup';
-import EditingName from '@components/main/EditingName';
+import UserRegister from '@components/main/UserRegister';
 
 import AlertModal from '@hook/AlertModal';
 
@@ -24,7 +24,7 @@ const MainPage = () => {
   const isTestStartOpen = popupToggle.isTestStartOpen;
   const isSettingOpen = popupToggle.isSettingOpen;
   const isInfoPopupOpen = popupToggle.isInfoPopupOpen;
-  const isEditingName = popupToggle.isEditingName;
+  const isUserRegister = popupToggle.isUserRegister;
 
   return (
     <div>
@@ -38,7 +38,7 @@ const MainPage = () => {
             >
               {isNoticeOpen && <Notice />}
               {isInfoPopupOpen && <ExamineeInfoPopup />}
-              {isEditingName && <EditingName />}
+              {isUserRegister && <UserRegister />}
               {isHistoryOpen && <TestResult />}
               {isTestStartOpen && <TestForm />}
               {isSettingOpen && <Setting />}

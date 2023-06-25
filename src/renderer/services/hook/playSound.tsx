@@ -15,7 +15,7 @@ const PlaySound = (props: PlayProps) => {
     volume: vol,
     src: [mp3],
     onend: () => {
-      if ((typeof onEnd === 'function') && (onEnd.length === 1)) onEnd();
+      if (typeof onEnd === 'function') onEnd();
     }
   }
   useEffect(() => {
