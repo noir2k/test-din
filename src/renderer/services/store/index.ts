@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
-import popupToggle from './slices/popupToggle';
+import navigateProvicer from './slices/navigateProvicer';
 import alertModalProvider from './slices/alertModalProvider';
 import scoreProvider from './slices/scoreProvider';
 import userDataProvider from './slices/userDataProvider';
@@ -10,7 +10,7 @@ import testProgressProvider from './slices/testProgressProvider';
 import testResultProvider from './slices/testResultProvider';
 
 const rootReducer = combineReducers({
-  popupToggle: popupToggle,
+  navigate: navigateProvicer,
   alertModal: alertModalProvider,
   scoreData: scoreProvider,
   userData: userDataProvider,
@@ -23,7 +23,8 @@ export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(
     { serializableCheck: false }
-  ).concat(logger),
+  )
+  .concat(logger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

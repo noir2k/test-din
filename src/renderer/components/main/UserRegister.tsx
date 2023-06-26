@@ -10,7 +10,7 @@ import type { FieldError } from 'react-hook-form';
 
 import {
   setNoticeOpen,
-} from '@store/slices/popupToggle';
+} from '@store/slices/navigateProvicer';
 
 import {
   setUserInfo,
@@ -20,12 +20,10 @@ import {
   setAlertModal,
 } from '@store/slices/alertModalProvider';
 
-import {
-  ColumnName,
-  UserInfo,
-} from '@interfaces';
+import { UserInfo } from '@interfaces';
+import { ColumnName } from '@lib/common';
 
-import { IdentificationIcon } from '@heroicons/react/20/solid';
+import { IdentificationIcon } from '@heroicons/react/24/solid';
 
 type ErrorMessageType = {
   [key: string]: FieldError;
@@ -33,7 +31,7 @@ type ErrorMessageType = {
 
 const UserRegister = () => {
   const userData = useAppSelector((state: RootState) => state.userData);
-  const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
+  const navigate = useAppSelector((state: RootState) => state.navigate);
 
   const dispatch = useAppDispatch();
 
@@ -121,10 +119,10 @@ const UserRegister = () => {
   }
 
   useEffect(() => {
-    if (popupToggle.isRegister)  {
+    if (navigate.isRegister)  {
       handleReset();
     }
-  }, [popupToggle.isRegister]);
+  }, [navigate.isRegister]);
 
   return (
     <>

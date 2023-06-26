@@ -13,15 +13,19 @@ import {
   SoundSetOptions,
   FixedTypeOptions,
   DirectionOptions
-} from '@interfaces';
+} from '@lib/common';
+
+import {
+  setSession,
+} from '@store/slices/userDataProvider';
 
 import {
   setTestForm,
-  resetDefaultForm
+  resetDefaultForm,
 } from '@store/slices/testFormProvider';
 
 import {
-  nextPage
+  nextPage,
 } from '@store/slices/testProgressProvider';
 
 import {
@@ -49,6 +53,10 @@ const ExamineeInfoForm = () => {
   } = useForm();
 
   const onSubmit = (data: any) => {
+    if (userData.sessionId !== undefined) {
+      console.log("NEW SESSION");
+      dispatch(setSession());
+    }
     dispatch(setTestForm(data));
     dispatch(nextPage());
   }

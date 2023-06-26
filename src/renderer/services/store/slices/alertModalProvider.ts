@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 type AlertModalType = {
   isShow: boolean,
@@ -29,7 +29,7 @@ const alertModalSlice = createSlice({
       state.isShow = action.payload;
     },
     resetAlertModal: () => initialState,
-  }
+  },
 });
 
 export const {

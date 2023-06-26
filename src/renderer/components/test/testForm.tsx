@@ -15,7 +15,7 @@ import ico_angle_right from '@assets/images/icons/icon_angle_right.png';
 import ExamineeInfoForm from './examineeInfoForm';
 import PreCheckScreen from './preCheckScreen';
 import CheckScreen from './checkScreen';
-import TestResult from './testResult';
+import TestComplete from './testComplete';
 
 const TestForm = () => {
   const createPages = (length: number): number[] => {
@@ -84,7 +84,7 @@ const TestForm = () => {
           {currentPage === 0 && <ExamineeInfoForm />}
           {currentPage === 1 && <PreCheckScreen />}
           {currentPage === 2 && <CheckScreen />}
-          {currentPage === 3 && <TestResult />}
+          {currentPage === 3 && <TestComplete />}
         </div>
       </div>
     </div>

@@ -79,6 +79,7 @@ const CheckScreen = () => {
     dispatch(nextPage());
   }
 
+
   useEffect(() => {
     if (isEmpty(testForm)) {
       dispatch(
@@ -90,6 +91,7 @@ const CheckScreen = () => {
           callback: () => handleTestFormError()
         })
       );
+
     } else {
       dispatch(setScoreConfig({
         volume_level: testForm.volume_level,

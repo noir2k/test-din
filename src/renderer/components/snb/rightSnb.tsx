@@ -5,7 +5,7 @@ import {
   ScoringOptions,
   SoundSetOptions,
   DirectionOptions
-} from '@interfaces';
+} from '@lib/common';
 
 import ico_speaker_white from '@assets/images/icons/icon_speaker_white.png';
 

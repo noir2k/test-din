@@ -2,7 +2,7 @@ import type { ConfigSchemaType } from '@interfaces';
 import { useState, useEffect } from 'react';
 
 import { useAppDispatch } from '@hook/index';
-import { setNoticeOpen } from '@store/slices/popupToggle';
+import { setNoticeOpen } from '@store/slices/navigateProvicer';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 

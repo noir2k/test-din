@@ -14,13 +14,21 @@ const userInfoSlice = createSlice({
       state.birthday = action.payload.birthday;
       state.patient_no = action.payload.patient_no;
     },
+    setSession: (state) => {
+      state.sessionId = Number(new Date).toString(36);;
+    },
+    clearSession: (state) => {
+      state.sessionId = undefined;
+    },
     resetUserInfo: () => initialState,
   }
 });
 
 export const {
   setUserInfo,
-  resetUserInfo
+  resetUserInfo,
+  setSession,
+  clearSession,
 } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

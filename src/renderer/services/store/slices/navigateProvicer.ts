@@ -1,76 +1,81 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { TestForm } from '@interfaces';
+import { columnToForm } from '@lib/common';
 
-interface PopupToggleState {
+interface navigateState {
   isNoticeOpen: boolean;
-  isHistoryOpen: boolean;
+  isTestResultOpen: boolean;
   isSettingOpen: boolean;
   isTestStartOpen: boolean;
   isInfoPopupOpen: boolean;
   isUserRegister: boolean;
   isRegister: boolean;
+  itemResult?: TestForm;
 }
 
-const initialState: PopupToggleState = {
+const initialState: navigateState = {
   isNoticeOpen: true,
-  isHistoryOpen: false,
+  isTestResultOpen: false,
   isSettingOpen: false,
   isTestStartOpen: false,
   isInfoPopupOpen: false,
   isUserRegister: false,
   isRegister: true,
+  itemResult: undefined
 };
 
-const popupToggleSlice = createSlice({
-  name: 'popupToggle',
+const navigateProvider = createSlice({
+  name: 'navigate',
   initialState,
   reducers: {
     setNoticeOpen: (state) => {
-      state.isNoticeOpen = true; //!state.isNoticeOpen;
-      state.isHistoryOpen = false;
+      state.isNoticeOpen = true;
+      state.isTestResultOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
       state.isUserRegister = false;
     },
-    setHistoryOpen: (state) => {
+    setTestResultOpen: (state, actions) => {
       state.isNoticeOpen = false;
-      state.isHistoryOpen = true; //!state.isHistoryOpen;
+      state.isTestResultOpen = true;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
       state.isUserRegister = false;
+      state.itemResult = columnToForm(actions.payload);
     },
     setSettingOpen: (state) => {
       state.isNoticeOpen = false;
-      state.isHistoryOpen = false;
-      state.isSettingOpen = true; //!state.isSettingOpen;
+      state.isTestResultOpen = false;
+      state.isSettingOpen = true;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
       state.isUserRegister = false;
     },
     setTestStartOpen: (state) => {
       state.isNoticeOpen = false;
-      state.isHistoryOpen = false;
+      state.isTestResultOpen = false;
       state.isSettingOpen = false;
-      state.isTestStartOpen = true; //!state.isTestStartOpen;
+      state.isTestStartOpen = true;
       state.isInfoPopupOpen = false;
       state.isUserRegister = false;
     },
     setInfoPopupOpen: (state) => {
       state.isNoticeOpen = false;
-      state.isHistoryOpen = false;
+      state.isTestResultOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
-      state.isInfoPopupOpen = true; //!state.isInfoPopupOpen;
+      state.isInfoPopupOpen = true;
       state.isUserRegister = false;
     },
     setUserRegister: (state, actions) => {
       state.isNoticeOpen = false;
-      state.isHistoryOpen = false;
+      state.isTestResultOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
-      state.isUserRegister = true; //!state.isEditingName;
+      state.isUserRegister = true;
       state.isRegister = actions.payload;
     },
   },
@@ -78,11 +83,11 @@ const popupToggleSlice = createSlice({
 
 export const {
   setNoticeOpen,
-  setHistoryOpen,
+  setTestResultOpen,
   setSettingOpen,
   setTestStartOpen,
   setInfoPopupOpen,
   setUserRegister,
-} = popupToggleSlice.actions;
+} = navigateProvider.actions;
 
-export default popupToggleSlice.reducer;
+export default navigateProvider.reducer;

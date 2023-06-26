@@ -3,53 +3,67 @@ import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
-import { setNoticeOpen } from '@store/slices/popupToggle';
+import {
+  setNoticeOpen,
+} from '@store/slices/navigateProvicer';
+
+import {
+  setInsertResult,
+} from '@store/slices/testResultProvider';
 
 import RightSnb from '@components/snb/RightSnb';
-import TestResultComponent from '@components/main/TestResultComponent';
+import TestResult from '@components/main/TestResultComponent';
 
+import { formToColumn } from '@lib/common';
 // import TestResultPopup from './testResultPopup';
+
+import isEmpty from 'lodash.isempty';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
-export default function TestResult() {
+const TestComplete = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const testForm = useAppSelector((state: RootState) => state.testForm);
+  const testResult = useAppSelector((state: RootState) => state.testResult);
 
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
+
+  const saveTestResult = () => {
+    let lastId = 0;
+    if (!isEmpty(testResult.data)) {
+      lastId = testResult.data[0].id;
+    }
+
+    const data = formToColumn(testForm, lastId);
+    dispatch(setInsertResult(data));
+    setShowSuccessPopup(true);
+  }
 
   return (
     <>
       <RightSnb />
       {/* <TestResultPopup /> */}
-
       <div className="result-form-title">
         <img src={ico_speaker} alt="speaker icon" />
         <p>테스트 결과</p>
       </div>
-
-      <div className="graph-wrapper">
-        <TestResultComponent />
-      </div>
-
+      <TestResult data={testForm}/>
       <div className="result-btn-wrapper">
         <button
           type="button"
-          onClick={() => {
-            setShowSuccessPopup(true);
-          }}
+          onClick={saveTestResult}
         >
           저장 후 종료
         </button>
       </div>
 
-      {showSuccessPopup && <SuccessPopup />}
+      {showSuccessPopup && <SuccessPopup show={setShowSuccessPopup}/>}
     </>
   );
 }
 
-function SuccessPopup() {
+function SuccessPopup ({...props}) {
   const dispatch = useAppDispatch();
 
   return (
@@ -68,7 +82,8 @@ function SuccessPopup() {
                 className="confirm-btn"
                 type="button"
                 onClick={() => {
-                  dispatch(setNoticeOpen());
+                  props.show(false);
+                  // dispatch(setNoticeOpen());
                 }}
               >
                 확인
@@ -80,3 +95,5 @@ function SuccessPopup() {
     </>
   );
 }
+
+export default TestComplete;

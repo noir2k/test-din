@@ -6,8 +6,13 @@ import type { RootState } from '@store/index';
 import isEmpty from 'lodash.isempty';
 import hash from "object-hash";
 
-import ico_home from '@assets/images/icons/icon_home.png';
-import ico_settings from '@assets/images/icons/icon_settings.png';
+import {
+  HomeIcon,
+  Cog6ToothIcon,
+  InboxIcon,
+  PrinterIcon
+} from '@heroicons/react/24/outline';
+
 import ico_user from '@assets/images/icons/icon_user_white.png';
 
 import useInfiniteScroll from '@hook/useInfiniteScroll';
@@ -22,7 +27,6 @@ import {
   resetProgress
 } from '@store/slices/testProgressProvider';
 
-
 import {
   setTestResult,
   setMergeResult,
@@ -35,7 +39,7 @@ import {
   setInfoPopupOpen,
   setSettingOpen,
   setTestStartOpen,
-} from '@store/slices/popupToggle';
+} from '@store/slices/navigateProvicer';
 
 import {
   setAlertModal,
@@ -87,6 +91,7 @@ const snb = () => {
     if (isConfirm) {
       setMoreData(false);
       setSelectedIndex(0);
+      setLoading(false);
       dispatch(resetTestResult());
       dispatch(resetUserInfo());
       dispatch(setUserRegister(true));
@@ -104,7 +109,6 @@ const snb = () => {
 
   const onLoadData = (data: unknown) => {
     const colData = data as ColumnType[];
-    console.log("onLoadData", colData);
     if (colData !== null) {
       dispatch(setTestResult(colData));
       dispatch(setUserInfo(colData[0]));
@@ -137,7 +141,6 @@ const snb = () => {
     const channel = 'load-more-data';
     window.electron.ipcRenderer.on(channel, (data) => {
       const colData = data as ColumnType[];
-      console.log("moreLoadData", colData);
       if (colData !== null && testResult.data !== null) {
         dispatch(setMergeResult(colData))
         const isNoMore = colData.length < 10;
@@ -164,13 +167,25 @@ const snb = () => {
               className="cursor-pointer"
               onClick={() => { dispatch(setNoticeOpen()); }}
             >
-              <img width="26" src={ico_home} alt="icon_home" />
+              <HomeIcon className='h-8 w-8 text-black' />
+            </div>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setLoading(true);
+                window.electron.ipcRenderer.sendMessage(
+                  'show-open-sql',
+                  []
+                );
+              }}
+            >
+            <InboxIcon className='h-8 w-8 text-black' />
             </div>
             <div
               className="cursor-pointer"
               onClick={() => { dispatch(setSettingOpen()); }}
             >
-              <img width="26" src={ico_settings} alt="icon_home" />
+              <Cog6ToothIcon className='h-8 w-8 text-black' />
             </div>
           </div>
           <div className="snb-btn-container">
@@ -183,7 +198,7 @@ const snb = () => {
                 신규환자등록
               </button>
             </div>
-            <div className="snb-column-child-container">
+            {/* <div className="snb-column-child-container">
               <label htmlFor="backupData">
                 <button
                   type="button"
@@ -198,20 +213,14 @@ const snb = () => {
                   저장하기
                 </button>
               </label>
-            </div>
+            </div> */}
             <div className="snb-column-child-container">
               <label htmlFor="examineeDataFile">
                 <button
-                  className="snb-column-child-btn btn-import"
-                  onClick={() => {
-                    setLoading(true);
-                    window.electron.ipcRenderer.sendMessage(
-                      'show-open-sql',
-                      []
-                    );
-                  }}
+                  className="snb-column-child-btn btn-print"
+                  onClick={() => {}}
                 >
-                  불러오기
+                  <span><PrinterIcon className='h-4 w-4 text-white' />&nbsp;결과지 출력</span>
                 </button>
               </label>
             </div>

@@ -197,6 +197,18 @@ a:hover {
   text-align: center;
 }
 
+.btn-print {
+  width: 120px !important;
+  background-color: #24abff;
+}
+
+.btn-print span{
+  float: none;
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
 .snb-btn-container {
   width: 100%;
   display: flex;
@@ -263,7 +275,7 @@ a:hover {
 
 .chart-component {
   width: 420px;
-  height: 500px;
+  height: 512px;
 }
 
 /* testForm.tsx */
@@ -277,7 +289,7 @@ a:hover {
 }
 
 .test-form-inner {
-  width: 500px;
+  width: 512px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -350,7 +362,7 @@ a:hover {
 .alert-wrapper {
   position: absolute;
   background-color: white;
-  width: 518px;
+  width: 512px;
   height: 153px;
   border-radius: 10px;
   text-align: center;
@@ -545,7 +557,7 @@ span {
 }
 
 .save-success-wrapper {
-  width: 500px;
+  width: 512px;
   height: 276px;
   display: flex;
   flex-direction: column;
@@ -566,7 +578,7 @@ span {
 }
 
 .editing-name-modal {
-  width: 500px;
+  width: 512px;
   height: 176px;
   background: #ffffff;
   border-radius: 10px;
@@ -606,7 +618,7 @@ span {
 }
 
 .modal-btn-wrapper {
-  width: 518px;
+  width: 512px;
   height: 50px;
   background: #568af0;
   border-radius: 0px 0px 10px 10px;
@@ -1077,8 +1089,6 @@ input[type='range']:active::-webkit-slider-runnable-track {
   margin: 0px;
 }
 
-
-
 .popup-wrapper {
   width: 1440px;
   height: 1024px;
@@ -1173,4 +1183,24 @@ input[type='range']:active::-webkit-slider-runnable-track {
 
 .modal-dim {
   background-color: #f0f8ffad;
+}
+
+.test-result-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 512px;
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.25);
+  padding: 32px;
+  margin-bottom: 64px;
+}
+
+.test-result-wrapper hr {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border: 0;
+  height: 2px;
+  background-color: #c1c1c1;
 }

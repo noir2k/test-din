@@ -22,6 +22,10 @@ const testResultSlice = createSlice({
     setMergeResult: (state, action) => {
       state.data = state.data.concat(action.payload);
     },
+    setInsertResult: (state, action) => {
+      console.log("setInsertResult", action.payload);
+      state.data.unshift(action.payload);
+    },
     resetTestResult: () => initialState
   }
 });
@@ -29,6 +33,7 @@ const testResultSlice = createSlice({
 export const {
   setTestResult,
   setMergeResult,
+  setInsertResult,
   resetTestResult,
 } = testResultSlice.actions;
 

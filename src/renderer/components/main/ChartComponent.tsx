@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,8 +18,8 @@ import { Line } from 'react-chartjs-2';
 
 import jsPDF from 'jspdf';
 
-
-import { DataRange, ChartDataProps } from '@interfaces';
+import { ChartDataProps } from '@interfaces';
+import { DataRange } from '@lib/common';
 
 const data_dummy: ChartDataProps[] = [
   { date: '2023-06-01', value: -18 },
@@ -227,21 +229,49 @@ const ChartComponent = (props: { data: ChartDataProps[] }) => {
     ]
   }
 
+  // const chartItemData = useAppSelector(
+  //   (state: RootState) => state.navigate.chartItemData
+  // );
+
+  // useEffect(() => {
+  //   const channel = 'graph-data';
+  //   window.electron.ipcRenderer.sendMessage(channel, []);
+  // }, [chartItemData]);
+
+  // useEffect(() => {
+  //   const channel = 'graph-data-result';
+  //   window.electron.ipcRenderer.on(channel, (data: unknown) => {
+  //     const colData = data as ColumnType[];
+  //     if (colData !== null) {
+  //       const data: ChartDataProps[] = [];
+  //       colData.map((item) => {
+  //         data.push({ date: item.test_date, value: Number(item.test_result) });
+  //       });
+  //       // TODO : will be removed
+  //       // test for reload data on changed
+
+  //     }
+  //   });
+  //   return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  // });
+
   return (
-    <div className="chart-component">
-      <Line
-        id="chart"
-        data={chartData}
-        plugins={[plugins]}
-        options={options}
-      />
-      <div className="result-btn-wrapper chart-btn">
-        <button
-          type='button'
-          className='download-btn'
-          onClick={() => downloadPDF()}>
-          PDF로 저장
-        </button>
+    <div className="chart-wrapper">
+      <div className="chart-component">
+        <Line
+          id="chart"
+          data={chartData}
+          plugins={[plugins]}
+          options={options}
+        />
+        <div className="result-btn-wrapper chart-btn">
+          <button
+            type='button'
+            className='download-btn'
+            onClick={() => downloadPDF()}>
+            PDF로 저장
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@hook/index';
 import type { RootState } from '@store/index';
-import { setNoticeOpen } from '@store/slices/popupToggle';
+import { setNoticeOpen } from '@store/slices/navigateProvicer';
 
 import ico_close from '@assets/images/icons/icon_close.png';
 import ico_speaker from '@assets/images/icons/icon_speaker.png';

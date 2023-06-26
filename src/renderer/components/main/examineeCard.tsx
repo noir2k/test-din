@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@hook/index';
-import { setHistoryOpen } from '@store/slices/popupToggle';
+import { setTestResultOpen } from '@store/slices/navigateProvicer';
 
 import { ColumnType } from '@interfaces';
 
@@ -13,7 +13,7 @@ const ExamineeCard = ({ ...props }) => {
     <div
       className="examinee-card"
       onClick={() => {
-        dispatch(setHistoryOpen());
+        dispatch(setTestResultOpen(item));
       }}
     >
       <img src={ico_document} alt="document icon" />

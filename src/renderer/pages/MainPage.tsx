@@ -17,14 +17,14 @@ import UserRegister from '@components/main/UserRegister';
 import AlertModal from '@hook/AlertModal';
 
 const MainPage = () => {
-  const popupToggle = useAppSelector((state: RootState) => state.popupToggle);
+  const navigate = useAppSelector((state: RootState) => state.navigate);
 
-  const isNoticeOpen = popupToggle.isNoticeOpen;
-  const isHistoryOpen = popupToggle.isHistoryOpen;
-  const isTestStartOpen = popupToggle.isTestStartOpen;
-  const isSettingOpen = popupToggle.isSettingOpen;
-  const isInfoPopupOpen = popupToggle.isInfoPopupOpen;
-  const isUserRegister = popupToggle.isUserRegister;
+  const isNoticeOpen = navigate.isNoticeOpen;
+  const isTestResultOpen = navigate.isTestResultOpen;
+  const isTestStartOpen = navigate.isTestStartOpen;
+  const isSettingOpen = navigate.isSettingOpen;
+  const isInfoPopupOpen = navigate.isInfoPopupOpen;
+  const isUserRegister = navigate.isUserRegister;
 
   return (
     <div>
@@ -39,7 +39,7 @@ const MainPage = () => {
               {isNoticeOpen && <Notice />}
               {isInfoPopupOpen && <ExamineeInfoPopup />}
               {isUserRegister && <UserRegister />}
-              {isHistoryOpen && <TestResult />}
+              {isTestResultOpen && <TestResult />}
               {isTestStartOpen && <TestForm />}
               {isSettingOpen && <Setting />}
             </div>
