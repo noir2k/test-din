@@ -10,10 +10,11 @@ import {
   HomeIcon,
   Cog6ToothIcon,
   InboxIcon,
-  PrinterIcon
+  PrinterIcon,
+  PencilSquareIcon,
+  UserIcon,
+  UserPlusIcon,
 } from '@heroicons/react/24/outline';
-
-import ico_user from '@assets/images/icons/icon_user_white.png';
 
 import useInfiniteScroll from '@hook/useInfiniteScroll';
 
@@ -99,6 +100,7 @@ const snb = () => {
   }
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+    console.log("onIntersect");
     if (isIntersecting && isMoreData && !isLoading) {
       setLoading(true);
       window.electron.ipcRenderer.sendMessage('next-page', []);
@@ -179,7 +181,7 @@ const snb = () => {
                 );
               }}
             >
-            <InboxIcon className='h-8 w-8 text-black' />
+              <InboxIcon className='h-8 w-8 text-black' />
             </div>
             <div
               className="cursor-pointer"
@@ -195,7 +197,10 @@ const snb = () => {
                 className="snb-column-child-btn btn-blue"
                 onClick={userRegister}
               >
-                신규환자등록
+                <span>
+                  <UserPlusIcon className='h-4 w-4 text-white mr-1'/>
+                  신규환자등록
+                </span>
               </button>
             </div>
             {/* <div className="snb-column-child-container">
@@ -220,7 +225,10 @@ const snb = () => {
                   className="snb-column-child-btn btn-print"
                   onClick={() => {}}
                 >
-                  <span><PrinterIcon className='h-4 w-4 text-white' />&nbsp;결과지 출력</span>
+                  <span>
+                    <PrinterIcon className='h-4 w-4 text-white mr-1' />
+                    결과지 출력
+                  </span>
                 </button>
               </label>
             </div>
@@ -236,13 +244,15 @@ const snb = () => {
               }
             }}
           >
-            <img className="float-left mr-5" src={ico_user} alt="user icon" />
-            <span className="text-white text-lg font-bold">
+            <span className="user-info-span">
+              <UserIcon className='h-8 w-8 text-white mr-1' />
+              <p>
               {
                 isEmpty(userData)
                   ? '환자명 (환자번호)'
-                  : <p>{userData.user_name} ({userData.patient_no})</p>
+                  : `${userData.user_name} (${userData.patient_no})`
               }
+              </p>
             </span>
           </div>
           <button
@@ -261,9 +271,11 @@ const snb = () => {
       </div>
       <div className="child import-success-screen overflow-y-auto">
         <div>
-          {!isEmpty(testResult.data) && testResult.data.map((item) => (
-            <div key={hash(item)} className={selectedIndex == item.id ? "selected-item" : ""} onClick={() => setSelectedIndex(item.id)}>
-              <ExamineeCard item={item} />
+          {!isEmpty(testResult.data) && testResult.data.map((item, index) => (
+            <div key={hash(item)}
+              className={selectedIndex == item.id ? "selected-item" : ""}
+              onClick={() => setSelectedIndex(item.id)}>
+              <ExamineeCard item={item} index={index}/>
             </div>
           ))}
         </div>
@@ -275,7 +287,8 @@ const snb = () => {
           className="test-start-btn text-xl"
           onClick={testStartOpen}
         >
-          시작하기
+          <PencilSquareIcon className='h-8 w-8 text-white mr-1'/>
+          <span>시작하기</span>
         </button>
       </div>
     </div>

@@ -79,7 +79,6 @@ const CheckScreen = () => {
     dispatch(nextPage());
   }
 
-
   useEffect(() => {
     if (isEmpty(testForm)) {
       dispatch(

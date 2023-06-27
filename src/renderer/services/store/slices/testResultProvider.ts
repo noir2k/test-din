@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { ScoreItemType } from './scoreProvider';
-
 import { ColumnType } from '@interfaces';
 
 type TestResultType = {
@@ -23,8 +21,20 @@ const testResultSlice = createSlice({
       state.data = state.data.concat(action.payload);
     },
     setInsertResult: (state, action) => {
-      console.log("setInsertResult", action.payload);
       state.data.unshift(action.payload);
+    },
+    setRemoveResult: (state, action) => {
+      state.data.splice(action.payload, 1);
+    },
+    setReplaceResult: (state, action) => {
+      const index = action.payload.index;
+      const data = action.payload.data;
+      const _data = {
+        id: state.data[index].id,
+        ...data,
+        reg_timestamp: state.data[index].reg_timestamp
+      }
+      state.data.splice(index, 1, _data);
     },
     resetTestResult: () => initialState
   }
@@ -34,6 +44,8 @@ export const {
   setTestResult,
   setMergeResult,
   setInsertResult,
+  setRemoveResult,
+  setReplaceResult,
   resetTestResult,
 } = testResultSlice.actions;
 

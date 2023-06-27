@@ -1,11 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
-
-import {
-  setNoticeOpen,
-} from '@store/slices/navigateProvicer';
 
 import {
   setInsertResult,
@@ -14,6 +10,7 @@ import {
 import RightSnb from '@components/snb/RightSnb';
 import TestResult from '@components/main/TestResultComponent';
 
+import { TestForm } from '@interfaces';
 import { formToColumn } from '@lib/common';
 // import TestResultPopup from './testResultPopup';
 
@@ -22,6 +19,7 @@ import isEmpty from 'lodash.isempty';
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
 const TestComplete = () => {
+  const [testFormResult, setTestFormResult] = useState<TestForm>({} as TestForm);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const testForm = useAppSelector((state: RootState) => state.testForm);
@@ -35,10 +33,14 @@ const TestComplete = () => {
       lastId = testResult.data[0].id;
     }
 
-    const data = formToColumn(testForm, lastId);
+    const data = formToColumn(testFormResult, lastId);
     dispatch(setInsertResult(data));
     setShowSuccessPopup(true);
   }
+
+  useEffect(() => {
+    setTestFormResult(testForm);
+  }, []);
 
   return (
     <>
@@ -48,7 +50,8 @@ const TestComplete = () => {
         <img src={ico_speaker} alt="speaker icon" />
         <p>테스트 결과</p>
       </div>
-      <TestResult data={testForm}/>
+      {/* <TestResult /> */}
+      <TestResult isTestResult={true} data={testFormResult} setData={setTestFormResult}/>
       <div className="result-btn-wrapper">
         <button
           type="button"
@@ -63,9 +66,8 @@ const TestComplete = () => {
   );
 }
 
-function SuccessPopup ({...props}) {
+const SuccessPopup = ({...props}) => {
   const dispatch = useAppDispatch();
-
   return (
     <>
       <div className="popup-wrapper"></div>

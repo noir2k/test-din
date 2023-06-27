@@ -39,7 +39,7 @@ const MainPage = () => {
               {isNoticeOpen && <Notice />}
               {isInfoPopupOpen && <ExamineeInfoPopup />}
               {isUserRegister && <UserRegister />}
-              {isTestResultOpen && <TestResult />}
+              {isTestResultOpen && <TestResult isTestResult={false}/>}
               {isTestStartOpen && <TestForm />}
               {isSettingOpen && <Setting />}
             </div>

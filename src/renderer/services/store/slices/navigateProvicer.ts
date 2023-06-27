@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { TestForm } from '@interfaces';
-import { columnToForm } from '@lib/common';
 
 interface navigateState {
   isNoticeOpen: boolean;
@@ -10,7 +9,7 @@ interface navigateState {
   isInfoPopupOpen: boolean;
   isUserRegister: boolean;
   isRegister: boolean;
-  itemResult?: TestForm;
+  itemResult?: { index: number, data: TestForm };
 }
 
 const initialState: navigateState = {
@@ -43,7 +42,8 @@ const navigateProvider = createSlice({
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
       state.isUserRegister = false;
-      state.itemResult = columnToForm(actions.payload);
+      const { index, data } = actions.payload;
+      state.itemResult = { index, data };
     },
     setSettingOpen: (state) => {
       state.isNoticeOpen = false;
@@ -60,6 +60,7 @@ const navigateProvider = createSlice({
       state.isTestStartOpen = true;
       state.isInfoPopupOpen = false;
       state.isUserRegister = false;
+      state.itemResult = undefined;
     },
     setInfoPopupOpen: (state) => {
       state.isNoticeOpen = false;
