@@ -8,6 +8,7 @@ interface navigateState {
   isTestStartOpen: boolean;
   isInfoPopupOpen: boolean;
   isUserRegister: boolean;
+  isDimPopupOpen: boolean;
   isRegister: boolean;
   itemResult?: { index: number, data: TestForm };
 }
@@ -19,6 +20,7 @@ const initialState: navigateState = {
   isTestStartOpen: false,
   isInfoPopupOpen: false,
   isUserRegister: false,
+  isDimPopupOpen: false,
   isRegister: true,
   itemResult: undefined
 };
@@ -35,14 +37,14 @@ const navigateProvider = createSlice({
       state.isInfoPopupOpen = false;
       state.isUserRegister = false;
     },
-    setTestResultOpen: (state, actions) => {
+    setTestResultOpen: (state, action) => {
       state.isNoticeOpen = false;
       state.isTestResultOpen = true;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
       state.isUserRegister = false;
-      const { index, data } = actions.payload;
+      const { index, data } = action.payload;
       state.itemResult = { index, data };
     },
     setSettingOpen: (state) => {
@@ -70,14 +72,17 @@ const navigateProvider = createSlice({
       state.isInfoPopupOpen = true;
       state.isUserRegister = false;
     },
-    setUserRegister: (state, actions) => {
+    setUserRegister: (state, action) => {
       state.isNoticeOpen = false;
       state.isTestResultOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
       state.isInfoPopupOpen = false;
       state.isUserRegister = true;
-      state.isRegister = actions.payload;
+      state.isRegister = action.payload;
+    },
+    setDimPopup: (state, action) => {
+      state.isDimPopupOpen = action.payload;
     },
   },
 });
@@ -89,6 +94,7 @@ export const {
   setTestStartOpen,
   setInfoPopupOpen,
   setUserRegister,
+  setDimPopup,
 } = navigateProvider.actions;
 
 export default navigateProvider.reducer;

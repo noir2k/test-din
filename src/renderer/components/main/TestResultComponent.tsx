@@ -7,6 +7,14 @@ import {
   setReplaceResult,
 } from '@store/slices/testResultProvider';
 
+import {
+  setDimPopup,
+} from '@store/slices/navigateProvicer';
+
+import {
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
+
 import isEmpty from 'lodash.isempty';
 
 import { TestForm } from '@interfaces';
@@ -36,19 +44,21 @@ const TestResult = ({...props}) => {
     return 'ERROR';
   }
 
-  const editMemo = () => {
+  const showEditMemo = (toggle: boolean) => {
+    setEditMemoShow(toggle);
+    dispatch(setDimPopup(toggle));
+  }
+
+  const saveMemo = () => {
     const data = { ...result, memo: memoStr };
-    if (isEditMemoShow) {
-      setResult(data);
-    }
+    setResult(data);
     if (props.isTestResult) {
       props.setData(data);
     } else if (!isEmpty(navigate.itemResult)) {
       const index = navigate.itemResult.index;
       dispatch(setReplaceResult({index: index, data: data}))
     }
-
-    setEditMemoShow(!isEditMemoShow);
+    showEditMemo(false);
   }
 
   useEffect(() => {
@@ -57,6 +67,7 @@ const TestResult = ({...props}) => {
   }, [navigate.itemResult])
 
   useEffect(() => {
+    setMemoStr(result.memo);
     prevResultRef.current = result;
   }, [result])
 
@@ -112,7 +123,7 @@ const TestResult = ({...props}) => {
           <button
             className={"test-result-btn"}
             type="button"
-            onClick={editMemo}
+            onClick={() => showEditMemo(true)}
           >
             노트수정
           </button>
@@ -120,7 +131,15 @@ const TestResult = ({...props}) => {
       </div>
       {isEditMemoShow && (
         <div className="edit-note-wrapper">
-          <div className="edit-note-title">노트수정</div>
+          <div className="edit-note-title">
+            <button
+              type="button"
+              className="close-btn"
+              onClick={() => showEditMemo(false)}
+            >
+              <XMarkIcon className='h-8 w-8 text-white'/>
+            </button>
+          </div>
           <div className="edit-note-inner">
             <label htmlFor={ColumnName.memo} className="hidden">
               참고사항
@@ -130,8 +149,18 @@ const TestResult = ({...props}) => {
               value={!!memoStr ? memoStr : ''}
               className="info-memo-input"
               placeholder="참고사항을 입력해주세요."
+              autoFocus={true}
               onChange={(e) => setMemoStr(e.target.value)}
             />
+          </div>
+          <div className="edit-note-confirm">
+            <button
+              type="button"
+              className="close-btn"
+              onClick={saveMemo}
+            >
+              저장
+            </button>
           </div>
         </div>
       )}

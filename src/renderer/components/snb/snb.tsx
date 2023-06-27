@@ -53,6 +53,8 @@ import {
 
 import { ColumnType } from '@interfaces';
 
+const PAGE_COUNT = 15;
+
 const snb = () => {
   const [selectedIndex, setSelectedIndex] = useState<any>(0);
   const [isMoreData, setMoreData] = useState(false);
@@ -100,7 +102,7 @@ const snb = () => {
   }
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
-    console.log("onIntersect");
+    console.log("onIntersect", isIntersecting);
     if (isIntersecting && isMoreData && !isLoading) {
       setLoading(true);
       window.electron.ipcRenderer.sendMessage('next-page', []);
@@ -114,7 +116,7 @@ const snb = () => {
     if (colData !== null) {
       dispatch(setTestResult(colData));
       dispatch(setUserInfo(colData[0]));
-      const isNoMore = colData.length < 10;
+      const isNoMore = colData.length < PAGE_COUNT;
       setMoreData(!isNoMore);
     }
     setLoading(false);
@@ -144,8 +146,17 @@ const snb = () => {
     window.electron.ipcRenderer.on(channel, (data) => {
       const colData = data as ColumnType[];
       if (colData !== null && testResult.data !== null) {
-        dispatch(setMergeResult(colData))
-        const isNoMore = colData.length < 10;
+        const data = colData.map((item: ColumnType) => {
+          return {
+            ...item,
+            user_name: userData.user_name,
+            gender: userData.gender,
+            birthday: userData.birthday,
+            patient_no: userData.patient_no,
+          };
+        });
+        dispatch(setMergeResult(data))
+        const isNoMore = colData.length < PAGE_COUNT;
         setMoreData(!isNoMore);
       }
       setLoading(false);
@@ -271,13 +282,13 @@ const snb = () => {
       </div>
       <div className="child import-success-screen overflow-y-auto">
         <div>
-          {!isEmpty(testResult.data) && testResult.data.map((item, index) => (
-            <div key={hash(item)}
-              className={selectedIndex == item.id ? "selected-item" : ""}
-              onClick={() => setSelectedIndex(item.id)}>
-              <ExamineeCard item={item} index={index}/>
-            </div>
-          ))}
+        {!isEmpty(testResult.data) && testResult.data.map((item, index) => (
+          <div key={hash(item)} id={hash(item)}
+            className={selectedIndex == item.id ? "selected-item" : ""}
+            onClick={() => setSelectedIndex(item.id)}>
+            <ExamineeCard item={item} index={index}/>
+          </div>
+        ))}
         </div>
         <div className="scroll-end" ref={setTarget} />
       </div>

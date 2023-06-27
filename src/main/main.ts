@@ -225,7 +225,7 @@ const createWindow = async () => {
   });
 
   ipcMain.on('next-page', (event) => {
-    const PAGE_COUNT = 10;
+    const PAGE_COUNT = 15;
     const rowCount = Number(STORE.get('rowCount'));
     const currentPage = Number(STORE.get('currentPage'));
     const offset = currentPage * PAGE_COUNT;

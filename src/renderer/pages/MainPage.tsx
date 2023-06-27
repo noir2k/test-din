@@ -25,10 +25,12 @@ const MainPage = () => {
   const isSettingOpen = navigate.isSettingOpen;
   const isInfoPopupOpen = navigate.isInfoPopupOpen;
   const isUserRegister = navigate.isUserRegister;
+  const isDimPopupOpen = navigate.isDimPopupOpen;
 
   return (
     <div>
       <div className="main-container">
+        {isDimPopupOpen && <div className="dim-popup-wrapper" />}
         <Snb />
         <div id="contents" className="contents-area">
           <main className="h-screen">

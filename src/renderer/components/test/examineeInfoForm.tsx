@@ -147,7 +147,7 @@ const ExamineeInfoForm = () => {
     <>
       <form className="w-full" onSubmit={handleSubmit(onSubmit, onError)}>
         <div className="info-form-title">
-          <p>환자 기본 정보를 입력해 주세요.</p>
+          <p>청력테스트를 위한 기본 정보를 입력해 주세요.</p>
         </div>
 
         <div className="info-input-wrapper">
@@ -252,6 +252,7 @@ const ExamineeInfoForm = () => {
                 type="text"
                 id={ColumnName.tester_name}
                 defaultValue={testForm?.tester_name}
+                autoFocus={true}
                 {...register(
                   `${ColumnName.tester_name}`,
                   { required: '검사자명 항목은 필수입니다.' }

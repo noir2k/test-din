@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAction } from '@reduxjs/toolkit';
 
 import { ColumnType } from '@interfaces';
 
@@ -36,6 +36,18 @@ const testResultSlice = createSlice({
       }
       state.data.splice(index, 1, _data);
     },
+    setReplaceUserInfo: (state, action) => {
+      const data = state.data.map((item: ColumnType) => {
+        return {
+          ...item,
+          user_name: action.payload.user_name,
+          gender: action.payload.gender,
+          birthday: action.payload.birthday,
+          patient_no: action.payload.patient_no,
+        }
+      });
+      state.data = data;
+    },
     resetTestResult: () => initialState
   }
 });
@@ -46,6 +58,7 @@ export const {
   setInsertResult,
   setRemoveResult,
   setReplaceResult,
+  setReplaceUserInfo,
   resetTestResult,
 } = testResultSlice.actions;
 

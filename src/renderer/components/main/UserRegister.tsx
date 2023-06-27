@@ -17,6 +17,10 @@ import {
 } from '@store/slices/userDataProvider';
 
 import {
+  setReplaceUserInfo,
+} from '@store/slices/testResultProvider';
+
+import {
   setAlertModal,
 } from '@store/slices/alertModalProvider';
 
@@ -44,6 +48,7 @@ const UserRegister = () => {
 
   const handleAfterSubmit = (userData: UserInfo) => {
     dispatch(setUserInfo(userData));
+    dispatch(setReplaceUserInfo(userData));
     dispatch(setNoticeOpen());
   }
 
@@ -148,6 +153,7 @@ const UserRegister = () => {
                 id={ColumnName.user_name}
                 defaultValue={userData?.user_name}
                 className="info-input-item-input"
+                autoFocus={true}
                 {...register(
                   `${ColumnName.user_name}`,
                   { required: '이름 항목은 필수입니다.' }

@@ -123,7 +123,6 @@ a:hover {
 }
 
 .snb-setting-wrapper {
-  width: 100%;
   height: 148px;
   background-color: white;
 }
@@ -171,7 +170,7 @@ a:hover {
 
 .snb-column-container {
   width: 100%;
-  height: 100%;
+  height: inherit;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
@@ -235,10 +234,8 @@ a:hover {
 }
 
 .btn-wrapper {
-  margin-top: 45px;
-  margin-bottom: 25px;
-  padding-right: 20px;
-  padding-left: 20px;
+  background-color: white;
+  padding: 25px 20px 25px 20px;
 }
 .btn-wrapper button {
   display: flex;
@@ -257,13 +254,13 @@ a:hover {
 }
 
 .import-success-screen {
-  height: 62vh;
+  height: 100%;
 }
 
 /* examineeData.tsx */
 .examinee-data-wrapper {
   width: 100%;
-  height: 100%;
+  height: inherit;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -458,7 +455,7 @@ a:hover {
 /* examineePopup.tsx */
 .examinee-popup-wrapper {
   position: absolute;
-  width: 450px;
+  width: 512px;
   height: 516px;
   background: #ffffff;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
@@ -466,14 +463,14 @@ a:hover {
 }
 
 .close-btn-wrapper {
-  width: 450px;
+  width: 512px;
   height: 50px;
   background: #568af0;
   border-radius: 10px 10px 0px 0px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0px 23px 0px 0px;
+  padding: 0px 12px 0px 0px;
 }
 
 .popup-contents {
@@ -1109,22 +1106,17 @@ input[type='range']:active::-webkit-slider-runnable-track {
   margin: 0px;
 }
 
-.popup-wrapper {
-  width: 1440px;
-  height: 1024px;
+.dim-popup-wrapper {
+  width: -webkit-fill-available;
+  height: inherit;
   position: absolute;
-  top: 0px;
-  left: -400px;
   background: rgba(118, 118, 118, 0.37);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+  z-index: 1000;
 }
 
 .save-success-wrapper {
   position: absolute;
-  z-index: 1000;
+  z-index: 1001;
 }
 
 /* examinee-card.tsx */
@@ -1246,19 +1238,44 @@ input[type='range']:active::-webkit-slider-runnable-track {
   width: 640px;
   height: 240px;
   box-sizing: border-box;
-  background: #f6f6f6;
+  background: white;
+  border-radius: 12px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 7px;
   margin-top: 80px;
+  z-index: 1001;
 }
 
 .edit-note-title {
-  background: white;
   padding: 12px;
   text-align: center;
   font-weight: 700;
-  border-radius: 7px;
+  border-radius: 12px 12px 0 0;
+  height: 50px;
+  background: #393939;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
+
+.edit-note-confirm {
+  text-align: center;
+  font-weight: 700;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white  ;
+}
+
+.edit-note-confirm button
+{
+  border-radius: 0 0 12px 12px;
+  background: #568af0;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+}
+
 .edit-note-inner {
   padding: 12px;
   height: 100%;

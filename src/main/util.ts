@@ -158,7 +158,7 @@ export const rowCount = (db: Database) => {
 };
 
 export const findByRegDate = (db: Database, offset?: string) => {
-  let sqlstr = `SELECT * FROM ${tbName} ORDER BY ${ColumnName.reg_timestamp} DESC LIMIT 10`;
+  let sqlstr = `SELECT * FROM ${tbName} ORDER BY ${ColumnName.reg_timestamp} DESC LIMIT 15`;
   if (offset === undefined) {
     offset = '0';
   }
