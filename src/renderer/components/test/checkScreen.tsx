@@ -29,7 +29,7 @@ import { alertCustom, confirmCustom } from '@lib/common';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
-const maxCount = 6;
+const maxCount = 30;
 const minVolumeLevel = -18;
 const maxVolumeLevel = 12;
 
@@ -135,7 +135,7 @@ const CheckScreen = () => {
   useEffect(() => {
     const index = hooks.countTest - 1;
     let bias = testForm.volume_level;
-    if (scoreData.scoreItems.length > 1) {
+    if (scoreData.scoreItems.length > 0) {
       const beforeIndex = index - 1;
       if (scoreData.scoreItems[beforeIndex].isPass) {
         const _bias = scoreData.scoreItems[beforeIndex].volume_level - 2;

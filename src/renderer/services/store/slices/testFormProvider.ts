@@ -15,6 +15,7 @@ const testFormSlice = createSlice({
     setTestResult: (state, action) => {
       const testDate = (new Date()).toISOString().split('T')[0];
       const res = calculateResult(action.payload);
+
       state.test_date = testDate;
       state.test_result = res;
     },
@@ -37,7 +38,6 @@ const calculateResult = (results: ScoreItemType[]): number => {
   }
 
   _results.forEach((result) => {
-    console.log("result", result);
     total += result.volume_level;
   });
 
