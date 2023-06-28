@@ -106,7 +106,7 @@ export const alertCustom = (prop: AlertPropType) => {
   Swal.fire({
     html: message,
     title: prop.title,
-    width: '400px',
+    width: '448px',
     confirmButtonText: '확인',
     customClass: {
       title: 'sweet_title_text',
@@ -122,7 +122,7 @@ export const confirmCustom = (prop: AlertPropType) => {
   Swal.fire({
     html: message,
     title: prop.title,
-    width: '400px',
+    width: '448px',
     showCancelButton: true,
     confirmButtonText: '확인',
     cancelButtonText: '취소',

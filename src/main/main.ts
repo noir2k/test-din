@@ -53,7 +53,6 @@ export const getAssetPath = (...paths: string[]): string => {
 };
 
 async function installExtensions() {
-  // [REACT_DEVELOPER_TOOLS] not work!
   [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
     log.log(extension);
     installExtension(extension, {
@@ -296,7 +295,6 @@ app
       return net.fetch('file://' + getAssetPath(request.url.slice('static://'.length)))
     })
     createWindow();
-    // log.info('ts', new Date().getTime());
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

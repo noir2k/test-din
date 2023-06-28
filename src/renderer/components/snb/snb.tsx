@@ -75,23 +75,27 @@ const snb = () => {
     }
   }
 
+  const createUserInfo = () => {
+    setMoreData(false);
+    setSelectedIndex(0);
+    setLoading(false);
+    dispatch(resetTestResult());
+    dispatch(resetUserInfo());
+    dispatch(setUserRegister(true));
+  }
+
   const userRegister = () => {
     if (!isEmpty(userData)) {
       confirmCustom({
         title: '신규 환자 정보 등록 확인',
         message: `이미 등록된 환자 정보가 있습니다.
-신규 환자를 등록하시면 기존의 검사정보는 초기화 됩니다.
+기존의 환자 정보 및 테스트 세션이 초기화 됩니다.
 
 새로 등록하시겠습니까?`,
-        callback: () => {
-          setMoreData(false);
-          setSelectedIndex(0);
-          setLoading(false);
-          dispatch(resetTestResult());
-          dispatch(resetUserInfo());
-          dispatch(setUserRegister(true));
-        }
+        callback: () => createUserInfo(),
       });
+    } else {
+      createUserInfo();
     }
   }
 
