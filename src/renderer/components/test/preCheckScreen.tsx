@@ -8,9 +8,7 @@ import {
   setVolume,
 } from '@store/slices/testProgressProvider';
 
-import {
-  setAlertModal,
-} from '@store/slices/alertModalProvider';
+import { alertCustom } from '@lib/common';
 
 import RightSnb from '@components/snb/RightSnb';
 import useNumberInput from '@hook/useNumberInput';
@@ -48,15 +46,12 @@ const PreCheckScreen = () => {
 
   useEffect(() => {
     if (hooks.isTestComplete) {
-      dispatch(
-        setAlertModal({
-          isShow: true,
-          title:'검사 완료',
-          message: `사전 테스트가 완료되었습니다.
+      alertCustom({
+        title:'검사 완료',
+        message: `사전 테스트가 완료되었습니다.
 테스트완료 버튼을 클릭하여 본 테스트로 진행하세요.`,
-          // callback: dispatch(nextPage())
-        })
-      );
+        // callback: () => dispatch(nextPage())
+      });
     }
     if (hooks.isTestStart && !hooks.isTestComplete) {
       setBtnText('테스트진행중');

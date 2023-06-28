@@ -21,13 +21,11 @@ import {
   resetScore,
 } from '@store/slices/scoreProvider';
 
-import {
-  setAlertModal,
-} from '@store/slices/alertModalProvider';
-
 import RightSnb from '@components/snb/RightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
+
+import { alertCustom, confirmCustom } from '@lib/common';
 
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
@@ -55,18 +53,21 @@ const CheckScreen = () => {
   }
 
   const handleAbort = () => {
-    if(confirm('테스트를 중단하고 처음으로 돌아가겠습니까?')) {
-      hooks.resetTest();
-      dispatch(resetScore());
-      dispatch(setScoreConfig({
-        volume_level: testForm.volume_level,
-        direction: testForm.direction,
-        sound_set: testForm.sound_set,
-        scoring: testForm.scoring,
-        max_count: maxCount,
-      }));
-      setPlay(false);
-    }
+    confirmCustom({
+      message: '테스트를 중단하고 처음으로 돌아가겠습니까?',
+      callback: () => {
+        hooks.resetTest();
+        dispatch(resetScore());
+        dispatch(setScoreConfig({
+          volume_level: testForm.volume_level,
+          direction: testForm.direction,
+          sound_set: testForm.sound_set,
+          scoring: testForm.scoring,
+          max_count: maxCount,
+        }));
+        setPlay(false);
+      }
+    });
   }
 
   const handleTestFormError = () => {
@@ -81,15 +82,12 @@ const CheckScreen = () => {
 
   useEffect(() => {
     if (isEmpty(testForm)) {
-      dispatch(
-        setAlertModal({
-          isShow: true,
-          title:'기본 정보 오류',
-          message: `입력 정보 중 오류 내용이 있습니다.
+      alertCustom({
+        title:'기본 정보 오류',
+        message: `입력 정보 중 오류 내용이 있습니다.
 기본 정보 입력 화면으로 돌아갑니다.`,
-          callback: () => handleTestFormError()
-        })
-      );
+        callback: () => handleTestFormError()
+      });
 
     } else {
       dispatch(setScoreConfig({
@@ -117,15 +115,12 @@ const CheckScreen = () => {
 
   useEffect(() => {
     if (hooks.isTestComplete) {
-      dispatch(
-        setAlertModal({
-          isShow: true,
-          title:'검사 완료',
-          message: `본 테스트가 완료되었습니다.
+      alertCustom({
+        title:'검사 완료',
+        message: `본 테스트가 완료되었습니다.
 결과 화면으로 진행합니다.`,
-          callback: () => handleTestComplete()
-        })
-      );
+        callback: () => handleTestComplete()
+      });
     }
   }, [hooks.isTestComplete]);
 

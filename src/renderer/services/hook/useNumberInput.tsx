@@ -6,6 +6,8 @@ import {
   setScoreItemResult,
 } from '@store/slices/scoreProvider';
 
+import { alertCustom } from '@lib/common';
+
 const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => {
   const [digits, setDigits] = useState(['', '', '']);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -36,7 +38,7 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
       }
     } else {
       setError(true);
-      alert('시작 버튼을 눌러서 시작해주세요');
+      alertCustom({message: '시작 버튼을 눌러서 시작해주세요.'});
     }
   };
 
@@ -58,11 +60,11 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
         }
       } else {
         setError(true);
-        alert('모든 숫자가 입력되지 않았습니다.');
+        alertCustom({message: '모든 숫자가 입력되지 않았습니다.'});
       }
     } else {
       setError(true);
-      alert('시작 버튼을 눌러서 시작해주세요');
+      alertCustom({message: '시작 버튼을 눌러서 시작해주세요.'});
     }
   };
 

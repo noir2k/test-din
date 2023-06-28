@@ -13,6 +13,8 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/outline';
 
+import { confirmCustom } from '@lib/common';
+
 import ico_document from '@assets/images/icons/icon_document.png';
 
 const ExamineeCard = ({ ...props }) => {
@@ -20,6 +22,15 @@ const ExamineeCard = ({ ...props }) => {
   const index = props.index;
 
   const dispatch = useAppDispatch();
+
+  const deleteItem = () => {
+    confirmCustom({
+      message:'삭제하시겠습니까?',
+      callback: () => {
+        dispatch(setRemoveResult(index));
+      }
+    });
+  }
 
   return (
     <div
@@ -38,12 +49,7 @@ const ExamineeCard = ({ ...props }) => {
         <button
           type="button"
           className="delete-btn bg-transparent"
-          onClick={() => {
-            if (confirm('삭제하시겠습니까?')) {
-              dispatch(setRemoveResult(index));
-              // window.electron.ipcRenderer.sendMessage('delete-data', [item.id]);
-            }
-          }}
+          onClick={deleteItem}
         >
           <TrashIcon className='h-4 w-4 text-white mr-1' />
           <span>삭제</span>

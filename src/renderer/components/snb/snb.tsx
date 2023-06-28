@@ -43,15 +43,12 @@ import {
 } from '@store/slices/navigateProvicer';
 
 import {
-  setAlertModal,
-} from '@store/slices/alertModalProvider';
-
-import {
   setUserInfo,
   resetUserInfo,
 } from '@store/slices/userDataProvider';
 
 import { ColumnType } from '@interfaces';
+import { alertCustom, confirmCustom } from '@lib/common';
 
 const PAGE_COUNT = 15;
 
@@ -67,14 +64,10 @@ const snb = () => {
 
   const testStartOpen = () => {
     if (isEmpty(userData)) {
-      dispatch(
-        setAlertModal({
-          isShow: true,
-          title:'환자 정보 오류',
-          message: `등록된 환자정보가 없습니다.
-먼저 환자정보를 등록해주세요.`
-        })
-      );
+      alertCustom({
+        title:'환자 정보 오류',
+        message: `등록된 환자 정보가 없습니다.\n환자 정보를 등록해주세요.`,
+      });
     } else {
       dispatch(resetForm());
       dispatch(resetProgress());
@@ -83,26 +76,26 @@ const snb = () => {
   }
 
   const userRegister = () => {
-    let isConfirm = true;
     if (!isEmpty(userData)) {
-      isConfirm = confirm(`이미 등록된 환자 정보가 있습니다.
+      confirmCustom({
+        title: '신규 환자 정보 등록 확인',
+        message: `이미 등록된 환자 정보가 있습니다.
 신규 환자를 등록하시면 기존의 검사정보는 초기화 됩니다.
 
-새로 등록하시겠습니까?`);
-    }
-
-    if (isConfirm) {
-      setMoreData(false);
-      setSelectedIndex(0);
-      setLoading(false);
-      dispatch(resetTestResult());
-      dispatch(resetUserInfo());
-      dispatch(setUserRegister(true));
+새로 등록하시겠습니까?`,
+        callback: () => {
+          setMoreData(false);
+          setSelectedIndex(0);
+          setLoading(false);
+          dispatch(resetTestResult());
+          dispatch(resetUserInfo());
+          dispatch(setUserRegister(true));
+        }
+      });
     }
   }
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
-    console.log("onIntersect", isIntersecting);
     if (isIntersecting && isMoreData && !isLoading) {
       setLoading(true);
       window.electron.ipcRenderer.sendMessage('next-page', []);
@@ -184,7 +177,11 @@ const snb = () => {
             >
               <HomeIcon className='h-8 w-8 text-black' />
             </div>
-            <div
+            {/**
+              * TODO: when release, remove this code
+              * DISABLE import sql for release
+              */}
+            {/* <div
               className="cursor-pointer"
               onClick={() => {
                 setLoading(true);
@@ -195,7 +192,7 @@ const snb = () => {
               }}
             >
               <InboxIcon className='h-8 w-8 text-black' />
-            </div>
+            </div> */}
             <div
               className="cursor-pointer"
               onClick={() => { dispatch(setSettingOpen()); }}

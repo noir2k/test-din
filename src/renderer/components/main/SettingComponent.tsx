@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useAppDispatch } from '@hook/index';
 import { setNoticeOpen } from '@store/slices/navigateProvicer';
 
+import { alertCustom } from '@lib/common';
+
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
 const _config = {} as ConfigSchemaType;
@@ -76,8 +78,10 @@ const Setting = () => {
           onClick={() => {
             _config.soundInterval = value;
             window.electron.store.set('config', _config);
-            alert('설정이 저장되었습니다.');
-            dispatch(setNoticeOpen());
+            alertCustom({
+              message: '설정이 저장되었습니다.',
+              callback: () => dispatch(setNoticeOpen())
+            });
           }}
         >
           설정완료

@@ -58,7 +58,13 @@ const TestForm = () => {
             disabled={currentPage === 0 ? true : false}
             type="button"
             className="progress-btn prev-btn"
-            onClick={() => dispatch(prevPage())}
+            onClick={() => {
+              /**
+               * TODO: when release, remove this code
+               * DISABLE import sql for release
+               */
+              dispatch(prevPage())
+            }}
           >
             <img
               src={ico_angle_left}
@@ -70,7 +76,13 @@ const TestForm = () => {
             disabled={currentPage === 3 ? true : false}
             type="button"
             className="progress-btn next-btn"
-            onClick={() => dispatch(nextPage())}
+            onClick={() => {
+              /**
+               * TODO: when release, remove this code
+               * DISABLE import sql for release
+               */
+              dispatch(nextPage())
+            }}
           >
             <img
               src={ico_angle_right}

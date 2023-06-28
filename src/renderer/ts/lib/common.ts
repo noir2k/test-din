@@ -1,5 +1,7 @@
 import { ColumnType, TestForm } from '@interfaces';
 
+import Swal from 'sweetalert2';
+
 export const ColumnName = {
   id: 'id',
 	user_name: 'user_name',
@@ -93,3 +95,46 @@ export const formToColumn = (payload: TestForm, lastId: number) => {
   };
 }
 
+type AlertPropType = {
+  message: string | undefined,
+  title? : string | undefined,
+  callback?: () => void,
+}
+
+export const alertCustom = (prop: AlertPropType) => {
+  const message = !!prop.message ? prop.message.replace(/\n/g, '<br />') : '';
+  Swal.fire({
+    html: message,
+    title: prop.title,
+    width: '400px',
+    confirmButtonText: '확인',
+    customClass: {
+      title: 'sweet_title_text',
+      confirmButton: 'sweet_confirm_button',
+    }
+  }).then(() => {
+    !!prop.callback && prop.callback();
+  });
+}
+
+export const confirmCustom = (prop: AlertPropType) => {
+  const message = !!prop.message ? prop.message.replace(/\n/g, '<br />') : '';
+  Swal.fire({
+    html: message,
+    title: prop.title,
+    width: '400px',
+    showCancelButton: true,
+    confirmButtonText: '확인',
+    cancelButtonText: '취소',
+    customClass: {
+      title: 'sweet_title_text',
+      confirmButton: 'sweet_confirm_button',
+    }
+  }).then((result) => {
+    console.log("confirm", result);
+    if (result.isConfirmed) {
+      console.log("confirm_check", result.isConfirmed);
+      !!prop.callback && prop.callback();
+    }
+  });
+}

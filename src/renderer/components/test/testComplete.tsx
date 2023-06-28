@@ -9,7 +9,6 @@ import {
 
 import {
   setNoticeOpen,
-  setDimPopup,
 } from '@store/slices/navigateProvicer';
 
 import RightSnb from '@components/snb/RightSnb';
@@ -21,11 +20,12 @@ import { formToColumn } from '@lib/common';
 
 import isEmpty from 'lodash.isempty';
 
+import { alertCustom } from '@lib/common';
+
 import ico_speaker from '@assets/images/icons/icon_speaker.png';
 
 const TestComplete = () => {
   const [testFormResult, setTestFormResult] = useState<TestForm>({} as TestForm);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const testForm = useAppSelector((state: RootState) => state.testForm);
   const testResult = useAppSelector((state: RootState) => state.testResult);
@@ -40,8 +40,11 @@ const TestComplete = () => {
 
     const data = formToColumn(testFormResult, lastId);
     dispatch(setInsertResult(data));
-    dispatch(setDimPopup(true));
-    setShowSuccessPopup(true);
+
+    alertCustom({
+      message: '저장되었습니다.',
+      callback: () => dispatch(setNoticeOpen())
+    });
   }
 
   useEffect(() => {
@@ -64,41 +67,6 @@ const TestComplete = () => {
         >
           저장 후 종료
         </button>
-      </div>
-
-      {showSuccessPopup && <SuccessPopup show={setShowSuccessPopup}/>}
-    </>
-  );
-}
-
-const SuccessPopup = ({...props}) => {
-  const dispatch = useAppDispatch();
-  return (
-    <>
-      <div className="popup-wrapper"></div>
-      <div className="save-success-wrapper">
-        <div className="editing-name-modal">
-          <ul className="modal-item-wrapper">
-            <li>
-              <p>저장되었습니다.</p>
-            </li>
-          </ul>
-          <ul className="modal-btn-wrapper">
-            <li className="modal-btn-inner">
-              <button
-                className="confirm-btn"
-                type="button"
-                onClick={() => {
-                  props.show(false);
-                  dispatch(setDimPopup(false));
-                  dispatch(setNoticeOpen());
-                }}
-              >
-                확인
-              </button>
-            </li>
-          </ul>
-        </div>
       </div>
     </>
   );

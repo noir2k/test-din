@@ -12,7 +12,8 @@ import {
   ScoringOptions,
   SoundSetOptions,
   FixedTypeOptions,
-  DirectionOptions
+  DirectionOptions,
+  alertCustom,
 } from '@lib/common';
 
 import {
@@ -27,10 +28,6 @@ import {
 import {
   nextPage,
 } from '@store/slices/testProgressProvider';
-
-import {
-  setAlertModal,
-} from '@store/slices/alertModalProvider';
 
 type ErrorMessageType = {
   [key: string]: FieldError;
@@ -97,7 +94,10 @@ const ExamineeInfoForm = () => {
 
     if (firstError) {
       const error = err[firstError];
-      dispatch(setAlertModal({isShow: true, title:'환자 정보 입력 오류', message: error.message}));
+      alertCustom({
+        message: error.message,
+        title:'환자 정보 입력 오류',
+      });
       setFocus(firstError.toString());
     }
   }

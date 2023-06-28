@@ -1289,3 +1289,19 @@ input[type='range']:active::-webkit-slider-runnable-track {
   padding: 12px;
   height: 100%;
 }
+
+/* sweetAlert */
+
+.sweet_title_text {
+  font-size: x-large;
+}
+
+.sweet_content_text {
+  font-size: x-large;
+}
+
+.sweet_confirm_button {
+  background-color: #568af0 !important;
+  box-shadow: 0 0 0 3px rgba(86, 138, 240, .5) !important;
+}
+

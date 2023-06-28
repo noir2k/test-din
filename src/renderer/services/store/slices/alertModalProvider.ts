@@ -1,3 +1,5 @@
+/** TODO: REMOVE */
+
 import { createSlice } from '@reduxjs/toolkit';
 
 type AlertModalType = {

@@ -20,12 +20,8 @@ import {
   setReplaceUserInfo,
 } from '@store/slices/testResultProvider';
 
-import {
-  setAlertModal,
-} from '@store/slices/alertModalProvider';
-
 import { UserInfo } from '@interfaces';
-import { ColumnName } from '@lib/common';
+import { ColumnName, alertCustom } from '@lib/common';
 
 import { IdentificationIcon } from '@heroicons/react/24/solid';
 
@@ -54,14 +50,11 @@ const UserRegister = () => {
 
   const onSubmit = (data: any) => {
     const userData = data as UserInfo;
-    dispatch(
-      setAlertModal({
-        isShow: true,
-        title:'환자 정보 등록/수정',
-        message: '환자 정보가 등록/수정 되었습니다.',
-        callback: () => handleAfterSubmit(userData)
-      })
-    );
+    alertCustom({
+      title: '환자 정보 등록/수정',
+      message: '환자 정보가 등록/수정 되었습니다.',
+      callback: () => handleAfterSubmit(userData)
+    });
   }
 
   const onError = (error: any) => {
@@ -75,13 +68,10 @@ const UserRegister = () => {
 
     if (firstError) {
       const error = err[firstError];
-      dispatch(
-        setAlertModal({
-          isShow: true,
-          title:'환자 정보 입력 오류',
-          message: error.message
-        })
-      );
+      alertCustom({
+        title: '환자 정보 입력 오류',
+        message: error.message,
+      });
       setFocus(firstError.toString());
     }
   }
