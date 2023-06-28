@@ -63,7 +63,7 @@ const TestForm = () => {
                * TODO: when release, remove this code
                * DISABLE import sql for release
                */
-              dispatch(prevPage())
+              // dispatch(prevPage())
             }}
           >
             <img
@@ -81,7 +81,7 @@ const TestForm = () => {
                * TODO: when release, remove this code
                * DISABLE import sql for release
                */
-              dispatch(nextPage())
+              // dispatch(nextPage())
             }}
           >
             <img
