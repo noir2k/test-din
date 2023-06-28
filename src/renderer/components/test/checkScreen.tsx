@@ -111,7 +111,7 @@ const CheckScreen = () => {
     const title = hooks.isTestStart
       ? '테스트 진행중'
       : `본 테스트를 실시합니다.
-아래의 시작 버튼을 눌러서 검사를 실시하세요`;
+아래의 시작 버튼을 눌러서 검사를 실시하세요.`;
     setTestTitle(title);
   }, [hooks.isTestStart]);
 

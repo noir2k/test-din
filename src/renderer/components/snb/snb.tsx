@@ -171,6 +171,8 @@ const snb = () => {
     return () => window.electron.ipcRenderer.removeAllListeners(channel);
   });
 
+  // TODO: remove system confirm popup
+
   return (
     <div id="snb" className="snb-container">
       <div className="child snb-setting-wrapper">

@@ -26,12 +26,7 @@ const Setting = () => {
     }
   }, []);
 
-  // TODO: will be removed
-  // save config onChanged
-  // useEffect(() => {
-  //   _config.soundInterval = value;
-  //   window.electron.store.set('config', _config);
-  // }, [value]);
+  // TODO: remove system alert popup
 
   return (
     <div className="sound-setting-wrapper">

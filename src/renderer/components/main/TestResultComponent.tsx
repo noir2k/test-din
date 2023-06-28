@@ -131,7 +131,7 @@ const TestResult = ({...props}) => {
       </div>
       {isEditMemoShow && (
         <div className="edit-note-wrapper">
-          <div className="edit-note-title">
+          {/* <div className="edit-note-title">
             <button
               type="button"
               className="close-btn"
@@ -139,7 +139,7 @@ const TestResult = ({...props}) => {
             >
               <XMarkIcon className='h-8 w-8 text-white'/>
             </button>
-          </div>
+          </div> */}
           <div className="edit-note-inner">
             <label htmlFor={ColumnName.memo} className="hidden">
               참고사항

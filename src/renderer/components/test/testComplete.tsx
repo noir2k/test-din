@@ -7,6 +7,11 @@ import {
   setInsertResult,
 } from '@store/slices/testResultProvider';
 
+import {
+  setNoticeOpen,
+  setDimPopup,
+} from '@store/slices/navigateProvicer';
+
 import RightSnb from '@components/snb/RightSnb';
 import TestResult from '@components/main/TestResultComponent';
 
@@ -35,6 +40,7 @@ const TestComplete = () => {
 
     const data = formToColumn(testFormResult, lastId);
     dispatch(setInsertResult(data));
+    dispatch(setDimPopup(true));
     setShowSuccessPopup(true);
   }
 
@@ -50,7 +56,6 @@ const TestComplete = () => {
         <img src={ico_speaker} alt="speaker icon" />
         <p>테스트 결과</p>
       </div>
-      {/* <TestResult /> */}
       <TestResult isTestResult={true} data={testFormResult} setData={setTestFormResult}/>
       <div className="result-btn-wrapper">
         <button
@@ -85,7 +90,8 @@ const SuccessPopup = ({...props}) => {
                 type="button"
                 onClick={() => {
                   props.show(false);
-                  // dispatch(setNoticeOpen());
+                  dispatch(setDimPopup(false));
+                  dispatch(setNoticeOpen());
                 }}
               >
                 확인

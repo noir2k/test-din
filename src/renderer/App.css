@@ -963,6 +963,15 @@ input[type='range']:active::-webkit-slider-runnable-track {
 
 
 /* checkScreen.tsx */
+.check-form-title {
+  flex-direction: column;
+}
+
+.check-form-title > img {
+  width: 26px;
+  margin-bottom: 16px;
+}
+
 .check-form-title,
 .result-form-title,
 .sound-setting-title {
@@ -971,7 +980,6 @@ input[type='range']:active::-webkit-slider-runnable-track {
   align-items: center;
 }
 
-.check-form-title > img,
 .result-form-title > img,
 .sound-setting-title > img {
   width: 26px;
@@ -980,8 +988,9 @@ input[type='range']:active::-webkit-slider-runnable-track {
 
 .check-form-title > p,
 .result-form-title > p {
-  font-weight: 600;
-  font-size: 23px;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
 }
 
 .question-progress {
