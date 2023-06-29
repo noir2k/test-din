@@ -2,11 +2,9 @@ import { useAppDispatch, useAppSelector } from '@hook/index';
 import type { RootState } from '@store/index';
 import { setNoticeOpen } from '@store/slices/navigateProvicer';
 
-import {
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import ico_speaker from '@assets/images/icons/icon_speaker.png';
+import iconSpeaker from '@assets/images/icons/icon_speaker.png';
 
 const ExamineeInfoPopup = () => {
   const userData = useAppSelector((state: RootState) => state.userData);
@@ -21,13 +19,13 @@ const ExamineeInfoPopup = () => {
           className="close-btn"
           onClick={() => dispatch(setNoticeOpen())}
         >
-          <XMarkIcon className='h-8 w-8 text-white'/>
+          <XMarkIcon className="h-8 w-8 text-white" />
         </button>
       </div>
 
       <ul className="popup-contents">
         <li className="popup-title">
-          <img src={ico_speaker} alt="speaker icon" />
+          <img src={iconSpeaker} alt="speaker icon" />
           <span>환자 정보</span>
         </li>
         <li className="popup-item">

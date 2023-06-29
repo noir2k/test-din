@@ -6,7 +6,7 @@ import { setNoticeOpen } from '@store/slices/navigateProvicer';
 
 import { alertCustom } from '@lib/common';
 
-import ico_speaker from '@assets/images/icons/icon_speaker.png';
+import iconSpeaker from '@assets/images/icons/icon_speaker.png';
 
 const _config = {} as ConfigSchemaType;
 
@@ -16,7 +16,7 @@ const Setting = () => {
   const dispatch = useAppDispatch();
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(e.target.value);
+    const newValue = parseInt(e.target.value, 10);
     setValue(newValue);
   };
 
@@ -33,7 +33,7 @@ const Setting = () => {
   return (
     <div className="sound-setting-wrapper">
       <div className="sound-setting-title">
-        <img src={ico_speaker} alt="speaker icon" />
+        <img src={iconSpeaker} alt="speaker icon" />
         <p className="text-3xl font-bold">설정</p>
       </div>
 
@@ -80,7 +80,7 @@ const Setting = () => {
             window.electron.store.set('config', _config);
             alertCustom({
               message: '설정이 저장되었습니다.',
-              callback: () => dispatch(setNoticeOpen())
+              callback: () => dispatch(setNoticeOpen()),
             });
           }}
         >

@@ -16,13 +16,12 @@ const useInfinteScroll = ({
   const [target, setTarget] = useState<HTMLElement | null | undefined>(null);
 
   useEffect(() => {
-    if (!target) return;
+    if (!target) return undefined;
 
     const observer: IntersectionObserver = new IntersectionObserver(
       onIntersect,
       { root, rootMargin, threshold }
     );
-
 
     observer.observe(target);
 

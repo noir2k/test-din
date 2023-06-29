@@ -27,16 +27,11 @@ const testProgressSlice = createSlice({
     setDelay: (state, action) => {
       state.delay = action.payload;
     },
-    resetProgress: () => initialState
-  }
+    resetProgress: () => initialState,
+  },
 });
 
-export const {
-  nextPage,
-  prevPage,
-  setVolume,
-  setDelay,
-  resetProgress
-} = testProgressSlice.actions;
+export const { nextPage, prevPage, setVolume, setDelay, resetProgress } =
+  testProgressSlice.actions;
 
 export default testProgressSlice.reducer;

@@ -14,7 +14,8 @@ import {
   shell,
   ipcMain,
   dialog,
-  protocol, net,
+  protocol,
+  net,
   OpenDialogSyncOptions,
 } from 'electron';
 
@@ -22,15 +23,15 @@ import Store from 'electron-store';
 import log from 'electron-log';
 import 'dotenv/config';
 
-import MenuBuilder from './menu';
-import * as Util from './util';
-import type { ConfigSchemaType } from './util';
-
 import type { Database } from 'sql.js';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
 } from 'electron-devtools-assembler';
+
+import MenuBuilder from './menu';
+import * as Util from './util';
+import type { ConfigSchemaType } from './util';
 
 // import { autoUpdater } from 'electron-updater';
 // class AppUpdater {
@@ -61,8 +62,8 @@ async function installExtensions() {
       },
       forceDownload: !!process.env.UPGRADE_EXTENSIONS,
     })
-    .then((name) => console.log(`Added Extension: ${name}`))
-    .catch((err) => console.log(`"${extension}" An error occurred: `, err));
+      .then((name) => console.log(`Added Extension: ${name}`))
+      .catch((err) => console.log(`"${extension}" An error occurred: `, err));
   });
 }
 
@@ -85,7 +86,7 @@ if (isDebug) {
 
 const _loadDefaultConfig = () => {
   const config = STORE.get('config') as ConfigSchemaType;
-  if (config && !config.hasOwnProperty('soundInterval')) {
+  if (!!config && !config.hasOwnProperty('soundInterval')) {
     config.soundInterval = Util.defaultConfig.soundInterval;
     STORE.set('config', config);
   } else {
@@ -164,7 +165,7 @@ const createWindow = async () => {
 
   /**
    * ipcMain event
-   **/
+   * */
   ipcMain.on('ipc', async (event, arg) => {
     const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
     log.log(msgTemplate(arg));
@@ -209,9 +210,12 @@ const createWindow = async () => {
 
       if (result && result.length > 0) {
         const sqlstr = Util.generateInsertQueryFromSelect(result);
-        Util.saveFile(filePath, sqlstr)
-          ? event.sender.send('save-file-completed', 'File save completed')
-          : event.sender.send('save-file-failured', 'File save Error');
+        const saved = Util.saveFile(filePath, sqlstr);
+        if (saved) {
+          event.sender.send('save-file-completed', 'File save completed');
+        } else {
+          event.sender.send('save-file-failured', 'File save Error');
+        }
       } else {
         dialog.showMessageBox({
           message: 'No Data Found!',
@@ -293,8 +297,10 @@ app
   .whenReady()
   .then(() => {
     protocol.handle('static', (request) => {
-      return net.fetch('file://' + getAssetPath(request.url.slice('static://'.length)))
-    })
+      return net.fetch(
+        `file://${getAssetPath(request.url.slice('static://'.length))}`
+      );
+    });
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the

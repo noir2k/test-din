@@ -3,14 +3,16 @@ import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
 import type { RootState } from '@store/index';
 
+import hash from 'object-hash';
+
 import {
   nextPage,
   prevPage,
   setDelay,
 } from '@store/slices/testProgressProvider';
 
-import ico_angle_left from '@assets/images/icons/icon_angle_left.png';
-import ico_angle_right from '@assets/images/icons/icon_angle_right.png';
+import icoAngleLeft from '@assets/images/icons/icon_angle_left.png';
+import icoAngleRight from '@assets/images/icons/icon_angle_right.png';
 
 import ExamineeInfoForm from './examineeInfoForm';
 import PreCheckScreen from './preCheckScreen';
@@ -24,7 +26,7 @@ const TestForm = () => {
       array.push(i);
     }
     return array;
-  }
+  };
 
   const testProgress = useAppSelector((state: RootState) => state.testProgress);
 
@@ -37,16 +39,19 @@ const TestForm = () => {
     }
   }, []);
 
-  const currentPage = testProgress.currentPage;
+  const { currentPage } = testProgress;
   const pages = createPages(testProgress.lastPage);
 
   return (
     <div className="test-form-wrapper">
       <div className="test-form-inner">
         <div className="progress-bar">
-          {pages.map(function (a, i) {
+          {pages.map((a, index) => {
             return (
-              <div key={i} className={currentPage === i ? 'dot active' : 'dot'}>
+              <div
+                key={hash(index).toString()}
+                className={currentPage === index ? 'dot active' : 'dot'}
+              >
                 <p className="hidden">진행 단계 표시</p>
               </div>
             );
@@ -55,7 +60,7 @@ const TestForm = () => {
 
         <div className="progress-btn-wrapper">
           <button
-            disabled={currentPage === 0 ? true : false}
+            disabled={currentPage === 0}
             type="button"
             className="progress-btn prev-btn"
             onClick={() => {
@@ -67,13 +72,13 @@ const TestForm = () => {
             }}
           >
             <img
-              src={ico_angle_left}
+              src={icoAngleLeft}
               alt="icon_angle_left"
               className="icon-arrow"
             />
           </button>
           <button
-            disabled={currentPage === 3 ? true : false}
+            disabled={currentPage === 3}
             type="button"
             className="progress-btn next-btn"
             onClick={() => {
@@ -85,7 +90,7 @@ const TestForm = () => {
             }}
           >
             <img
-              src={ico_angle_right}
+              src={icoAngleRight}
               alt="icon_angle_left"
               className="icon-arrow"
             />
@@ -101,6 +106,6 @@ const TestForm = () => {
       </div>
     </div>
   );
-}
+};
 
 export default TestForm;

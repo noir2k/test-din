@@ -1,11 +1,12 @@
 import { URL } from 'url';
 import path from 'path';
 import fs from 'fs';
-import { getAssetPath } from './main';
 
 import log from 'electron-log';
 
 import type { Database, QueryExecResult } from 'sql.js';
+import { getAssetPath } from './main';
+
 const initSqlJs = require('sql.js');
 
 const tbName = 'test_din_history';
@@ -39,21 +40,21 @@ export interface ColumnType {
 
 export const ColumnName = {
   id: 'id',
-	user_name: 'user_name',
-	gender: 'gender',
-	birthday: 'birthday',
-	patient_no: 'patient_no',
+  user_name: 'user_name',
+  gender: 'gender',
+  birthday: 'birthday',
+  patient_no: 'patient_no',
   tester_name: 'tester_name',
   receiver: 'receiver',
   fixed_type: 'fixed_type',
-	direction: 'direction',
-	volume_level: 'volume_level',
-	scoring: 'scoring',
-	memo: 'memo',
-	sound_set: 'sound_set',
-	test_date: 'test_date',
-	test_result: 'test_result',
-	reg_timestamp: 'reg_timestamp',
+  direction: 'direction',
+  volume_level: 'volume_level',
+  scoring: 'scoring',
+  memo: 'memo',
+  sound_set: 'sound_set',
+  test_date: 'test_date',
+  test_result: 'test_result',
+  reg_timestamp: 'reg_timestamp',
 };
 
 export const resolveHtmlPath = (htmlFileName: string) => {
@@ -68,13 +69,14 @@ export const resolveHtmlPath = (htmlFileName: string) => {
 };
 
 const _rowsFromSqlDataArray = (queryExecResult: QueryExecResult) => {
-  let data = [];
+  const data = [];
   let i = 0;
   let j = 0;
-  for (let valueArray of queryExecResult.values) {
+  for (const valueArray of queryExecResult.values) {
     data[i] = {};
     j = 0;
-    for (let column of queryExecResult.columns) {
+    // eslint-disable-next-line
+    for (const column of queryExecResult.columns) {
       Object.assign(data[i], { [column]: valueArray[j] });
       j++;
     }
@@ -99,9 +101,9 @@ const _checkRegexSql = (queryText: string) => {
   const regexPattern: RegExp =
     /^BEGIN TRANSACTION;\n(?:INSERT INTO ["']?test_din_history["']?.*;\n)*COMMIT;$/;
 
-  queryText = queryText.replace(/\n$/, '');
-  log.log("queryText", queryText, regexPattern.test(queryText));
-  return regexPattern.test(queryText);
+  const qry = queryText.replace(/\n$/, '');
+  log.log('queryText', qry, regexPattern.test(qry));
+  return regexPattern.test(qry);
 };
 
 // NOT USED
@@ -130,6 +132,31 @@ export const initDbTable = async (db: Database) => {
   db.run(sqlstr);
 };
 
+export const findAll = (db: Database) => {
+  const sqlstr = `SELECT * FROM ${tbName}`;
+  const res = db.exec(sqlstr);
+  return res;
+};
+
+export const rowCount = (db: Database) => {
+  const sqlstr = `SELECT COUNT(id) FROM ${tbName} LIMIT 1`;
+
+  const res = db.exec(sqlstr);
+  return res[0].values[0][0];
+};
+
+export const findByRegDate = (db: Database, offset?: string) => {
+  let sqlstr = `SELECT * FROM ${tbName} ORDER BY ${ColumnName.reg_timestamp} DESC LIMIT 15`;
+  let offsetStr = offset;
+  if (offset === undefined) {
+    offsetStr = '0';
+  }
+  sqlstr += ` OFFSET ${offsetStr}`;
+
+  const res = db.exec(sqlstr);
+  return _resultData(res);
+};
+
 export const loadFromSql = (db: Database, filePath: string) => {
   const sqlstr = fs.readFileSync(filePath, 'utf8');
 
@@ -138,38 +165,13 @@ export const loadFromSql = (db: Database, filePath: string) => {
     initDbTable(db);
     db.run(sqlstr);
     return findByRegDate(db);
-  } else {
-    log.error('check regex NOT OK');
-    return null;
   }
-};
-
-export const findAll = (db: Database) => {
-  let sqlstr = `SELECT * FROM ${tbName}`;
-  const res = db.exec(sqlstr);
-  return res;
-};
-
-export const rowCount = (db: Database) => {
-  let sqlstr = `SELECT COUNT(id) FROM ${tbName} LIMIT 1`;
-
-  const res = db.exec(sqlstr);
-  return res[0].values[0][0];
-};
-
-export const findByRegDate = (db: Database, offset?: string) => {
-  let sqlstr = `SELECT * FROM ${tbName} ORDER BY ${ColumnName.reg_timestamp} DESC LIMIT 15`;
-  if (offset === undefined) {
-    offset = '0';
-  }
-  sqlstr += ` OFFSET ${offset}`;
-
-  const res = db.exec(sqlstr);
-  return _resultData(res);
+  log.error('check regex NOT OK');
+  return null;
 };
 
 export const getGraphData = (db: Database) => {
-  let sqlstr = `SELECT
+  const sqlstr = `SELECT
     ${ColumnName.id},
     ${ColumnName.direction},
     ${ColumnName.scoring},
@@ -249,11 +251,11 @@ export const generateInsertQueryFromSelect = (
     for (const column of columns) {
       insertQuery += `'${column}', `;
     }
-    insertQuery = insertQuery.slice(0, -2) + `) VALUES (`;
+    insertQuery = `${insertQuery.slice(0, -2)}) VALUES (`;
     for (const v of value) {
       insertQuery += typeof v === 'string' ? `'${v}', ` : `${v}, `;
     }
-    insertQuery = insertQuery.slice(0, -2) + `);\n`;
+    insertQuery = `${insertQuery.slice(0, -2)});\n`;
   }
   insertQuery += `COMMIT;`;
 
@@ -265,21 +267,19 @@ export const isExistFile = (filePath: string) => {
 };
 
 export const saveFile = (filePath: string, queryText: string) => {
-  let result = false;
   try {
     fs.writeFileSync(filePath, queryText, 'utf8');
     log.log('File saved:', filePath);
-    result = true;
+    return true;
   } catch (error) {
     log.error('Error saving file:', error);
-  } finally {
-    return result;
+    return false;
   }
 };
 
 export const testDb = (db: Database) => {
-  let sqlstr = `select * from ${tbName} limit 1`;
-  let res = db.exec(sqlstr);
+  const sqlstr = `select * from ${tbName} limit 1`;
+  const res = db.exec(sqlstr);
 
   _resultData(res);
 };

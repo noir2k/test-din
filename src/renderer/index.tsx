@@ -1,6 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import log from 'electron-log/renderer';
 
+import { alertCustom } from '@lib/common';
+
 import App from './App';
 
 const container = document.getElementById('root') as HTMLElement;
@@ -15,11 +17,11 @@ window.electron.ipcRenderer.once('ipc', (arg) => {
 window.electron.ipcRenderer.sendMessage('ipc', ['ping']);
 
 window.electron.ipcRenderer.on('load-data-failured', (message) => {
-  alert(message);
+  alertCustom({ message: message as string });
 });
 
 window.electron.ipcRenderer.on('save-file-failured', (message) => {
-  alert(message);
+  alertCustom({ message: message as string });
 });
 
 log.info('Log from the renderer process');

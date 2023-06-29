@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { useAppDispatch } from '@hook/index';
 
-import {
-  setScoreItemResult,
-} from '@store/slices/scoreProvider';
+import { setScoreItemResult } from '@store/slices/scoreProvider';
 
 import { alertCustom } from '@lib/common';
 
-const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => {
+const useNumberInput = (
+  testMaxCount: number,
+  isPreChecked: boolean = false
+) => {
   const [digits, setDigits] = useState(['', '', '']);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [countTest, setCountTest] = useState(1);
@@ -25,7 +26,7 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
     setCurrentIndex(0);
     setTestStart(false);
     setTestComplete(false);
-  }
+  };
 
   const handleNumberClick = (number: string) => {
     if (isTestStart) {
@@ -38,7 +39,7 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
       }
     } else {
       setError(true);
-      alertCustom({message: '시작 버튼을 눌러서 시작해주세요.'});
+      alertCustom({ message: '시작 버튼을 눌러서 시작해주세요.' });
     }
   };
 
@@ -47,7 +48,7 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
       if (currentIndex === 3) {
         setError(false);
         if (!isPreChecked) {
-          dispatch(setScoreItemResult({countTest, digits}));
+          dispatch(setScoreItemResult({ countTest, digits }));
         }
         const nextCount = countTest + 1;
         if (countTest < testMaxCount) {
@@ -60,11 +61,11 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
         }
       } else {
         setError(true);
-        alertCustom({message: '모든 숫자가 입력되지 않았습니다.'});
+        alertCustom({ message: '모든 숫자가 입력되지 않았습니다.' });
       }
     } else {
       setError(true);
-      alertCustom({message: '시작 버튼을 눌러서 시작해주세요.'});
+      alertCustom({ message: '시작 버튼을 눌러서 시작해주세요.' });
     }
   };
 
@@ -73,7 +74,7 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
       e.preventDefault();
 
       const number = Number(e.key);
-      if (!isNaN(number) && currentIndex < 3) {
+      if (!Number.isNaN(number) && currentIndex < 3) {
         handleNumberClick(number.toString());
       } else if (e.key === 'Backspace' || e.key === 'Delete') {
         if (currentIndex >= 1) {
@@ -101,6 +102,7 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
       buttons.push(
         <div key={i} className="number-btn-wrapper">
           <button
+            type="button"
             className="number-btn"
             onClick={() => handleNumberClick(i.toString())}
           >
@@ -111,21 +113,29 @@ const useNumberInput = (testMaxCount: number, isPreChecked: boolean = false) => 
     }
     buttons.push(
       <div key={-1} className="number-btn-wrapper remove-margin">
-        <button className="hidden" disabled>
+        <button type="button" className="hidden" disabled>
           간격 조절용 버튼
         </button>
       </div>
     );
     buttons.push(
       <div key={0} className="number-btn-wrapper remove-margin">
-        <button className="number-btn" onClick={() => handleNumberClick('0')}>
+        <button
+          type="button"
+          className="number-btn"
+          onClick={() => handleNumberClick('0')}
+        >
           0
         </button>
       </div>
     );
     buttons.push(
       <div key="confirm" className="number-btn-wrapper remove-margin">
-        <button className="number-btn confirm-btn" onClick={handleCheck}>
+        <button
+          type="button"
+          className="number-btn confirm-btn"
+          onClick={handleCheck}
+        >
           확인
         </button>
       </div>

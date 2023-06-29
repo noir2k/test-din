@@ -10,7 +10,7 @@ export type ScoreItemType = {
   fileName: string;
   answer?: number[];
   userAnswer?: number[];
-}
+};
 
 type ScoreConfigType = {
   direction: string;
@@ -18,66 +18,20 @@ type ScoreConfigType = {
   sound_set: number;
   volume_level: number;
   max_count: number;
-}
+};
 
 const initialState = {
   answers: answerData,
   scoreConfig: {} as ScoreConfigType,
   scoreItems: [] as ScoreItemType[],
   scoreItemIndex: [] as number[],
-}
+};
 
 const ext = '.mp3';
 const preType = 'NF';
 const filePath = 'static://sounds/';
 
 const soundSetGroupSize = 30;
-
-const answerSlice = createSlice({
-  name: 'scoreData',
-  initialState,
-  reducers: {
-    setScoreConfig: (state, action) => {
-      state.scoreConfig = action.payload;
-      state.scoreItemIndex = shuffleIndex(action.payload.max_count);
-    },
-    setScoreItem: (state, action) => {
-      const { index, volume_level } = action.payload;
-      const itemNo = state.scoreItemIndex[index];
-
-      let _volume_level = state.scoreConfig.volume_level;
-      if (volume_level !== undefined) {
-        _volume_level = volume_level;
-      }
-
-      const fileName = getSound(itemNo, _volume_level, state.scoreConfig.direction, state.scoreConfig.sound_set);
-      const scoreItem: ScoreItemType = {
-        itemNo: itemNo,
-        isPass: false,
-        volume_level: Number(_volume_level),
-        fileName: fileName
-      }
-
-      state.scoreItems = state.scoreItems.concat(scoreItem);
-    },
-    setScoreItemResult: (state, action) => {
-      const { countTest, digits } = action.payload;
-      const index = countTest - 1;
-      const scoreItem = state.scoreItems[index];
-      const itemNo = scoreItem.itemNo;
-      const answer = getAnswers(itemNo);
-      const result = resultScore(state.scoreConfig.scoring, answer, digits);
-
-      scoreItem.isPass = result;
-      scoreItem.answer = answer;
-      scoreItem.userAnswer = digits;
-    },
-    clearScoreItems: (state) => {
-      state.scoreItems = [];
-    },
-    resetScore: () => initialState
-  }
-});
 
 const shuffleIndex = (maxCount: number) => {
   const arr = [];
@@ -88,14 +42,18 @@ const shuffleIndex = (maxCount: number) => {
   // arr.sort(() => Math.random() - 0.5);
   // console.log("shuffleIndex", arr);
   return arr;
-}
+};
 
 const getType = (direction: string) => {
   return 'NFLR';
   // return (preType + direction).toUpperCase()
 };
 
-const resultScore = (scoring: string, answer: number[], digits: number[]): boolean => {
+const resultScore = (
+  scoring: string,
+  answer: number[],
+  digits: number[]
+): boolean => {
   let ansCount = 0;
   answer.forEach((a, idx) => {
     if (a === Number(digits[idx])) {
@@ -103,29 +61,81 @@ const resultScore = (scoring: string, answer: number[], digits: number[]): boole
     }
   });
 
-  const isPass = (scoring === 'digit' && ansCount >= 2) ||
+  const isPass =
+    (scoring === 'digit' && ansCount >= 2) ||
     (scoring === 'triplet' && ansCount === 3);
 
   return isPass;
-}
+};
 
-export const getAnswers = (key: string | number) => initialState.answers[key as keyof AnswerDataType];
+export const getAnswers = (key: string | number) =>
+  initialState.answers[key as keyof AnswerDataType];
 export const getSound = (
   _count: number,
-  volume_level: number,
-  direction: string,
-  sound_set: number) => {
+  _volumeLevel: number,
+  _direction: string,
+  _soundSet: number
+) => {
+  const type = getType(_direction);
 
-  let type = getType(direction);
-
-  const soundSetGroup = (soundSetGroupSize * (sound_set - 1));
+  const soundSetGroup = soundSetGroupSize * (_soundSet - 1);
   const count = _count + soundSetGroup;
 
-  let fileName = filePath + type + '/' + type + '[' + volume_level + ']' + count + ext;
+  const fileName = `${filePath + type}/${type}[${_volumeLevel}]${count}${ext}`;
 
-  console.log("getSound", fileName);
+  console.log('getSound', fileName);
   return fileName;
-}
+};
+
+const answerSlice = createSlice({
+  name: 'scoreData',
+  initialState,
+  reducers: {
+    setScoreConfig: (state, action) => {
+      state.scoreConfig = action.payload;
+      state.scoreItemIndex = shuffleIndex(action.payload.max_count);
+    },
+    setScoreItem: (state, action) => {
+      const itemNo = state.scoreItemIndex[action.payload.index];
+
+      let _volumeLevel = state.scoreConfig.volume_level;
+      if (_volumeLevel !== undefined) {
+        _volumeLevel = action.payload.volume_level;
+      }
+
+      const fileName = getSound(
+        itemNo,
+        _volumeLevel,
+        state.scoreConfig.direction,
+        state.scoreConfig.sound_set
+      );
+      const scoreItem: ScoreItemType = {
+        itemNo,
+        isPass: false,
+        volume_level: Number(_volumeLevel),
+        fileName,
+      };
+
+      state.scoreItems = state.scoreItems.concat(scoreItem);
+    },
+    setScoreItemResult: (state, action) => {
+      const { countTest, digits } = action.payload;
+      const index = countTest - 1;
+      const scoreItem = state.scoreItems[index];
+      const { itemNo } = scoreItem;
+      const answer = getAnswers(itemNo);
+      const result = resultScore(state.scoreConfig.scoring, answer, digits);
+
+      scoreItem.isPass = result;
+      scoreItem.answer = answer;
+      scoreItem.userAnswer = digits;
+    },
+    clearScoreItems: (state) => {
+      state.scoreItems = [];
+    },
+    resetScore: () => initialState,
+  },
+});
 
 export const {
   setScoreConfig,

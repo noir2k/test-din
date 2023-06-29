@@ -5,7 +5,7 @@ export type PlayProps = {
   mp3: string;
   volume: number;
   delay: number;
-  onEnd?: () => void;
+  onEnd?: () => void | undefined;
 };
 
 const PlaySound = (props: PlayProps) => {
@@ -15,33 +15,37 @@ const PlaySound = (props: PlayProps) => {
     volume: vol,
     src: [mp3],
     onplay: () => {
-      console.log("onplay");
+      console.log('onplay');
     },
     onloaderror: (id: any, error: any) => {
-      console.log("onloaderror", id, error);
+      console.log('onloaderror', id, error);
     },
     onplayerror: (id: any, error: any) => {
-      console.log("onplayerror", id, error);
+      console.log('onplayerror', id, error);
     },
     onend: () => {
       if (typeof onEnd === 'function') onEnd();
-    }
-  }
+    },
+  };
   useEffect(() => {
-    let howl = new Howl(option);
-    console.log("PLAY_BEFORE");
+    const howl = new Howl(option);
+    console.log('PLAY_BEFORE');
     setTimeout(() => {
-      console.log("PLAY_DELAYED", howl);
+      console.log('PLAY_DELAYED', howl);
       howl.play();
-    }, (delay * 1000));
+    }, delay * 1000);
 
     return () => {
-      console.log("PLAY_STOP");
+      console.log('PLAY_STOP');
       howl.stop();
     };
   }, [mp3]);
 
   return null;
-}
+};
+
+PlaySound.defaultProps = {
+  onEnd: () => {},
+};
 
 export default PlaySound;

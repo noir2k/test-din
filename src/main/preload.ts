@@ -27,7 +27,7 @@ const electronHandler = {
     },
     self() {
       return ipcRenderer;
-    }
+    },
   },
   store: {
     get(key: string) {

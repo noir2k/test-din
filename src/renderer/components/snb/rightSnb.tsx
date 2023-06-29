@@ -1,34 +1,15 @@
-import { useAppSelector, useAppDispatch } from '@hook/index';
+import { useAppSelector } from '@hook/index';
 import type { RootState } from '@store/index';
 
-import {
-  ScoringOptions,
-  SoundSetOptions,
-  DirectionOptions
-} from '@lib/common';
+import { ScoringOptions, SoundSetOptions, DirectionOptions } from '@lib/common';
 
-import ico_speaker_white from '@assets/images/icons/icon_speaker_white.png';
-
-const RightSnb = () => {
-  const testProgress = useAppSelector((state: RootState) => state.testProgress);
-
-  // console.log("currentPage" , testProgress.currentPage);
-
-  return (
-    <>
-      {testProgress.currentPage === 1
-        && <PreCheckSnb />}
-      {(testProgress.currentPage === 2 || testProgress.currentPage === 3)
-        && <CheckSnb />}
-    </>
-  );
-}
+import iconSpeakerWhite from '@assets/images/icons/icon_speaker_white.png';
 
 const PreCheckSnb = () => {
   return (
     <div className="right-snb-wrapper">
       <div className="right-snb-title">
-        <img src={ico_speaker_white} alt="white speaker icon" />
+        <img src={iconSpeakerWhite} alt="white speaker icon" />
         <p>검사 테스트</p>
       </div>
       <div className="right-snb-text">
@@ -40,14 +21,14 @@ const PreCheckSnb = () => {
       </div>
     </div>
   );
-}
+};
 
 const CheckSnb = () => {
-  const {sound_set, direction, scoring, test_date, test_result} = useAppSelector((state: RootState) => state.testForm);
+  const testForm = useAppSelector((state: RootState) => state.testForm);
 
-  const _soundSet = SoundSetOptions[sound_set?.toString() ?? ''];
-  const _direction = DirectionOptions[direction ?? ''];
-  const _scoring = ScoringOptions[scoring ?? ''];
+  const _soundSet = SoundSetOptions[testForm.sound_set?.toString() ?? ''];
+  const _direction = DirectionOptions[testForm.direction ?? ''];
+  const _scoring = ScoringOptions[testForm.scoring ?? ''];
 
   return (
     <div className="right-snb-wrapper">
@@ -58,11 +39,26 @@ const CheckSnb = () => {
         <p>검사 사운드 세트: {_soundSet}</p>
         <p>사운드 제시 방향: {_direction}</p>
         <p>채점 방식: {_scoring}</p>
-        {test_date && <p>날짜 : {test_date}</p>}
-        {test_result && <p>점수 : {test_result}</p>}
+        {testForm.test_date && <p>날짜 : {testForm.test_date}</p>}
+        {testForm.test_result && <p>점수 : {testForm.test_result}</p>}
       </div>
     </div>
   );
-}
+};
+
+const RightSnb = () => {
+  const testProgress = useAppSelector((state: RootState) => state.testProgress);
+
+  // console.log("currentPage" , testProgress.currentPage);
+
+  return (
+    <>
+      {testProgress.currentPage === 1 && <PreCheckSnb />}
+      {(testProgress.currentPage === 2 || testProgress.currentPage === 3) && (
+        <CheckSnb />
+      )}
+    </>
+  );
+};
 
 export default RightSnb;

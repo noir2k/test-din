@@ -4,58 +4,58 @@ import Swal from 'sweetalert2';
 
 export const ColumnName = {
   id: 'id',
-	user_name: 'user_name',
-	gender: 'gender',
-	birthday: 'birthday',
-	patient_no: 'patient_no',
+  user_name: 'user_name',
+  gender: 'gender',
+  birthday: 'birthday',
+  patient_no: 'patient_no',
   tester_name: 'tester_name',
   receiver: 'receiver',
   fixed_type: 'fixed_type',
-	direction: 'direction',
-	volume_level: 'volume_level',
-	scoring: 'scoring',
-	memo: 'memo',
-	sound_set: 'sound_set',
-	test_date: 'test_date',
-	test_result: 'test_result',
-	reg_timestamp: 'reg_timestamp',
-}
+  direction: 'direction',
+  volume_level: 'volume_level',
+  scoring: 'scoring',
+  memo: 'memo',
+  sound_set: 'sound_set',
+  test_date: 'test_date',
+  test_result: 'test_result',
+  reg_timestamp: 'reg_timestamp',
+};
 
 export const DataRange = {
-  "Normal": [-18, -5.28],
-  "Mild": [-5.27, 0.27],
-  "Moderate": [0.28, 0.68],
-  "Moderate to Severe": [0.69, 12],
-}
+  Normal: [-18, -5.28],
+  Mild: [-5.27, 0.27],
+  Moderate: [0.28, 0.68],
+  'Moderate to Severe': [0.69, 12],
+};
 
 type OptionProps = { [key: string]: string };
 
 export const FixedTypeOptions: OptionProps = {
-  "NF": "Noise Fixed",
-  "SF": "Signal Fixed",
-}
+  NF: 'Noise Fixed',
+  SF: 'Signal Fixed',
+};
 
 export const DirectionOptions: OptionProps = {
-  "L": "좌(L)",
-  "R": "우(R)",
-  "LR": "양방향(LR)",
-  "LNRS": "좌 노이즈 우 스피치(LNRS)",
-  "LSRN": "우 노이즈 좌 스피치(LSRN)"
-}
+  L: '좌(L)',
+  R: '우(R)',
+  LR: '양방향(LR)',
+  LNRS: '좌 노이즈 우 스피치(LNRS)',
+  LSRN: '우 노이즈 좌 스피치(LSRN)',
+};
 
 export const ScoringOptions: OptionProps = {
-  "digit": "Digit Scoring",
-  "triplet": "Triplet Scoring"
-}
+  digit: 'Digit Scoring',
+  triplet: 'Triplet Scoring',
+};
 
 export const SoundSetOptions: OptionProps = {
-  "1": "List 1",
-  "2": "List 2",
-  "3": "List 3",
-  "4": "List 4",
-  "5": "List 5",
-  "6": "List 6"
-}
+  '1': 'List 1',
+  '2': 'List 2',
+  '3': 'List 3',
+  '4': 'List 4',
+  '5': 'List 5',
+  '6': 'List 6',
+};
 
 export const columnToForm = (payload: ColumnType) => {
   return {
@@ -73,7 +73,7 @@ export const columnToForm = (payload: ColumnType) => {
     test_date: payload.test_date,
     test_result: payload.test_result,
   };
-}
+};
 
 export const formToColumn = (payload: TestForm, lastId: number) => {
   return {
@@ -93,16 +93,16 @@ export const formToColumn = (payload: TestForm, lastId: number) => {
     test_result: payload.test_result,
     reg_timestamp: new Date().getTime(),
   };
-}
+};
 
 type AlertPropType = {
-  message: string | undefined,
-  title? : string | undefined,
-  callback?: () => void,
-}
+  message: string | undefined;
+  title?: string | undefined;
+  callback?: () => void;
+};
 
 export const alertCustom = (prop: AlertPropType) => {
-  const message = !!prop.message ? prop.message.replace(/\n/g, '<br />') : '';
+  const message = prop.message ? prop.message.replace(/\n/g, '<br />') : '';
   Swal.fire({
     html: message,
     title: prop.title,
@@ -111,14 +111,14 @@ export const alertCustom = (prop: AlertPropType) => {
     customClass: {
       title: 'sweet_title_text',
       confirmButton: 'sweet_confirm_button',
-    }
+    },
   }).then(() => {
     !!prop.callback && prop.callback();
   });
-}
+};
 
 export const confirmCustom = (prop: AlertPropType) => {
-  const message = !!prop.message ? prop.message.replace(/\n/g, '<br />') : '';
+  const message = prop.message ? prop.message.replace(/\n/g, '<br />') : '';
   Swal.fire({
     html: message,
     title: prop.title,
@@ -129,12 +129,10 @@ export const confirmCustom = (prop: AlertPropType) => {
     customClass: {
       title: 'sweet_title_text',
       confirmButton: 'sweet_confirm_button',
-    }
+    },
   }).then((result) => {
-    console.log("confirm", result);
     if (result.isConfirmed) {
-      console.log("confirm_check", result.isConfirmed);
       !!prop.callback && prop.callback();
     }
   });
-}
+};

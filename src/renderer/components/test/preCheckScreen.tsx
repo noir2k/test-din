@@ -3,10 +3,9 @@ import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
-import {
-  nextPage,
-  setVolume,
-} from '@store/slices/testProgressProvider';
+import hash from 'object-hash';
+
+import { nextPage, setVolume } from '@store/slices/testProgressProvider';
 
 import { alertCustom } from '@lib/common';
 
@@ -28,7 +27,9 @@ const PreCheckScreen = () => {
   const [btnText, setBtnText] = useState('테스트시작');
   const [isBtnDisable, setBtnDisable] = useState(false);
 
-  const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
+  const { volume, delay } = useAppSelector(
+    (state: RootState) => state.testProgress
+  );
 
   const dispatch = useAppDispatch();
 
@@ -36,7 +37,7 @@ const PreCheckScreen = () => {
     hooks.resetTest();
     hooks.setTestStart(true);
     setPlay(true);
-  }
+  };
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
@@ -47,7 +48,7 @@ const PreCheckScreen = () => {
   useEffect(() => {
     if (hooks.isTestComplete) {
       alertCustom({
-        title:'검사 완료',
+        title: '검사 완료',
         message: `사전 테스트가 완료되었습니다.
 테스트완료 버튼을 클릭하여 본 테스트로 진행하세요.`,
         // callback: () => dispatch(nextPage())
@@ -73,7 +74,7 @@ const PreCheckScreen = () => {
 
   useEffect(() => {
     const index = hooks.countTest - 1;
-    if(index > 0 && soundFile !== undefined && soundFile.length > 0) {
+    if (index > 0 && soundFile !== undefined && soundFile.length > 0) {
       setPlay(true);
     }
   }, [soundFile]);
@@ -81,16 +82,13 @@ const PreCheckScreen = () => {
   return (
     <>
       <RightSnb />
-      { play &&
-        <PlaySound
-          mp3={soundFile}
-          volume={sliderVolume}
-          delay={delay}
-        />
-      }
+      {play && (
+        <PlaySound mp3={soundFile} volume={sliderVolume} delay={delay} />
+      )}
       <div className="pre-check-form-title">
         <p>
-          이제 <span className="blue">3개의 연속된 숫자</span>가 들리게 됩니다.<br />
+          이제 <span className="blue">3개의 연속된 숫자</span>가 들리게 됩니다.
+          <br />
           숫자를 다 듣고 해당 숫자를 순서대로 말하세요.
         </p>
         <p>
@@ -113,14 +111,16 @@ const PreCheckScreen = () => {
           <p className="max-value">100%</p>
         </div>
         <p className="current-value">{sliderVolume}</p>
-        <p className="text-sm">검사자는 연습 문항 실시하면서 환자의 MCL 레벨을 찾아내세요.</p>
+        <p className="text-sm">
+          검사자는 연습 문항 실시하면서 환자의 MCL 레벨을 찾아내세요.
+        </p>
       </div>
 
       <div className="number-input-wrapper">
         <div className="number-input-inner">
           {hooks.digits.map((digit, index) => (
             <input
-              key={index}
+              key={hash(index).toString()}
               type="text"
               value={digit}
               readOnly
@@ -133,7 +133,9 @@ const PreCheckScreen = () => {
 
       <div className="test-btn-wrapper">
         <button
-          className={isBtnDisable ? "test-start-btn deactive-btn" : "test-start-btn"}
+          className={
+            isBtnDisable ? 'test-start-btn deactive-btn' : 'test-start-btn'
+          }
           disabled={isBtnDisable}
           type="button"
           onClick={startTest}
@@ -151,9 +153,11 @@ const PreCheckScreen = () => {
           테스트건너뛰기
         </button>
         <button
-          className={hooks.isTestComplete
-            ? "test-complete-btn active-btn"
-            : "test-complete-btn"}
+          className={
+            hooks.isTestComplete
+              ? 'test-complete-btn active-btn'
+              : 'test-complete-btn'
+          }
           type="button"
           disabled={!hooks.isTestComplete}
           onClick={() => {
@@ -166,6 +170,6 @@ const PreCheckScreen = () => {
       </div>
     </>
   );
-}
+};
 
 export default PreCheckScreen;

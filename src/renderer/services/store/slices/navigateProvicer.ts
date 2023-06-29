@@ -10,7 +10,7 @@ interface navigateState {
   isUserRegister: boolean;
   isDimPopupOpen: boolean;
   isRegister: boolean;
-  itemResult?: { index: number, data: TestForm };
+  itemResult?: { index: number; data: TestForm };
 }
 
 const initialState: navigateState = {
@@ -22,7 +22,7 @@ const initialState: navigateState = {
   isUserRegister: false,
   isDimPopupOpen: false,
   isRegister: true,
-  itemResult: undefined
+  itemResult: undefined,
 };
 
 const navigateProvider = createSlice({

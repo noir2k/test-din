@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '@hook/index';
 import type { RootState } from '@store/index';
 
 import isEmpty from 'lodash.isempty';
-import hash from "object-hash";
+import hash from 'object-hash';
 
 import {
   HomeIcon,
@@ -20,13 +20,9 @@ import useInfiniteScroll from '@hook/useInfiniteScroll';
 
 import ExamineeCard from '@components/main/examineeCard';
 
-import {
-  resetForm
-} from '@store/slices/testFormProvider';
+import { resetForm } from '@store/slices/testFormProvider';
 
-import {
-  resetProgress
-} from '@store/slices/testProgressProvider';
+import { resetProgress } from '@store/slices/testProgressProvider';
 
 import {
   setTestResult,
@@ -42,10 +38,7 @@ import {
   setTestStartOpen,
 } from '@store/slices/navigateProvicer';
 
-import {
-  setUserInfo,
-  resetUserInfo,
-} from '@store/slices/userDataProvider';
+import { setUserInfo, resetUserInfo } from '@store/slices/userDataProvider';
 
 import { ColumnType } from '@interfaces';
 import { alertCustom, confirmCustom } from '@lib/common';
@@ -65,7 +58,7 @@ const snb = () => {
   const testStartOpen = () => {
     if (isEmpty(userData)) {
       alertCustom({
-        title:'환자 정보 오류',
+        title: '환자 정보 오류',
         message: `등록된 환자 정보가 없습니다.\n환자 정보를 등록해주세요.`,
       });
     } else {
@@ -73,7 +66,7 @@ const snb = () => {
       dispatch(resetProgress());
       dispatch(setTestStartOpen());
     }
-  }
+  };
 
   const createUserInfo = () => {
     setMoreData(false);
@@ -82,7 +75,7 @@ const snb = () => {
     dispatch(resetTestResult());
     dispatch(resetUserInfo());
     dispatch(setUserRegister(true));
-  }
+  };
 
   const userRegister = () => {
     if (!isEmpty(userData)) {
@@ -97,7 +90,7 @@ const snb = () => {
     } else {
       createUserInfo();
     }
-  }
+  };
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     if (isIntersecting && isMoreData && !isLoading) {
@@ -143,7 +136,7 @@ const snb = () => {
     window.electron.ipcRenderer.on(channel, (data) => {
       const colData = data as ColumnType[];
       if (colData !== null && testResult.data !== null) {
-        const data = colData.map((item: ColumnType) => {
+        const result = colData.map((item: ColumnType) => {
           return {
             ...item,
             user_name: userData.user_name,
@@ -152,7 +145,7 @@ const snb = () => {
             patient_no: userData.patient_no,
           };
         });
-        dispatch(setMergeResult(data))
+        dispatch(setMergeResult(result));
         const isNoMore = colData.length < PAGE_COUNT;
         setMoreData(!isNoMore);
       }
@@ -177,14 +170,16 @@ const snb = () => {
           <div className="snb-icons-container">
             <div
               className="cursor-pointer"
-              onClick={() => { dispatch(setNoticeOpen()); }}
+              onClick={() => {
+                dispatch(setNoticeOpen());
+              }}
             >
-              <HomeIcon className='h-8 w-8 text-black' />
+              <HomeIcon className="h-8 w-8 text-black" />
             </div>
             {/**
-              * TODO: when release, remove this code
-              * DISABLE import sql for release
-              */}
+             * TODO: when release, remove this code
+             * DISABLE import sql for release
+             */}
             {/* <div
               className="cursor-pointer"
               onClick={() => {
@@ -199,9 +194,11 @@ const snb = () => {
             </div> */}
             <div
               className="cursor-pointer"
-              onClick={() => { dispatch(setSettingOpen()); }}
+              onClick={() => {
+                dispatch(setSettingOpen());
+              }}
             >
-              <Cog6ToothIcon className='h-8 w-8 text-black' />
+              <Cog6ToothIcon className="h-8 w-8 text-black" />
             </div>
           </div>
           <div className="snb-btn-container">
@@ -212,7 +209,7 @@ const snb = () => {
                 onClick={userRegister}
               >
                 <span>
-                  <UserPlusIcon className='h-4 w-4 text-white mr-1'/>
+                  <UserPlusIcon className="h-4 w-4 text-white mr-1" />
                   신규환자등록
                 </span>
               </button>
@@ -234,24 +231,24 @@ const snb = () => {
               </label>
             </div> */}
             <div className="snb-column-child-container">
-              <label htmlFor="examineeDataFile">
-                <button
-                  className="snb-column-child-btn btn-print"
-                  onClick={() => {}}
-                >
-                  <span>
-                    <PrinterIcon className='h-4 w-4 text-white mr-1' />
-                    결과지 출력
-                  </span>
-                </button>
-              </label>
+              <button
+                type="button"
+                className="snb-column-child-btn btn-print"
+                onClick={() => {}}
+              >
+                <span>
+                  <PrinterIcon className="h-4 w-4 text-white mr-1" />
+                  결과지 출력
+                </span>
+              </button>
             </div>
           </div>
         </div>
       </div>
       <div className="child snb-data-wrapper">
         <div className="examinee-data-wrapper">
-          <div className="cursor-pointer data-text ml-5"
+          <div
+            className="cursor-pointer data-text ml-5"
             onClick={() => {
               if (!isEmpty(userData)) {
                 dispatch(setInfoPopupOpen());
@@ -259,13 +256,11 @@ const snb = () => {
             }}
           >
             <span className="user-info-span">
-              <UserIcon className='h-8 w-8 text-white mr-1' />
+              <UserIcon className="h-8 w-8 text-white mr-1" />
               <p>
-              {
-                isEmpty(userData)
+                {isEmpty(userData)
                   ? '환자명 (환자번호)'
-                  : `${userData.user_name} (${userData.patient_no})`
-              }
+                  : `${userData.user_name} (${userData.patient_no})`}
               </p>
             </span>
           </div>
@@ -285,13 +280,17 @@ const snb = () => {
       </div>
       <div className="child import-success-screen overflow-y-auto">
         <div>
-        {!isEmpty(testResult.data) && testResult.data.map((item, index) => (
-          <div key={hash(item)} id={hash(item)}
-            className={selectedIndex == item.id ? "selected-item" : ""}
-            onClick={() => setSelectedIndex(item.id)}>
-            <ExamineeCard item={item} index={index}/>
-          </div>
-        ))}
+          {!isEmpty(testResult.data) &&
+            testResult.data.map((item, index) => (
+              <div
+                key={hash(item)}
+                id={hash(item)}
+                className={selectedIndex === item.id ? 'selected-item' : ''}
+                onClick={() => setSelectedIndex(item.id)}
+              >
+                <ExamineeCard item={item} index={index} />
+              </div>
+            ))}
         </div>
         <div className="scroll-end" ref={setTarget} />
       </div>
@@ -301,7 +300,7 @@ const snb = () => {
           className="test-start-btn text-xl"
           onClick={testStartOpen}
         >
-          <PencilSquareIcon className='h-8 w-8 text-white mr-1'/>
+          <PencilSquareIcon className="h-8 w-8 text-white mr-1" />
           <span>시작하기</span>
         </button>
       </div>

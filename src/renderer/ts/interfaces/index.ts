@@ -1,14 +1,14 @@
 export interface ChartDataProps {
-  date: string
-  value: number
+  date: string;
+  value: number;
 }
 
 export interface UserInfo {
-	user_name?: string,
-	gender?: string,
-	birthday?: string,
-	patient_no?: number,
-  sessionId?: string
+  user_name?: string;
+  gender?: string;
+  birthday?: string;
+  patient_no?: number;
+  sessionId?: string;
 }
 
 export interface ColumnType {
@@ -37,7 +37,7 @@ export interface TestForm {
   patient_no?: string;
   tester_name?: string;
   receiver?: string;
-  fixed_type?: string,
+  fixed_type?: string;
   direction?: string;
   volume_level?: number;
   scoring?: string;

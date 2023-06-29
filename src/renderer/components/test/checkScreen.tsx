@@ -1,18 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
 import isEmpty from 'lodash.isempty';
+import hash from 'object-hash';
 
-import {
-  nextPage,
-  resetProgress,
-} from '@store/slices/testProgressProvider';
+import { nextPage, resetProgress } from '@store/slices/testProgressProvider';
 
-import {
-  setTestResult,
-} from '@store/slices/testFormProvider';
+import { setTestResult } from '@store/slices/testFormProvider';
 
 import {
   setScoreConfig,
@@ -27,20 +24,22 @@ import PlaySound from '@hook/playSound';
 
 import { alertCustom, confirmCustom } from '@lib/common';
 
-import ico_speaker from '@assets/images/icons/icon_speaker.png';
+import iconSpeaker from '@assets/images/icons/icon_speaker.png';
 
 const maxCount = 30;
 const minVolumeLevel = -18;
 const maxVolumeLevel = 12;
 
-const CheckScreen = () => {
+function CheckScreen() {
   const hooks = useNumberInput(maxCount);
 
   const [play, setPlay] = useState(false);
   const [soundFile, setSoundFile] = useState('');
   const [testTitle, setTestTitle] = useState('테스트 진행중');
 
-  const { volume, delay } = useAppSelector((state: RootState) => state.testProgress);
+  const { volume, delay } = useAppSelector(
+    (state: RootState) => state.testProgress
+  );
   const testForm = useAppSelector((state: RootState) => state.testForm);
   const scoreData = useAppSelector((state: RootState) => state.scoreData);
 
@@ -50,7 +49,7 @@ const CheckScreen = () => {
     hooks.resetTest();
     hooks.setTestStart(true);
     setPlay(true);
-  }
+  };
 
   const handleAbort = () => {
     confirmCustom({
@@ -58,45 +57,48 @@ const CheckScreen = () => {
       callback: () => {
         hooks.resetTest();
         dispatch(resetScore());
-        dispatch(setScoreConfig({
+        dispatch(
+          setScoreConfig({
+            volume_level: testForm.volume_level,
+            direction: testForm.direction,
+            sound_set: testForm.sound_set,
+            scoring: testForm.scoring,
+            max_count: maxCount,
+          })
+        );
+        setPlay(false);
+      },
+    });
+  };
+
+  const handleTestFormError = () => {
+    dispatch(resetProgress());
+    dispatch(resetScore());
+  };
+
+  const handleTestComplete = () => {
+    dispatch(setTestResult(scoreData.scoreItems));
+    dispatch(nextPage());
+  };
+
+  useEffect(() => {
+    if (isEmpty(testForm)) {
+      alertCustom({
+        title: '기본 정보 오류',
+        message: `입력 정보 중 오류 내용이 있습니다.
+기본 정보 입력 화면으로 돌아갑니다.`,
+        callback: () => handleTestFormError(),
+      });
+    } else {
+      dispatch(
+        setScoreConfig({
           volume_level: testForm.volume_level,
           direction: testForm.direction,
           sound_set: testForm.sound_set,
           scoring: testForm.scoring,
           max_count: maxCount,
-        }));
-        setPlay(false);
-      }
-    });
-  }
-
-  const handleTestFormError = () => {
-    dispatch(resetProgress());
-    dispatch(resetScore());
-  }
-
-  const handleTestComplete = () => {
-    dispatch(setTestResult(scoreData.scoreItems));
-    dispatch(nextPage());
-  }
-
-  useEffect(() => {
-    if (isEmpty(testForm)) {
-      alertCustom({
-        title:'기본 정보 오류',
-        message: `입력 정보 중 오류 내용이 있습니다.
-기본 정보 입력 화면으로 돌아갑니다.`,
-        callback: () => handleTestFormError()
-      });
-
-    } else {
-      dispatch(setScoreConfig({
-        volume_level: testForm.volume_level,
-        direction: testForm.direction,
-        sound_set: testForm.sound_set,
-        scoring: testForm.scoring,
-        max_count: maxCount,
-      }));
+        })
+      );
     }
 
     return () => {
@@ -116,21 +118,21 @@ const CheckScreen = () => {
   useEffect(() => {
     if (hooks.isTestComplete) {
       alertCustom({
-        title:'검사 완료',
+        title: '검사 완료',
         message: `본 테스트가 완료되었습니다.
 결과 화면으로 진행합니다.`,
-        callback: () => handleTestComplete()
+        callback: () => handleTestComplete(),
       });
     }
   }, [hooks.isTestComplete]);
 
   useEffect(() => {
-    if (scoreData.scoreItems.length > 0 ) {
+    if (scoreData.scoreItems.length > 0) {
       const index = hooks.countTest - 1;
       const mp3 = scoreData.scoreItems[index].fileName;
       setSoundFile(mp3);
     }
-  }, [scoreData.scoreItems.length])
+  }, [scoreData.scoreItems.length]);
 
   useEffect(() => {
     const index = hooks.countTest - 1;
@@ -138,20 +140,20 @@ const CheckScreen = () => {
     if (scoreData.scoreItems.length > 0) {
       const beforeIndex = index - 1;
       if (scoreData.scoreItems[beforeIndex].isPass) {
-        const _bias = scoreData.scoreItems[beforeIndex].volume_level - 2;
-        bias = _bias < minVolumeLevel ? minVolumeLevel : _bias;
+        const biasVolumn = scoreData.scoreItems[beforeIndex].volume_level - 2;
+        bias = biasVolumn < minVolumeLevel ? minVolumeLevel : biasVolumn;
       } else {
-        const _bias = scoreData.scoreItems[beforeIndex].volume_level + 2;
-        bias = _bias > maxVolumeLevel ? maxVolumeLevel : _bias;
+        const biasVolumn = scoreData.scoreItems[beforeIndex].volume_level + 2;
+        bias = biasVolumn > maxVolumeLevel ? maxVolumeLevel : biasVolumn;
       }
     }
 
-    dispatch(setScoreItem({index: index, volume_level: bias}));
+    dispatch(setScoreItem({ index, volume_level: bias }));
   }, [hooks.countTest]);
 
   useEffect(() => {
     const index = hooks.countTest - 1;
-    if(index > 0 && soundFile !== undefined && soundFile.length > 0) {
+    if (index > 0 && soundFile !== undefined && soundFile.length > 0) {
       setPlay(true);
     }
   }, [soundFile]);
@@ -159,16 +161,17 @@ const CheckScreen = () => {
   return (
     <>
       <RightSnb />
-      { play &&
+      {play && (
         <PlaySound
           mp3={soundFile}
           volume={volume}
           delay={delay}
-          onEnd={() => setPlay(false)}/>
-      }
+          onEnd={() => setPlay(false)}
+        />
+      )}
       <div className="check-form-title">
-        <img src={ico_speaker} alt="speaker icon" />
-        <p style={{whiteSpace: "pre"}}>{testTitle}</p>
+        <img src={iconSpeaker} alt="speaker icon" />
+        <p style={{ whiteSpace: 'pre' }}>{testTitle}</p>
       </div>
 
       <div className="question-progress">
@@ -181,7 +184,8 @@ const CheckScreen = () => {
         <div className="number-input-inner">
           {hooks.digits.map((digit, index) => (
             <input
-              key={index}
+              key={hash(index).toString()}
+              id={index.toString()}
               type="text"
               value={digit}
               readOnly
@@ -189,16 +193,14 @@ const CheckScreen = () => {
             />
           ))}
         </div>
-        <div className="render-number-wrapper">
-          {hooks.renderButtons()}
-        </div>
+        <div className="render-number-wrapper">{hooks.renderButtons()}</div>
       </div>
 
       <div className="test-btn-wrapper">
         <button
-          className={hooks.isTestStart
-            ? "test-start-btn deactive-btn"
-            : "test-start-btn"}
+          className={
+            hooks.isTestStart ? 'test-start-btn deactive-btn' : 'test-start-btn'
+          }
           disabled={hooks.isTestStart}
           type="button"
           onClick={startTest}

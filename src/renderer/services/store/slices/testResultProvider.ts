@@ -3,8 +3,8 @@ import { createSlice, isAction } from '@reduxjs/toolkit';
 import { ColumnType } from '@interfaces';
 
 type TestResultType = {
-  data: ColumnType[],
-}
+  data: ColumnType[];
+};
 
 const initialState: TestResultType = {
   data: [],
@@ -27,13 +27,13 @@ const testResultSlice = createSlice({
       state.data.splice(action.payload, 1);
     },
     setReplaceResult: (state, action) => {
-      const index = action.payload.index;
-      const data = action.payload.data;
+      const { index } = action.payload;
+      const { data } = action.payload;
       const _data = {
         id: state.data[index].id,
         ...data,
-        reg_timestamp: state.data[index].reg_timestamp
-      }
+        reg_timestamp: state.data[index].reg_timestamp,
+      };
       state.data.splice(index, 1, _data);
     },
     setReplaceUserInfo: (state, action) => {
@@ -44,12 +44,12 @@ const testResultSlice = createSlice({
           gender: action.payload.gender,
           birthday: action.payload.birthday,
           patient_no: action.payload.patient_no,
-        }
+        };
       });
       state.data = data;
     },
-    resetTestResult: () => initialState
-  }
+    resetTestResult: () => initialState,
+  },
 });
 
 export const {
