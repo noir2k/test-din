@@ -77,6 +77,7 @@ function CheckScreen() {
   };
 
   const handleTestComplete = () => {
+    console.log(scoreData.scoreItems);
     dispatch(setTestResult(scoreData.scoreItems));
     dispatch(nextPage());
   };

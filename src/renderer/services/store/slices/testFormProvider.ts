@@ -8,17 +8,14 @@ const initialState = {} as TestForm;
 const calculateResult = (results: ScoreItemType[]): number => {
   let total = 0;
   const skip = 6;
-  let _results = results;
-
-  if (_results.length > 12) {
-    _results = results.slice(0, -skip).slice(skip);
+  let baseResults = results;
+  if (results.length > 12) {
+    baseResults = results.slice(0, -skip).slice(skip);
   }
 
-  _results.forEach((result) => {
-    total += result.volume_level;
-  });
+  baseResults.forEach((r) => total += r.volume_level);
 
-  const res = parseFloat((total / results.length).toFixed(2));
+  const res = parseFloat((total / baseResults.length).toFixed(2));
   return res;
 };
 

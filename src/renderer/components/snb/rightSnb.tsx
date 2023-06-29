@@ -49,8 +49,6 @@ const CheckSnb = () => {
 const RightSnb = () => {
   const testProgress = useAppSelector((state: RootState) => state.testProgress);
 
-  // console.log("currentPage" , testProgress.currentPage);
-
   return (
     <>
       {testProgress.currentPage === 1 && <PreCheckSnb />}

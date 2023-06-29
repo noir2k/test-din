@@ -21,7 +21,6 @@ const alertModalSlice = createSlice({
   initialState,
   reducers: {
     setAlertModal: (state, action) => {
-      console.log('setAlertModal', action.payload);
       state.isShow = action.payload.isShow;
       state.title = action.payload.title;
       state.message = action.payload.message;

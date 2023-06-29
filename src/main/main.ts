@@ -308,4 +308,4 @@ app
       if (mainWindow === null) createWindow();
     });
   })
-  .catch(console.log);
+  .catch((e) => console.log(e));

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import smLogo from '@assets/images/logo/main_smLogo.png';
-import lgLogo from '@assets/images/logo/main_lgLogo.png';
+import smLogo from '@assets/images/logo/main_sm_logo.png';
+import lgLogo from '@assets/images/logo/main_lg_logo.png';
 import { useState } from 'react';
 
 function Alert() {

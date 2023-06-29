@@ -70,18 +70,21 @@ const resultScore = (
 
 export const getAnswers = (key: string | number) =>
   initialState.answers[key as keyof AnswerDataType];
-export const getSound = (
-  _count: number,
-  _volumeLevel: number,
-  _direction: string,
-  _soundSet: number
-) => {
-  const type = getType(_direction);
 
-  const soundSetGroup = soundSetGroupSize * (_soundSet - 1);
-  const count = _count + soundSetGroup;
+type SoundType = {
+  count: number,
+  volumeLevel: number,
+  direction: string,
+  soundSet: number
+}
 
-  const fileName = `${filePath + type}/${type}[${_volumeLevel}]${count}${ext}`;
+export const getSound = (sound : SoundType) => {
+  const type = getType(sound.direction);
+
+  const soundSetGroup = soundSetGroupSize * (sound.soundSet - 1);
+  const count = sound.count + soundSetGroup;
+
+  const fileName = `${filePath + type}/${type}[${sound.volumeLevel}]${count}${ext}`;
 
   console.log('getSound', fileName);
   return fileName;
@@ -103,12 +106,13 @@ const answerSlice = createSlice({
         _volumeLevel = action.payload.volume_level;
       }
 
-      const fileName = getSound(
-        itemNo,
-        _volumeLevel,
-        state.scoreConfig.direction,
-        state.scoreConfig.sound_set
-      );
+      const fileName = getSound({
+        count: itemNo,
+        volumeLevel: _volumeLevel,
+        direction: state.scoreConfig.direction,
+        soundSet: state.scoreConfig.sound_set
+      });
+
       const scoreItem: ScoreItemType = {
         itemNo,
         isPass: false,

@@ -52,11 +52,12 @@ const TestResult = ({ data, setData }: PropsType) => {
   const saveMemo = () => {
     const mergedData = { ...result, memo: memoStr };
     setResult(mergedData);
+
     if (!!data && !isEmpty(data) && !!setData) {
       setData(mergedData);
     } else if (!isEmpty(navigate.itemResult)) {
       const { index } = navigate.itemResult;
-      dispatch(setReplaceResult({ index, mergedData }));
+      dispatch(setReplaceResult({ index, data: mergedData }));
     }
     showEditMemo(false);
   };
