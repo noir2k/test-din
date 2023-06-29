@@ -9,7 +9,7 @@ import { nextPage, setVolume } from '@store/slices/testProgressProvider';
 
 import { alertCustom } from '@lib/common';
 
-import RightSnb from '@components/snb/RightSnb';
+import RightSnb from '@components/snb/rightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
 

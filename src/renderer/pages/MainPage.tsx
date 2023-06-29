@@ -6,15 +6,13 @@ import bgCircle2 from '@assets/images/bg_circle_2.png';
 import bgCircle3 from '@assets/images/bg_circle_3.png';
 import bgCircle4 from '@assets/images/bg_circle_4.png';
 
+import Notice from '@components/main/notice';
 import TestForm from '@components/test/testForm';
-import Notice from '@components/main/Notice';
 import TestResult from '@components/main/TestResultComponent';
 import Setting from '@components/main/SettingComponent';
 import Snb from '@components/snb/snb';
 import ExamineeInfoPopup from '@components/snb/examineePopup';
 import UserRegister from '@components/main/UserRegister';
-
-import AlertModal from '@hook/AlertModal';
 
 const MainPage = () => {
   const {
@@ -67,7 +65,6 @@ const MainPage = () => {
                 alt="background decoration"
               />
             </div>
-            <AlertModal />
           </main>
         </div>
       </div>

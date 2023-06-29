@@ -7,7 +7,7 @@ import { setInsertResult } from '@store/slices/testResultProvider';
 
 import { setNoticeOpen } from '@store/slices/navigateProvicer';
 
-import RightSnb from '@components/snb/RightSnb';
+import RightSnb from '@components/snb/rightSnb';
 import TestResult from '@components/main/TestResultComponent';
 
 import { TestForm } from '@interfaces';

@@ -2,7 +2,6 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
 import navigateProvicer from './slices/navigateProvicer';
-import alertModalProvider from './slices/alertModalProvider';
 import scoreProvider from './slices/scoreProvider';
 import userDataProvider from './slices/userDataProvider';
 import testFormProvider from './slices/testFormProvider';
@@ -11,7 +10,6 @@ import testResultProvider from './slices/testResultProvider';
 
 const rootReducer = combineReducers({
   navigate: navigateProvicer,
-  alertModal: alertModalProvider,
   scoreData: scoreProvider,
   userData: userDataProvider,
   testForm: testFormProvider,

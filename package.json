@@ -83,7 +83,6 @@
   "devDependencies": {
     "@electron/notarize": "^1.2.4",
     "@electron/rebuild": "^3.2.10",
-    "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@hookform/error-message": "^2.0.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",

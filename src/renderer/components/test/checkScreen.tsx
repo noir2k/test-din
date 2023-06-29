@@ -18,7 +18,7 @@ import {
   resetScore,
 } from '@store/slices/scoreProvider';
 
-import RightSnb from '@components/snb/RightSnb';
+import RightSnb from '@components/snb/rightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
 

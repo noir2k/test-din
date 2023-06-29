@@ -13,7 +13,9 @@ const calculateResult = (results: ScoreItemType[]): number => {
     baseResults = results.slice(0, -skip).slice(skip);
   }
 
-  baseResults.forEach((r) => total += r.volume_level);
+  baseResults.forEach((r) => {
+    total += r.volume_level;
+  });
 
   const res = parseFloat((total / baseResults.length).toFixed(2));
   return res;
