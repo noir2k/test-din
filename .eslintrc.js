@@ -4,6 +4,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'html'],
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    camelcase: 'off',
     'global-require': 'off',
     'no-console': 'off',
     'no-plusplus': 'off',
@@ -17,6 +18,7 @@ module.exports = {
     'promise/catch-or-return': 'off',
     'promise/always-return': 'off',
     // A temporary hack related to IDE not resolving correct package.json
+    'react/self-closing-comp': 'off',
     'react/function-component-definition': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': 'off',
@@ -33,11 +35,6 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/no-import-module-exports': 'off',
   },
-  overrides: [
-    {
-      excludedFiles: 'index.ejs',
-    },
-  ],
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',

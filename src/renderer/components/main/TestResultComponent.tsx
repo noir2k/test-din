@@ -13,7 +13,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import isEmpty from 'lodash.isempty';
 
 import { TestForm } from '@interfaces';
-import { ColumnName, DataRange } from '@lib/common';
+import { ColumnName, findEst } from '@lib/common';
 
 interface PropsType {
   data?: TestForm;
@@ -31,18 +31,6 @@ const TestResult = ({ data, setData }: PropsType) => {
   const navigate = useAppSelector((state: RootState) => state.navigate);
 
   const dispatch = useAppDispatch();
-
-  const findEst = (value: number | undefined) => {
-    for (const e of Object.entries(DataRange)) {
-      const key = e[0];
-      const MIN = e[1][0];
-      const MAX = e[1][1];
-      if (!!value && MIN <= value && MAX >= value) {
-        return key;
-      }
-    }
-    return 'ERROR';
-  };
 
   const showEditMemo = (toggle: boolean) => {
     setEditMemoShow(toggle);

@@ -1328,16 +1328,40 @@ input[type='range']:active::-webkit-slider-runnable-track {
 }
 
 .test-session-table {
+  display: flexbox;
   width: 100%;
   display: inline-table;
   border-collapse: collapse;
   table-layout: fixed;
   border: solid !important;
   border-width: 0.3em !important;
+  page-break-inside:auto;
 }
 
 .test-session-table tbody tr td {
   text-align: center;
+}
+
+.session-header {
+  display: grid;
+  grid-template-columns: 4em 4em 4em 4em auto 4em 4em 4em 4em 4em;
+  grid-template-rows: 3.8em 5.8em;
+  grid-gap: 0;
+  width: 100%;
+  height: 100%;
+  border: solid #000000;
+  border-width: 2px;
+  justify-items: center;
+  align-items: center;
+}
+
+.session-header > div {
+  border: 1px solid #8d8d8d7d;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .padding-th {
@@ -1356,16 +1380,38 @@ input[type='range']:active::-webkit-slider-runnable-track {
   line-height: 0.9em;
 }
 
-.item-tr > td {
-  border-top: solid #000000 !important;
-  border-top-width: 0.2em !important;
+.session-item-grid {
+  display: grid;
+  grid-template-columns: 4em 4em 4em 4em auto 4em 4em 4em 4em 4em;
+  grid-template-rows: 2em 2em;
+  grid-gap: 0;
+  width: 100%;
+  height: 100%;
+  border: solid #000000;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 2px;
+  border-right-width: 2px;
 }
 
-.test-session-table tbody tr td,
-.test-session-table thead tr th {
-  padding: 0.6em;
-  border: solid rgb(182 182 182 / 50%);
-  border-width: 0.12em;
+.session-item-bd-top {
+  border-top: solid #000000;
+  border-top-width: 2px;
+  margin-top: 10px;
+}
+
+.session-item-bd-btm {
+  border-bottom: solid #000000;
+  border-bottom-width: 2px;
+}
+
+.session-item-grid> div {
+  border: 1px solid #8d8d8d7d;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .test-session-pi > div {
@@ -1379,35 +1425,13 @@ input[type='range']:active::-webkit-slider-runnable-track {
 .note-td {
   text-align: left !important;
   white-space: pre !important;
-}
-
-.test-session-table tbody tr td {
-  position: relative;
+  justify-content: flex-start !important;
+  padding-left: 0.8em !important;
 }
 
 .bar-div {
-  position: absolute;
   height: 100%;
   width: 4px;
-  top: 0;
-  background: green;
-  margin-left: 35%;
-}
-
-#child-1 span {
-  margin-left: 0.4em;
-}
-#child-2 span {
-  margin-left: 1.2em;
-}
-#child-3 span {
-  margin-left: 0em;
-}
-#child-4 span {
-  margin-left: -0.4em;
-}
-#child-5 span {
-  margin-left: 0.4em;
 }
 
 /* sweetAlert */

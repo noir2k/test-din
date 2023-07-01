@@ -78,21 +78,6 @@ const snb = () => {
     dispatch(setUserRegister(true));
   };
 
-  const userRegister = () => {
-    if (!isEmpty(userData)) {
-      confirmCustom({
-        title: '신규 환자 정보 등록 확인',
-        message: `이미 등록된 환자 정보가 있습니다.
-기존의 환자 정보 및 테스트 세션이 초기화 됩니다.
-
-새로 등록하시겠습니까?`,
-        callback: () => createUserInfo(),
-      });
-    } else {
-      createUserInfo();
-    }
-  };
-
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     if (isIntersecting && isMoreData && !isLoading) {
       setLoading(true);
@@ -112,6 +97,33 @@ const snb = () => {
     }
     setLoading(false);
     dispatch(setNoticeOpen());
+  };
+
+  const handleOpenTestSession = () => {
+    if (testResult.data.length > 0) {
+      dispatch(setTestSession());
+    } else {
+      alertCustom({
+        title: '테스트 세션 오류',
+        message: `테스트 세션이 없습니다.\n테스트 세션을 등록해주세요.`,
+      });
+    }
+    dispatch(setTestSession());
+  };
+
+  const userRegister = () => {
+    if (!isEmpty(userData)) {
+      confirmCustom({
+        title: '신규 환자 정보 등록 확인',
+        message: `이미 등록된 환자 정보가 있습니다.
+기존의 환자 정보 및 테스트 세션이 초기화 됩니다.
+
+새로 등록하시겠습니까?`,
+        callback: () => createUserInfo(),
+      });
+    } else {
+      createUserInfo();
+    }
   };
 
   useEffect(() => {
@@ -235,7 +247,7 @@ const snb = () => {
               <button
                 type="button"
                 className="snb-column-child-btn btn-print"
-                onClick={() => dispatch(setTestSession())}
+                onClick={handleOpenTestSession}
               >
                 <span>
                   <PrinterIcon className="h-4 w-4 text-white mr-1" />

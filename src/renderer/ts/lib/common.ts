@@ -21,7 +21,9 @@ export const ColumnName = {
   reg_timestamp: 'reg_timestamp',
 };
 
-export const DataRange = {
+type DataRangeType = { [key: string]: number[] };
+
+export const DataRange: DataRangeType = {
   Normal: [-18, -5.28],
   Mild: [-5.27, 0.27],
   Moderate: [0.28, 0.68],
@@ -135,4 +137,16 @@ export const confirmCustom = (prop: AlertPropType) => {
       !!prop.callback && prop.callback();
     }
   });
+};
+
+export const findEst = (value: number | undefined) => {
+  for (const e of Object.entries(DataRange)) {
+    const key = e[0];
+    const MIN = e[1][0];
+    const MAX = e[1][1];
+    if (!!value && MIN <= value && MAX >= value) {
+      return key;
+    }
+  }
+  return 'ERROR';
 };
