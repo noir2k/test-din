@@ -1,6 +1,6 @@
 {
   "name": "ihab-din-test",
-  "version": "1.0.4a",
+  "version": "1.0.5a",
   "private": true,
   "main": "./src/main/main.ts",
   "homepage": "./",
