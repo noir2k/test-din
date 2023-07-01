@@ -38,6 +38,16 @@ const electronHandler = {
     },
     // Other method you want to add like has(), reset(), etc.
   },
+  print: {
+    printComponent: async (url: string, callback: (response: any) => void) => {
+      let response = await ipcRenderer.invoke('printComponent', url);
+      callback(response);
+     },
+     previewComponent: async (url: string, callback: (response: any) => void) => {
+      let response = await ipcRenderer.invoke('previewComponent', url);
+      callback(response);
+     },
+  },
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);

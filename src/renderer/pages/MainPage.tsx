@@ -13,6 +13,7 @@ import Setting from '@components/main/SettingComponent';
 import Snb from '@components/snb/snb';
 import ExamineeInfoPopup from '@components/snb/examineePopup';
 import UserRegister from '@components/main/UserRegister';
+import TestSession from '@components/main/TestSessionComponent';
 
 const MainPage = () => {
   const {
@@ -22,6 +23,7 @@ const MainPage = () => {
     isSettingOpen,
     isInfoPopupOpen,
     isUserRegister,
+    isTestSessionOpen,
     isDimPopupOpen,
   } = useAppSelector((state: RootState) => state.navigate);
 
@@ -42,6 +44,7 @@ const MainPage = () => {
               {isTestResultOpen && <TestResult />}
               {isTestStartOpen && <TestForm />}
               {isSettingOpen && <Setting />}
+              {isTestSessionOpen && <TestSession />}
             </div>
             <div className="main-contents main-contents-bg">
               <img

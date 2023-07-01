@@ -1097,11 +1097,13 @@ input[type='range']:active::-webkit-slider-runnable-track {
   margin-bottom: 116px;
 }
 
+.print-button-wrapper,
 .result-btn-wrapper {
   display: flex;
   flex-direction: column;
 }
 
+.print-button-wrapper > button,
 .result-btn-wrapper > button {
   width: 320px;
   height: 50px;
@@ -1290,8 +1292,125 @@ input[type='range']:active::-webkit-slider-runnable-track {
   height: 100%;
 }
 
-/* sweetAlert */
+/* test-session */
 
+.test-session-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  width: 100%;
+}
+
+.test-session-wrapper .inner {
+  height: 842px;
+  width: 816px;
+  margin-bottom: 16px;
+  background-color: white;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.test-session-pi {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: stretch;
+  justify-content: space-around;
+  padding: 0.6em;
+  margin-bottom: 0.6em;
+  border: solid #878787;
+  border-width: 0.1em;
+}
+
+.test-session-table-wrapper {
+  font-size: small;
+}
+
+.test-session-table {
+  width: 100%;
+  display: inline-table;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border: solid !important;
+  border-width: 0.3em !important;
+}
+
+.test-session-table tbody tr td {
+  text-align: center;
+}
+
+.padding-th {
+  padding: 1em !important;
+}
+
+.text-vertical-th {
+  white-space: normal;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.text-vertical-th span {
+  transform-origin: center;
+  transform: rotate(-90deg);
+  line-height: 0.9em;
+}
+
+.item-tr > td {
+  border-top: solid #000000 !important;
+  border-top-width: 0.2em !important;
+}
+
+.test-session-table tbody tr td,
+.test-session-table thead tr th {
+  padding: 0.6em;
+  border: solid rgb(182 182 182 / 50%);
+  border-width: 0.12em;
+}
+
+.test-session-pi > div {
+  display: flex;
+}
+
+.test-session-pi > div > div {
+  flex-grow: 1;
+}
+
+.note-td {
+  text-align: left !important;
+  white-space: pre !important;
+}
+
+.test-session-table tbody tr td {
+  position: relative;
+}
+
+.bar-div {
+  position: absolute;
+  height: 100%;
+  width: 4px;
+  top: 0;
+  background: green;
+  margin-left: 35%;
+}
+
+#child-1 span {
+  margin-left: 0.4em;
+}
+#child-2 span {
+  margin-left: 1.2em;
+}
+#child-3 span {
+  margin-left: 0em;
+}
+#child-4 span {
+  margin-left: -0.4em;
+}
+#child-5 span {
+  margin-left: 0.4em;
+}
+
+/* sweetAlert */
 .sweet_title_text {
   font-size: x-large;
 }

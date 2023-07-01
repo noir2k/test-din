@@ -36,6 +36,7 @@ import {
   setInfoPopupOpen,
   setSettingOpen,
   setTestStartOpen,
+  setTestSession,
 } from '@store/slices/navigateProvicer';
 
 import { setUserInfo, resetUserInfo } from '@store/slices/userDataProvider';
@@ -234,7 +235,7 @@ const snb = () => {
               <button
                 type="button"
                 className="snb-column-child-btn btn-print"
-                onClick={() => {}}
+                onClick={() => dispatch(setTestSession())}
               >
                 <span>
                   <PrinterIcon className="h-4 w-4 text-white mr-1" />
