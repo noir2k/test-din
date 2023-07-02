@@ -21,6 +21,25 @@ export const ColumnName = {
   reg_timestamp: 'reg_timestamp',
 };
 
+export const ColumnNameHeader = [
+  { label: 'INDEX', key: ColumnName.id },
+  { label: '환자명', key: ColumnName.user_name },
+  { label: '성별', key: ColumnName.gender },
+  { label: '생일', key: ColumnName.birthday },
+  { label: '환자번호', key: ColumnName.patient_no },
+  { label: '테스터명', key: ColumnName.tester_name },
+  { label: '리시버', key: ColumnName.receiver },
+  { label: '제시방법', key: ColumnName.fixed_type },
+  { label: '제시방향', key: ColumnName.direction },
+  { label: '시작레벨(db SNR)', key: ColumnName.volume_level },
+  { label: '채점방식', key: ColumnName.scoring },
+  { label: '노트', key: ColumnName.memo },
+  { label: '검사목록', key: ColumnName.sound_set },
+  { label: '시험날짜', key: ColumnName.test_date },
+  { label: '시험결과(DIN-SRT/db SNR)', key: ColumnName.test_result },
+  { label: 'timestamp', key: ColumnName.reg_timestamp },
+];
+
 type DataRangeType = { [key: string]: number[] };
 
 export const DataRange: DataRangeType = {

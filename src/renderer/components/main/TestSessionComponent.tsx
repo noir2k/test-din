@@ -6,11 +6,12 @@ import type { RootState } from '@store/index';
 
 import { useReactToPrint } from 'react-to-print';
 
+import { CSVLink } from 'react-csv';
 import Html2Pdf from 'js-html2pdf';
 import hash from 'object-hash';
 
 import { ColumnType } from '@interfaces';
-import { FixedTypeOptions, findEst } from '@lib/common';
+import { ColumnNameHeader, FixedTypeOptions, findEst } from '@lib/common';
 
 const TestSessionHeader = () => {
   return (
@@ -215,26 +216,23 @@ const TestSession = () => {
           <div className="text-center text-lg font-bold mb-8">
             [Korean Digit-In-Noise test]
           </div>
-          <div className="test-session-pi">
-            <div>Patient identification</div>
+          <div className="grid grid-cols-3 test-session-pi">
+            <div className="col-span-3">Patient identification</div>
             <div>
-              <div>
-                ID: <b>{userData.patient_no}</b>
-              </div>
-              <div>
-                Name: <b>{userData.user_name}</b>
-              </div>
-              <div>
-                Sex/Birth: <b>{userData.gender}</b> / <b>{userData.birthday}</b>
-              </div>
+              ID : &nbsp;<b>{userData.patient_no}</b>
             </div>
             <div>
-              <div>
-                Test Date: <b>{testResult.data[0].test_date}</b>
-              </div>
-              <div>
-                Tested By: <b>{testResult.data[0].tester_name}</b>
-              </div>
+              Name : &nbsp;<b>{userData.user_name}</b>
+            </div>
+            <div>
+              Sex/Birth : &nbsp;<b>{userData.gender}</b>&nbsp;/&nbsp;
+              <b>{userData.birthday}</b>
+            </div>
+            <div>
+              Test Date : &nbsp;<b>{testResult.data[0].test_date}</b>
+            </div>
+            <div className="col-span-2">
+              Tested By : &nbsp;<b>{testResult.data[0].tester_name}</b>
             </div>
           </div>
           <TestSessionHeader />
@@ -271,7 +269,20 @@ const TestSession = () => {
         </div>
       </div>
       <div className="print-button-wrapper">
-        <button type="button" onClick={handlePrintPDF}>
+        <button type="button" className="csv-print-btn">
+          <CSVLink
+            data={testResult.data}
+            headers={ColumnNameHeader}
+            filename="test_result.csv"
+          >
+            CSV 저장
+          </CSVLink>
+        </button>
+        <button
+          type="button"
+          className="pdf-print-btn"
+          onClick={handlePrintPDF}
+        >
           PDF 저장
         </button>
       </div>
