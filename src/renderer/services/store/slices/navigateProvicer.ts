@@ -98,6 +98,15 @@ const navigateProvider = createSlice({
       state.isUserRegister = false;
       state.isTestSessionOpen = true;
     },
+    setImportCsv: (state) => {
+      state.isNoticeOpen = false;
+      state.isTestResultOpen = false;
+      state.isSettingOpen = false;
+      state.isTestStartOpen = false;
+      state.isInfoPopupOpen = false;
+      state.isUserRegister = false;
+      state.isTestSessionOpen = true;
+    },
     setDimPopup: (state, action) => {
       state.isDimPopupOpen = action.payload;
     },

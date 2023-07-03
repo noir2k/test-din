@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
 import isEmpty from 'lodash.isempty';
 import hash from 'object-hash';
+import CSVReader from 'react-csv-reader';
 
 import {
   HomeIcon,
@@ -17,11 +18,8 @@ import {
 } from '@heroicons/react/24/outline';
 
 import useInfiniteScroll from '@hook/useInfiniteScroll';
-
 import ExamineeCard from '@components/main/examineeCard';
-
 import { resetForm } from '@store/slices/testFormProvider';
-
 import { resetProgress } from '@store/slices/testProgressProvider';
 
 import {
@@ -41,12 +39,22 @@ import {
 
 import { setUserInfo, resetUserInfo } from '@store/slices/userDataProvider';
 
-import { ColumnType } from '@interfaces';
-import { alertCustom, confirmCustom } from '@lib/common';
+import { UserInfo, ColumnType } from '@interfaces';
+import {
+  ColumnNameHeader,
+  columnToForm,
+  alertCustom,
+  confirmCustom,
+} from '@lib/common';
 
 const PAGE_COUNT = 15;
+const headerArr = ColumnNameHeader.map((item) => {
+  return item.key;
+});
 
 const snb = () => {
+  const importCsvRef = useRef<HTMLInputElement>(null);
+
   const [selectedIndex, setSelectedIndex] = useState<any>(0);
   const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -55,6 +63,42 @@ const snb = () => {
   const testResult = useAppSelector((state: RootState) => state.testResult);
 
   const dispatch = useAppDispatch();
+
+  const papaparseOptions = {
+    header: true,
+    dynamicTyping: true,
+    skipEmptyLines: true,
+    transformHeader: (header: string, index: number) => {
+      return headerArr[index];
+    },
+  };
+
+  const handleLoadFileInfo = (data: ColumnType[]) => {
+    const { user_name, gender, birthday, patient_no } = data[0];
+
+    const userInfo: UserInfo = {
+      user_name,
+      gender,
+      birthday,
+      patient_no,
+    };
+
+    const testResultFromCsv = data.map((item) => columnToForm(item));
+
+    setLoading(false);
+    dispatch(setUserInfo(userInfo));
+    dispatch(setTestResult(testResultFromCsv));
+  };
+
+  const handleFileLoad = (data: any) => {
+    confirmCustom({
+      title: '환자 정보 불러오기',
+      message: `기존의 환자 정보 및 테스트 세션이 초기화 됩니다.
+
+진행하시겠습니까?`,
+      callback: () => handleLoadFileInfo(data),
+    });
+  };
 
   const testStartOpen = () => {
     if (isEmpty(userData)) {
@@ -174,8 +218,6 @@ const snb = () => {
     return () => window.electron.ipcRenderer.removeAllListeners(channel);
   });
 
-  // TODO: remove system confirm popup
-
   return (
     <div id="snb" className="snb-container">
       <div className="child snb-setting-wrapper">
@@ -193,18 +235,23 @@ const snb = () => {
              * TODO: when release, remove this code
              * DISABLE import sql for release
              */}
-            {/* <div
+            <div
               className="cursor-pointer"
               onClick={() => {
                 setLoading(true);
-                window.electron.ipcRenderer.sendMessage(
-                  'show-open-sql',
-                  []
-                );
+                importCsvRef.current!.click();
+                // window.electron.ipcRenderer.sendMessage('show-open-sql', []);
               }}
             >
-              <InboxIcon className='h-8 w-8 text-black' />
-            </div> */}
+              <InboxIcon className="h-8 w-8 text-black" />
+              <CSVReader
+                ref={importCsvRef}
+                cssClass="csv-reader-input"
+                onFileLoaded={handleFileLoad}
+                // onError={this.handleDarkSideForce}
+                parserOptions={papaparseOptions}
+              />
+            </div>
             <div
               className="cursor-pointer"
               onClick={() => {

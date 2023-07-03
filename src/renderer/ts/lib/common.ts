@@ -108,6 +108,7 @@ export const formToColumn = (payload: TestForm, lastId: number) => {
     fixed_type: payload.fixed_type,
     direction: payload.direction,
     scoring: payload.scoring,
+    volume_level: payload.volume_level,
     memo: payload.memo,
     sound_set: payload.sound_set,
     test_date: payload.test_date,

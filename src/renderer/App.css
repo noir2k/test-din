@@ -1448,3 +1448,17 @@ input[type='range']:active::-webkit-slider-runnable-track {
   box-shadow: 0 0 0 3px rgba(86, 138, 240, .5) !important;
 }
 
+.csv-reader-input {
+  display: none;
+}
+
+.csv-reader-input input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
+}

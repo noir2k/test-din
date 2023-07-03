@@ -7,7 +7,7 @@ export interface UserInfo {
   user_name?: string;
   gender?: string;
   birthday?: string;
-  patient_no?: number;
+  patient_no?: string;
   sessionId?: string;
 }
 
