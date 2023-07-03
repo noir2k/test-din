@@ -170,14 +170,19 @@ const TestSession = () => {
     content: () => componentRef.current,
     print: async (printIframe: HTMLIFrameElement) => {
       const document = printIframe.contentDocument;
-      document!
-        .getElementsByClassName('firstItem')[0]
-        .classList.add('session-item-bd-top');
-      document!
-        .getElementsByClassName('lastItem')[0]
-        .classList.add('session-item-bd-btm');
 
       if (document) {
+        document.body.style.backgroundImage = 'none';
+        if (document.getElementsByClassName('firstItem')[0]) {
+          document
+            .getElementsByClassName('firstItem')[0]
+            .classList.add('session-item-bd-top');
+        }
+        if (document.getElementsByClassName('lastItem')[0]) {
+          document
+            .getElementsByClassName('lastItem')[0]
+            .classList.add('session-item-bd-btm');
+        }
         const options = {
           margin: [10, 10, 20, 10],
           pagebreak: {

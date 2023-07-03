@@ -37,8 +37,8 @@
 body {
   background: linear-gradient(
     180deg,
-    #568af0 -4.98%,
-    rgba(207, 216, 234, 0.72) 100%
+    #568af0 -5%,
+    rgba(207, 216, 234, 0.7) 100%
   );
   color: black;
   font-family: 'LINESeed', 'FiraSans', sans-serif;
