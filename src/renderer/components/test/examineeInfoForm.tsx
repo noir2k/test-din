@@ -9,6 +9,7 @@ import type { RootState } from '@store/index';
 
 import {
   ColumnName,
+  ReceiverOptions,
   ScoringOptions,
   SoundSetOptions,
   FixedTypeOptions,
@@ -53,7 +54,7 @@ const ExamineeInfoForm = () => {
 
   const defaultValue = () => {
     setValue(ColumnName.tester_name, '');
-    setValue(ColumnName.receiver, '');
+    setValue(ColumnName.receiver, 'Headphone');
     setValue(ColumnName.fixed_type, 'NF');
     setValue(ColumnName.direction, 'LR');
     setValue(ColumnName.volume_level, 0);
@@ -94,14 +95,6 @@ const ExamineeInfoForm = () => {
       });
       setFocus(firstError.toString());
     }
-  };
-
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
   };
 
   const validateDate = (date: string) => {
@@ -260,15 +253,18 @@ const ExamineeInfoForm = () => {
             >
               리시버
             </label>
-            <input
-              type="text"
+            <select
               id={ColumnName.receiver}
-              defaultValue={testForm?.receiver}
-              {...register(`${ColumnName.receiver}`, {
-                required: '리시버 항목은 필수입니다.',
-              })}
+              defaultValue="Headphone"
+              {...register(`${ColumnName.receiver}`)}
               className="info-input-item-input"
-            />
+            >
+              {Object.entries(ReceiverOptions).map(([k, v]) => (
+                <option key={k} value={k}>
+                  {v}
+                </option>
+              ))}
+            </select>
           </li>
           <li className="info-input-item">
             <p className="info-input-item-order-number">07</p>
@@ -334,11 +330,11 @@ const ExamineeInfoForm = () => {
               <option value="-12">-12</option>
               <option value="-10">-10</option>
               <option value="-8">-8</option>
-              <option value="-6">-6</option>
-              <option value="-4">-4</option>
+              <option value="-6">-6(정상 권장 레벨)</option>
+              <option value="-4">-4(경도 권장 레벨)</option>
               <option value="-2">-2</option>
-              <option value="0">0</option>
-              <option value="2">+2</option>
+              <option value="0">0(중도, 중고도 권장 레벨)</option>
+              <option value="2">+2(고도 이상 권장 레벨)</option>
               <option value="4">+4</option>
               <option value="6">+6</option>
               <option value="8">+8</option>

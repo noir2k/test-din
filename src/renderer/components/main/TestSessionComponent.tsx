@@ -166,6 +166,8 @@ const TestSession = () => {
   const testResult = useAppSelector((state: RootState) => state.testResult);
   const { data } = testResult;
 
+  const fileName = `${userData.user_name}(${userData.patient_no})`;
+
   const handlePrintPDF = useReactToPrint({
     content: () => componentRef.current,
     print: async (printIframe: HTMLIFrameElement) => {
@@ -188,7 +190,7 @@ const TestSession = () => {
           pagebreak: {
             mode: ['avoid-all', 'css', 'legacy'],
           },
-          filename: `${userData.user_name}(${userData.patient_no})_din_test.pdf`,
+          filename: `${fileName}_din_test.pdf`,
           image: { type: 'jpeg', quality: 0.95 },
           html2canvas: {
             scale: 4, // for PDF resolution
@@ -250,27 +252,6 @@ const TestSession = () => {
                 maxCount={data.length}
               />
             ))}
-          {/* <div className="session-item">
-            <div className="session-item-grid">
-              <div className="col-span-2">Speaker</div>
-              <div className="col-span-2">Signal Fixed</div>
-              <div className="row-span-2">
-                <span className="text-2xl float-none">-4.6</span>
-              </div>
-              <div className="row-span-2">
-                <div className="bar-div" />
-              </div>
-              <div className="row-span-2">|</div>
-              <div className="row-span-2">|</div>
-              <div className="row-span-2">|</div>
-              <div className="row-span-2" />
-              <div>B</div>
-              <div>B</div>
-              <div>3</div>
-              <div>D</div>
-            </div>
-          </div> */}
-          {/* <div className="html2pdf__page-break"></div> */}
         </div>
       </div>
       <div className="print-button-wrapper">
@@ -278,7 +259,7 @@ const TestSession = () => {
           <CSVLink
             data={testResult.data}
             headers={ColumnNameHeader}
-            filename="test_result.csv"
+            filename={`${fileName}_din_test.csv`}
           >
             CSV 저장
           </CSVLink>

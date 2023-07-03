@@ -106,6 +106,27 @@ const UserRegister = () => {
     }
   };
 
+  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.currentTarget;
+    let DataFormat: any;
+    let RegDateFmt: any;
+
+    const RegNotNum = /[^0-9]/g;
+    const onlyNum = value.replace(RegNotNum, '');
+
+    if (onlyNum.length <= 6) {
+      DataFormat = '$1-$2';
+      RegDateFmt = /([0-9]{4})([0-9]+)/;
+    } else if (onlyNum.length <= 8) {
+      DataFormat = '$1-$2-$3';
+      RegDateFmt = /([0-9]{4})([0-9]{2})([0-9]+)/;
+    }
+
+    const newDate = onlyNum.replace(RegDateFmt, DataFormat);
+
+    setValue(ColumnName.birthday, newDate);
+  };
+
   useEffect(() => {
     if (navigate.isRegister) {
       handleReset();
@@ -184,6 +205,7 @@ const UserRegister = () => {
                     validateDate(fieldValue) ||
                     '올바른 날짜 입력 범위가 아닙니다.',
                 })}
+                onChange={handleChangeDate}
               />
             </li>
             <li className="info-input-item">

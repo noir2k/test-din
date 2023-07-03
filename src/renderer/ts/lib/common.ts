@@ -51,6 +51,12 @@ export const DataRange: DataRangeType = {
 
 type OptionProps = { [key: string]: string };
 
+export const ReceiverOptions: OptionProps = {
+  Headphone: 'Headphone',
+  Speaker: 'Speaker',
+  Earphone: 'Earphone',
+};
+
 export const FixedTypeOptions: OptionProps = {
   NF: 'Noise Fixed',
   SF: 'Signal Fixed',

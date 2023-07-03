@@ -152,7 +152,6 @@ const snb = () => {
         message: `테스트 세션이 없습니다.\n테스트 세션을 등록해주세요.`,
       });
     }
-    dispatch(setTestSession());
   };
 
   const userRegister = () => {
@@ -252,14 +251,14 @@ const snb = () => {
                 parserOptions={papaparseOptions}
               />
             </div>
-            <div
+            {/* <div
               className="cursor-pointer"
               onClick={() => {
                 dispatch(setSettingOpen());
               }}
             >
               <Cog6ToothIcon className="h-8 w-8 text-black" />
-            </div>
+            </div> */}
           </div>
           <div className="snb-btn-container">
             <div className="snb-column-child-container">
