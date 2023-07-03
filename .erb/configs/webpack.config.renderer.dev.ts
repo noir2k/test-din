@@ -106,6 +106,7 @@ const configuration: webpack.Configuration = {
       // Fonts
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        loader: 'url-loader?limit=100000',
         type: 'asset/resource',
       },
       // Images
@@ -118,8 +119,8 @@ const configuration: webpack.Configuration = {
         test: /\.(mp3|ogg)$/,
         loader: 'url-loader',
         options: {
-           name: "assets/media/[name].[ext]?[hash]",
-        }
+          name: 'assets/media/[name].[ext]?[hash]',
+        },
       },
     ],
   },
@@ -173,7 +174,7 @@ const configuration: webpack.Configuration = {
     }),
 
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
 

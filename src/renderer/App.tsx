@@ -4,6 +4,13 @@ import { store } from '@store/index';
 
 import 'tailwindcss/tailwind.css';
 import './App.css';
+
+import '@assets/fonts/FiraSans-Black.ttf';
+import '@assets/fonts/FiraSans-Bold.ttf';
+import '@assets/fonts/FiraSans-Regular.ttf';
+import '@assets/fonts/LINESeedKR-Bd.ttf';
+import '@assets/fonts/LINESeedKR-Rg.ttf';
+
 import Welcome from './pages/WelcomePage';
 import MainPage from './pages/MainPage';
 

@@ -419,16 +419,6 @@ a:hover {
   margin: 0px 0px 55px 0px;
 }
 
-.notice-text {
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 64px;
-}
-
-.notice-text > span {
-  float: none;
-}
-
 /* MainPage.tsx */
 .contents-area {
   display: flex;
