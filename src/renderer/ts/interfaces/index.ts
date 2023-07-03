@@ -8,16 +8,18 @@ export interface UserInfo {
   gender?: string;
   birthday?: string;
   patient_no?: string;
+  tester_name?: string;
   sessionId?: string;
 }
 
-export interface ColumnType {
-  id: number;
+export interface TestForm {
+  id?: number;
   user_name: string;
   gender: string;
   birthday: string;
   patient_no: string;
   tester_name: string;
+  sessionId: string;
   receiver: string;
   fixed_type: string;
   direction: string;
@@ -27,24 +29,7 @@ export interface ColumnType {
   sound_set: number;
   test_date: string;
   test_result: number;
-  reg_timestamp: number;
-}
-
-export interface TestForm {
-  user_name?: string;
-  gender?: string;
-  birthday?: string;
-  patient_no?: string;
-  tester_name?: string;
-  receiver?: string;
-  fixed_type?: string;
-  direction?: string;
-  volume_level?: number;
-  scoring?: string;
-  memo?: string;
-  sound_set?: number;
-  test_date?: string;
-  test_result?: number;
+  reg_timestamp?: string;
 }
 
 export type ConfigSchemaType = {

@@ -38,7 +38,7 @@ const TestResult = ({ data, setData }: PropsType) => {
   };
 
   const saveMemo = () => {
-    const mergedData = { ...result, memo: memoStr };
+    const mergedData = { ...result, memo: memoStr || '' };
     setResult(mergedData);
 
     if (!!data && !isEmpty(data) && !!setData) {
@@ -158,15 +158,6 @@ const TestResult = ({ data, setData }: PropsType) => {
       </div>
       {isEditMemoShow && (
         <div className="edit-note-wrapper">
-          {/* <div className="edit-note-title">
-            <button
-              type="button"
-              className="close-btn"
-              onClick={() => showEditMemo(false)}
-            >
-              <XMarkIcon className='h-8 w-8 text-white'/>
-            </button>
-          </div> */}
           <div className="edit-note-inner">
             <label htmlFor={ColumnName.memo} className="hidden">
               참고사항

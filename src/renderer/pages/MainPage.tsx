@@ -11,7 +11,6 @@ import TestForm from '@components/test/testForm';
 import TestResult from '@components/main/TestResultComponent';
 import Setting from '@components/main/SettingComponent';
 import Snb from '@components/snb/snb';
-import ExamineeInfoPopup from '@components/snb/examineePopup';
 import UserRegister from '@components/main/UserRegister';
 import TestSession from '@components/main/TestSessionComponent';
 
@@ -21,7 +20,6 @@ const MainPage = () => {
     isTestResultOpen,
     isTestStartOpen,
     isSettingOpen,
-    isInfoPopupOpen,
     isUserRegister,
     isTestSessionOpen,
     isDimPopupOpen,
@@ -39,7 +37,6 @@ const MainPage = () => {
               className="main-contents flex justify-center items-center"
             >
               {isNoticeOpen && <Notice />}
-              {isInfoPopupOpen && <ExamineeInfoPopup />}
               {isUserRegister && <UserRegister />}
               {isTestResultOpen && <TestResult />}
               {isTestStartOpen && <TestForm />}

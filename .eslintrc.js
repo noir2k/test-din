@@ -25,6 +25,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react-hooks/rules-of-hooks': 'off',
     'react-hooks/exhaustive-deps': 'off',
+    'jsx-a11y/media-has-caption': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',

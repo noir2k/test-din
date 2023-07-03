@@ -30,10 +30,11 @@ const PlaySound = (props: PlayProps) => {
   useEffect(() => {
     const howl = new Howl(option);
     console.log('PLAY_BEFORE');
-    setTimeout(() => {
-      console.log('PLAY_DELAYED', howl);
-      howl.play();
-    }, delay * 1000);
+    howl.play();
+    // setTimeout(() => {
+    //   console.log('PLAY_DELAYED', howl);
+    //   howl.play();
+    // }, delay * 1000);
 
     return () => {
       console.log('PLAY_STOP');

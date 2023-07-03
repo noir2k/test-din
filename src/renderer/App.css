@@ -4,33 +4,33 @@
  */
 @font-face {
   font-family: 'LINESeed';
-  src: url(../../assets/fonts/LINESeedKR-Bd.ttf) format('truetype');
+  src: url(../../assets/fonts/LINESeedKR-Bd.ttf) format('TrueType');
   unicode-range: U+AC00-D7A3;
   font-weight: 700;
 }
 
 @font-face {
   font-family: 'LINESeed';
-  src: url(../../assets/fonts/LINESeedKR-Rg.ttf) format('truetype');
+  src: url(../../assets/fonts/LINESeedKR-Rg.ttf) format('TrueType');
   unicode-range: U+AC00-D7A3;
   font-weight: 400;
 }
 
 @font-face {
   font-family: 'FiraSans';
-  src: url(../../assets/fonts/FiraSans-Black.ttf) format('truetype');
+  src: url(../../assets/fonts/FiraSans-Black.ttf) format('TrueType');
   font-weight: 900;
 }
 
 @font-face {
   font-family: 'FiraSans';
-  src: url(../../assets/fonts/FiraSans-Bold.ttf) format('truetype');
+  src: url(../../assets/fonts/FiraSans-Bold.ttf) format('TrueType');
   font-weight: 700;
 }
 
 @font-face {
   font-family: 'FiraSans';
-  src: url(../../assets/fonts/FiraSans-Regular.ttf) format('truetype');
+  src: url(../../assets/fonts/FiraSans-Regular.ttf) format('TrueType');
   font-weight: 400;
 }
 
@@ -548,7 +548,7 @@ span {
 
 /* UserRegister.tsx */
 .user-reg-input {
-  height: 300px !important;
+  height: 360px !important;
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
@@ -1417,6 +1417,13 @@ input[type='range']:active::-webkit-slider-runnable-track {
   white-space: pre !important;
   justify-content: flex-start !important;
   padding-left: 0.8em !important;
+}
+
+.time-td {
+  text-align: right !important;
+  justify-content: flex-end !important;
+  padding-right: 0.4em !important;
+  font-size: 0.8em;
 }
 
 .bar-div {

@@ -17,9 +17,7 @@ import {
   alertCustom,
 } from '@lib/common';
 
-import { setSession } from '@store/slices/userDataProvider';
-
-import { setTestForm, resetDefaultForm } from '@store/slices/testFormProvider';
+import { setTestForm } from '@store/slices/testFormProvider';
 
 import { nextPage } from '@store/slices/testProgressProvider';
 
@@ -31,7 +29,6 @@ const ExamineeInfoForm = () => {
   const [isDisabled, setDisable] = useState(false);
 
   const userData = useAppSelector((state: RootState) => state.userData);
-  const testForm = useAppSelector((state: RootState) => state.testForm);
 
   const dispatch = useAppDispatch();
 
@@ -44,16 +41,11 @@ const ExamineeInfoForm = () => {
   } = useForm();
 
   const onSubmit = (data: any) => {
-    if (userData.sessionId !== undefined) {
-      console.log('NEW SESSION');
-      dispatch(setSession());
-    }
     dispatch(setTestForm(data));
     dispatch(nextPage());
   };
 
   const defaultValue = () => {
-    setValue(ColumnName.tester_name, '');
     setValue(ColumnName.receiver, 'Headphone');
     setValue(ColumnName.fixed_type, 'NF');
     setValue(ColumnName.direction, 'LR');
@@ -61,22 +53,13 @@ const ExamineeInfoForm = () => {
     setValue(ColumnName.scoring, 'digit');
     setValue(ColumnName.sound_set, '1');
     setValue(ColumnName.memo, '');
-    setFocus(ColumnName.tester_name);
   };
 
   const handleReset = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    dispatch(resetDefaultForm());
     defaultValue();
-    if (isEmpty(userData)) {
-      setValue(ColumnName.user_name, '');
-      setValue(ColumnName.gender, 'M');
-      setValue(ColumnName.birthday, '');
-      setValue(ColumnName.patient_no, '');
-      setFocus(ColumnName.user_name);
-    }
   };
 
   const onError = (error: any) => {
@@ -154,7 +137,7 @@ const ExamineeInfoForm = () => {
               type="text"
               id={ColumnName.user_name}
               disabled={isDisabled}
-              defaultValue={userData?.user_name}
+              defaultValue={userData.user_name}
               className="info-input-item-input"
               {...register(`${ColumnName.user_name}`, {
                 required: '이름 항목은 필수입니다.',
@@ -172,7 +155,7 @@ const ExamineeInfoForm = () => {
             <select
               id={ColumnName.gender}
               disabled={isDisabled}
-              defaultValue={userData?.gender}
+              defaultValue={userData.gender}
               className="info-input-item-input"
               {...register(`${ColumnName.gender}`)}
             >
@@ -192,7 +175,7 @@ const ExamineeInfoForm = () => {
               type="text"
               id={ColumnName.birthday}
               disabled={isDisabled}
-              defaultValue={userData?.birthday}
+              defaultValue={userData.birthday}
               className="info-input-item-input"
               maxLength={10}
               minLength={10}
@@ -220,7 +203,7 @@ const ExamineeInfoForm = () => {
               type="text"
               id={ColumnName.patient_no}
               disabled={isDisabled}
-              defaultValue={userData?.patient_no?.toString()}
+              defaultValue={userData.patient_no?.toString()}
               {...register(`${ColumnName.patient_no}`, {
                 required: '환자번호 항목은 필수입니다.',
               })}
@@ -238,7 +221,8 @@ const ExamineeInfoForm = () => {
             <input
               type="text"
               id={ColumnName.tester_name}
-              defaultValue={testForm?.tester_name}
+              disabled={isDisabled}
+              defaultValue={userData.tester_name}
               {...register(`${ColumnName.tester_name}`, {
                 required: '검사자명 항목은 필수입니다.',
               })}

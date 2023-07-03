@@ -1,9 +1,8 @@
-import { createSlice, isAction } from '@reduxjs/toolkit';
-
-import { ColumnType } from '@interfaces';
+import { createSlice } from '@reduxjs/toolkit';
+import { TestForm } from '@interfaces';
 
 type TestResultType = {
-  data: ColumnType[];
+  data: TestForm[];
 };
 
 const initialState: TestResultType = {
@@ -37,7 +36,7 @@ const testResultSlice = createSlice({
       state.data.splice(index, 1, _data);
     },
     setReplaceUserInfo: (state, action) => {
-      const data = state.data.map((item: ColumnType) => {
+      const data = state.data.map((item: TestForm) => {
         return {
           ...item,
           user_name: action.payload.user_name,

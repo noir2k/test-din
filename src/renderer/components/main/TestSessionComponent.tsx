@@ -1,6 +1,5 @@
-/* eslint-disable react/require-default-props */
 import { useEffect, useState, useRef } from 'react';
-import { useAppSelector, useAppDispatch } from '@hook/index';
+import { useAppSelector } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
@@ -10,7 +9,7 @@ import { CSVLink } from 'react-csv';
 import Html2Pdf from 'js-html2pdf';
 import hash from 'object-hash';
 
-import { ColumnType } from '@interfaces';
+import { TestForm } from '@interfaces';
 import { ColumnNameHeader, FixedTypeOptions, findEst } from '@lib/common';
 
 const TestSessionHeader = () => {
@@ -53,18 +52,19 @@ const TestSessionHeader = () => {
         </span>
       </div>
       <div className="text-vertical-th">
-        <span>Severe</span>
+        <span>Severe 이상</span>
       </div>
     </div>
   );
 };
 
 interface PropsType {
-  item: ColumnType;
+  item: TestForm;
   index: number;
   maxCount: number;
 }
 
+const TIME_ZONE = 9 * 60 * 60 * 1000;
 const PAGE_BREAK = 6;
 
 const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
@@ -76,7 +76,9 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
     scoring,
     test_result,
     memo,
+    reg_timestamp,
   } = item;
+
   const [estimate, setEstimate] = useState('');
   const [barColor, setBarColor] = useState('');
   const [fontColor, setFontColor] = useState('');
@@ -98,6 +100,11 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
   if (isPageBreak) {
     sessionItemClass += ' lastItem';
   }
+  const date = new Date(Number(reg_timestamp));
+  const testDate = new Date(date.getTime() + TIME_ZONE)
+    .toISOString()
+    .replace('T', ' ')
+    .slice(0, -5);
 
   useEffect(() => {
     setEstimate(findEst(test_result));
@@ -141,7 +148,9 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
           )}
         </div>
         <div className="row-span-2">
-          {estimate === 'Severe' && <div className={`${barColor} bar-div`} />}
+          {estimate === 'Severe 이상' && (
+            <div className={`${barColor} bar-div`} />
+          )}
         </div>
         <div className={fontColor}>{dirStr[0]}</div>
         <div>{dirStr[0]}</div>
@@ -153,6 +162,9 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
             <span>NOTE: {memo}</span>
           </div>
         )}
+        <div className="col-span-10 time-td">
+          <span>{testDate}</span>
+        </div>
       </div>
       {isPageBreak && <div className="html2pdf__page-break" />}
     </div>
@@ -235,16 +247,16 @@ const TestSession = () => {
               Sex/Birth : &nbsp;<b>{userData.gender}</b>&nbsp;/&nbsp;
               <b>{userData.birthday}</b>
             </div>
-            <div>
-              Test Date : &nbsp;<b>{testResult.data[0].test_date}</b>
-            </div>
             <div className="col-span-2">
-              Tested By : &nbsp;<b>{testResult.data[0].tester_name}</b>
+              Tested By : &nbsp;<b>{userData.tester_name}</b>
+            </div>
+            <div>
+              Session ID : &nbsp;<b>{userData.sessionId}</b>
             </div>
           </div>
           <TestSessionHeader />
           {data &&
-            data.map((item: ColumnType, index: number) => (
+            data.map((item: TestForm, index: number) => (
               <TestSessionItem
                 key={hash(item)}
                 item={item}

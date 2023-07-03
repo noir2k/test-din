@@ -102,6 +102,7 @@ const UserRegister = () => {
       setValue(ColumnName.gender, 'M');
       setValue(ColumnName.birthday, '');
       setValue(ColumnName.patient_no, '');
+      setValue(ColumnName.tester_name, '');
       setFocus(ColumnName.user_name);
     }
   };
@@ -155,7 +156,7 @@ const UserRegister = () => {
               <input
                 type="text"
                 id={ColumnName.user_name}
-                defaultValue={userData?.user_name}
+                defaultValue={userData.user_name}
                 className="info-input-item-input"
                 {...register(`${ColumnName.user_name}`, {
                   required: '이름 항목은 필수입니다.',
@@ -172,7 +173,7 @@ const UserRegister = () => {
               </label>
               <select
                 id={ColumnName.gender}
-                defaultValue={userData?.gender}
+                defaultValue={userData.gender}
                 className="info-input-item-input"
                 {...register(`${ColumnName.gender}`)}
               >
@@ -191,7 +192,7 @@ const UserRegister = () => {
               <input
                 type="text"
                 id={ColumnName.birthday}
-                defaultValue={userData?.birthday}
+                defaultValue={userData.birthday}
                 className="info-input-item-input"
                 maxLength={10}
                 minLength={10}
@@ -219,9 +220,27 @@ const UserRegister = () => {
               <input
                 type="text"
                 id={ColumnName.patient_no}
-                defaultValue={userData?.patient_no?.toString()}
+                defaultValue={userData.patient_no?.toString()}
                 {...register(`${ColumnName.patient_no}`, {
                   required: '환자번호 항목은 필수입니다.',
+                })}
+                className="info-input-item-input"
+              />
+            </li>
+            <li className="info-input-item">
+              <p className="info-input-item-order-number">05</p>
+              <label
+                htmlFor={ColumnName.tester_name}
+                className="info-input-item-subject"
+              >
+                검사자명
+              </label>
+              <input
+                type="text"
+                id={ColumnName.tester_name}
+                defaultValue={userData.tester_name?.toString()}
+                {...register(`${ColumnName.tester_name}`, {
+                  required: '검사자명 항목은 필수입니다.',
                 })}
                 className="info-input-item-input"
               />

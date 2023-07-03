@@ -12,9 +12,6 @@ import TestResult from '@components/main/TestResultComponent';
 
 import { TestForm } from '@interfaces';
 import { formToColumn, alertCustom } from '@lib/common';
-// import TestResultPopup from './testResultPopup';
-
-import isEmpty from 'lodash.isempty';
 
 import iconSpeaker from '@assets/images/icons/icon_speaker.png';
 
@@ -23,6 +20,7 @@ const TestComplete = () => {
     {} as TestForm
   );
 
+  const userData = useAppSelector((state: RootState) => state.userData);
   const testForm = useAppSelector((state: RootState) => state.testForm);
   const testResult = useAppSelector((state: RootState) => state.testResult);
 
@@ -30,11 +28,12 @@ const TestComplete = () => {
 
   const saveTestResult = () => {
     let lastId = 0;
-    if (!isEmpty(testResult.data)) {
+    if (testResult.data.length > 0 && testResult.data[0].id) {
       lastId = testResult.data[0].id;
     }
 
     const data = formToColumn(testFormResult, lastId);
+
     dispatch(setInsertResult(data));
 
     alertCustom({
@@ -50,7 +49,6 @@ const TestComplete = () => {
   return (
     <>
       <RightSnb />
-      {/* <TestResultPopup /> */}
       <div className="result-form-title">
         <img src={iconSpeaker} alt="speaker icon" />
         <p>테스트 결과</p>

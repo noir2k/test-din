@@ -31,7 +31,6 @@ import {
 import {
   setNoticeOpen,
   setUserRegister,
-  setInfoPopupOpen,
   setSettingOpen,
   setTestStartOpen,
   setTestSession,
@@ -39,15 +38,10 @@ import {
 
 import { setUserInfo, resetUserInfo } from '@store/slices/userDataProvider';
 
-import { UserInfo, ColumnType } from '@interfaces';
-import {
-  ColumnNameHeader,
-  columnToForm,
-  alertCustom,
-  confirmCustom,
-} from '@lib/common';
+import { UserInfo, TestForm } from '@interfaces';
+import { ColumnNameHeader, alertCustom, confirmCustom } from '@lib/common';
 
-const PAGE_COUNT = 15;
+// const PAGE_COUNT = 15;
 const headerArr = ColumnNameHeader.map((item) => {
   return item.key;
 });
@@ -56,8 +50,9 @@ const snb = () => {
   const importCsvRef = useRef<HTMLInputElement>(null);
 
   const [selectedIndex, setSelectedIndex] = useState<any>(0);
-  const [isMoreData, setMoreData] = useState(false);
+  // const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [isDisableTest, setDisableTest] = useState(false);
 
   const userData = useAppSelector((state: RootState) => state.userData);
   const testResult = useAppSelector((state: RootState) => state.testResult);
@@ -73,21 +68,23 @@ const snb = () => {
     },
   };
 
-  const handleLoadFileInfo = (data: ColumnType[]) => {
-    const { user_name, gender, birthday, patient_no } = data[0];
+  const handleLoadFileInfo = (data: TestForm[]) => {
+    const { user_name, gender, birthday, patient_no, tester_name, sessionId } =
+      data[0];
 
     const userInfo: UserInfo = {
       user_name,
       gender,
       birthday,
       patient_no,
+      tester_name,
+      sessionId,
     };
 
-    const testResultFromCsv = data.map((item) => columnToForm(item));
-
     setLoading(false);
+    setDisableTest(true);
     dispatch(setUserInfo(userInfo));
-    dispatch(setTestResult(testResultFromCsv));
+    dispatch(setTestResult(data));
   };
 
   const handleFileLoad = (data: any) => {
@@ -106,6 +103,11 @@ const snb = () => {
         title: '환자 정보 오류',
         message: `등록된 환자 정보가 없습니다.\n환자 정보를 등록해주세요.`,
       });
+    } else if (isDisableTest) {
+      alertCustom({
+        title: '테스트 시작 오류',
+        message: `불러오기로 등록된 환자는\n결과지 보기 및 출력만 가능합니다.`,
+      });
     } else {
       dispatch(resetForm());
       dispatch(resetProgress());
@@ -114,7 +116,7 @@ const snb = () => {
   };
 
   const createUserInfo = () => {
-    setMoreData(false);
+    // setMoreData(false);
     setSelectedIndex(0);
     setLoading(false);
     dispatch(resetTestResult());
@@ -122,26 +124,26 @@ const snb = () => {
     dispatch(setUserRegister(true));
   };
 
-  const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
-    if (isIntersecting && isMoreData && !isLoading) {
-      setLoading(true);
-      window.electron.ipcRenderer.sendMessage('next-page', []);
-    }
-  };
+  // const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+  //   if (isIntersecting && isMoreData && !isLoading) {
+  //     setLoading(true);
+  //     window.electron.ipcRenderer.sendMessage('next-page', []);
+  //   }
+  // };
 
-  const { setTarget } = useInfiniteScroll({ onIntersect });
+  // const { setTarget } = useInfiniteScroll({ onIntersect });
 
-  const onLoadData = (data: unknown) => {
-    const colData = data as ColumnType[];
-    if (colData !== null) {
-      dispatch(setTestResult(colData));
-      dispatch(setUserInfo(colData[0]));
-      const isNoMore = colData.length < PAGE_COUNT;
-      setMoreData(!isNoMore);
-    }
-    setLoading(false);
-    dispatch(setNoticeOpen());
-  };
+  // const onLoadData = (data: unknown) => {
+  //   const colData = data as TestForm[];
+  //   if (colData !== null) {
+  //     dispatch(setTestResult(colData));
+  //     dispatch(setUserInfo(colData[0]));
+  //     const isNoMore = colData.length < PAGE_COUNT;
+  //     setMoreData(!isNoMore);
+  //   }
+  //   setLoading(false);
+  //   dispatch(setNoticeOpen());
+  // };
 
   const handleOpenTestSession = () => {
     if (testResult.data.length > 0) {
@@ -149,7 +151,7 @@ const snb = () => {
     } else {
       alertCustom({
         title: '테스트 세션 오류',
-        message: `테스트 세션이 없습니다.\n테스트 세션을 등록해주세요.`,
+        message: `테스트 세션이 없습니다.\n신규 테스트를 등록해주세요.`,
       });
     }
   };
@@ -158,10 +160,7 @@ const snb = () => {
     if (!isEmpty(userData)) {
       confirmCustom({
         title: '신규 환자 정보 등록 확인',
-        message: `이미 등록된 환자 정보가 있습니다.
-기존의 환자 정보 및 테스트 세션이 초기화 됩니다.
-
-새로 등록하시겠습니까?`,
+        message: `이미 등록된 환자 정보가 있습니다.\n현재 환자 정보 및 테스트 세션이 초기화 됩니다.\n\n신규 환자를 등록하시겠습니까?`,
         callback: () => createUserInfo(),
       });
     } else {
@@ -169,53 +168,53 @@ const snb = () => {
     }
   };
 
-  useEffect(() => {
-    const channel = 'sql-file-selected';
-    window.electron.ipcRenderer.on(channel, onLoadData);
-    return () => window.electron.ipcRenderer.removeAllListeners(channel);
-  });
+  // useEffect(() => {
+  //   const channel = 'sql-file-selected';
+  //   window.electron.ipcRenderer.on(channel, onLoadData);
+  //   return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  // });
 
-  useEffect(() => {
-    const channel = 'reload-data';
-    window.electron.ipcRenderer.on(channel, onLoadData);
-    return () => window.electron.ipcRenderer.removeAllListeners(channel);
-  });
+  // useEffect(() => {
+  //   const channel = 'reload-data';
+  //   window.electron.ipcRenderer.on(channel, onLoadData);
+  //   return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  // });
 
-  useEffect(() => {
-    const channel = 'update-user-name';
-    window.electron.ipcRenderer.on(channel, onLoadData);
-    return () => window.electron.ipcRenderer.removeAllListeners(channel);
-  });
+  // useEffect(() => {
+  //   const channel = 'update-user-name';
+  //   window.electron.ipcRenderer.on(channel, onLoadData);
+  //   return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  // });
 
-  useEffect(() => {
-    const channel = 'load-more-data';
-    window.electron.ipcRenderer.on(channel, (data) => {
-      const colData = data as ColumnType[];
-      if (colData !== null && testResult.data !== null) {
-        const result = colData.map((item: ColumnType) => {
-          return {
-            ...item,
-            user_name: userData.user_name,
-            gender: userData.gender,
-            birthday: userData.birthday,
-            patient_no: userData.patient_no,
-          };
-        });
-        dispatch(setMergeResult(result));
-        const isNoMore = colData.length < PAGE_COUNT;
-        setMoreData(!isNoMore);
-      }
-      setLoading(false);
-    });
+  // useEffect(() => {
+  //   const channel = 'load-more-data';
+  //   window.electron.ipcRenderer.on(channel, (data) => {
+  //     const colData = data as TestForm[];
+  //     if (colData !== null && testResult.data !== null) {
+  //       const result = colData.map((item: TestForm) => {
+  //         return {
+  //           ...item,
+  //           user_name: userData.user_name,
+  //           gender: userData.gender,
+  //           birthday: userData.birthday,
+  //           patient_no: userData.patient_no,
+  //         };
+  //       });
+  //       dispatch(setMergeResult(result));
+  //       const isNoMore = colData.length < PAGE_COUNT;
+  //       setMoreData(!isNoMore);
+  //     }
+  //     setLoading(false);
+  //   });
 
-    return () => window.electron.ipcRenderer.removeAllListeners(channel);
-  });
+  //   return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  // });
 
-  useEffect(() => {
-    const channel = 'no-more-data';
-    window.electron.ipcRenderer.on(channel, () => setMoreData(false));
-    return () => window.electron.ipcRenderer.removeAllListeners(channel);
-  });
+  // useEffect(() => {
+  //   const channel = 'no-more-data';
+  //   window.electron.ipcRenderer.on(channel, () => setMoreData(false));
+  //   return () => window.electron.ipcRenderer.removeAllListeners(channel);
+  // });
 
   return (
     <div id="snb" className="snb-container">
@@ -306,14 +305,7 @@ const snb = () => {
       </div>
       <div className="child snb-data-wrapper">
         <div className="examinee-data-wrapper">
-          <div
-            className="cursor-pointer data-text ml-5"
-            onClick={() => {
-              if (!isEmpty(userData)) {
-                dispatch(setInfoPopupOpen());
-              }
-            }}
-          >
+          <div className="data-text ml-5">
             <span className="user-info-span">
               <UserIcon className="h-8 w-8 text-white mr-1" />
               <p>
@@ -351,7 +343,7 @@ const snb = () => {
               </div>
             ))}
         </div>
-        <div className="scroll-end" ref={setTarget} />
+        {/* <div className="scroll-end" ref={setTarget} /> */}
       </div>
       <div className="child btn-wrapper">
         <button

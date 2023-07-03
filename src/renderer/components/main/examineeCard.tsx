@@ -4,8 +4,8 @@ import { setTestResultOpen } from '@store/slices/navigateProvicer';
 
 import { setRemoveResult } from '@store/slices/testResultProvider';
 
-import { ColumnType } from '@interfaces';
-import { columnToForm, confirmCustom } from '@lib/common';
+import { TestForm } from '@interfaces';
+import { confirmCustom } from '@lib/common';
 
 import { TrashIcon } from '@heroicons/react/24/outline';
 
@@ -13,7 +13,7 @@ import iconDocument from '@assets/images/icons/icon_document.png';
 
 interface PropType {
   index: number;
-  item: ColumnType;
+  item: TestForm;
 }
 
 function ExamineeCard({ item, index }: PropType) {
@@ -35,7 +35,7 @@ function ExamineeCard({ item, index }: PropType) {
         dispatch(
           setTestResultOpen({
             index,
-            data: columnToForm(item),
+            data: item,
           })
         )
       }
@@ -43,8 +43,8 @@ function ExamineeCard({ item, index }: PropType) {
       <img src={iconDocument} alt="document icon" />
       <div className="examinee-card-data">
         <p>
-          {item.fixed_type}
-          {item.direction}({item.scoring}){' '}
+          {/* {item.fixed_type} */}
+          {item.direction}({item.receiver}){' '}
         </p>
         <p>{item.test_date}</p>
       </div>

@@ -106,7 +106,6 @@ const configuration: webpack.Configuration = {
       // Fonts
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        loader: 'url-loader',
         type: 'asset/resource',
       },
       // Images

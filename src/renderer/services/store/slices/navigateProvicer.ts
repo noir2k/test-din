@@ -6,7 +6,6 @@ interface navigateState {
   isTestResultOpen: boolean;
   isSettingOpen: boolean;
   isTestStartOpen: boolean;
-  isInfoPopupOpen: boolean;
   isUserRegister: boolean;
   isTestSessionOpen: boolean;
   isDimPopupOpen: boolean;
@@ -19,7 +18,6 @@ const initialState: navigateState = {
   isTestResultOpen: false,
   isSettingOpen: false,
   isTestStartOpen: false,
-  isInfoPopupOpen: false,
   isUserRegister: false,
   isTestSessionOpen: false,
   isDimPopupOpen: false,
@@ -36,7 +34,6 @@ const navigateProvider = createSlice({
       state.isTestResultOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
-      state.isInfoPopupOpen = false;
       state.isUserRegister = false;
       state.isTestSessionOpen = false;
     },
@@ -45,7 +42,6 @@ const navigateProvider = createSlice({
       state.isTestResultOpen = true;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
-      state.isInfoPopupOpen = false;
       state.isUserRegister = false;
       state.isTestSessionOpen = false;
       const { index, data } = action.payload;
@@ -56,7 +52,6 @@ const navigateProvider = createSlice({
       state.isTestResultOpen = false;
       state.isSettingOpen = true;
       state.isTestStartOpen = false;
-      state.isInfoPopupOpen = false;
       state.isUserRegister = false;
       state.isTestSessionOpen = false;
     },
@@ -65,26 +60,15 @@ const navigateProvider = createSlice({
       state.isTestResultOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = true;
-      state.isInfoPopupOpen = false;
       state.isUserRegister = false;
       state.isTestSessionOpen = false;
       state.itemResult = undefined;
-    },
-    setInfoPopupOpen: (state) => {
-      state.isNoticeOpen = false;
-      state.isTestResultOpen = false;
-      state.isSettingOpen = false;
-      state.isTestStartOpen = false;
-      state.isInfoPopupOpen = true;
-      state.isUserRegister = false;
-      state.isTestSessionOpen = false;
     },
     setUserRegister: (state, action) => {
       state.isNoticeOpen = false;
       state.isTestResultOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
-      state.isInfoPopupOpen = false;
       state.isUserRegister = true;
       state.isTestSessionOpen = false;
       state.isRegister = action.payload;
@@ -94,7 +78,6 @@ const navigateProvider = createSlice({
       state.isTestResultOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
-      state.isInfoPopupOpen = false;
       state.isUserRegister = false;
       state.isTestSessionOpen = true;
     },
@@ -103,7 +86,6 @@ const navigateProvider = createSlice({
       state.isTestResultOpen = false;
       state.isSettingOpen = false;
       state.isTestStartOpen = false;
-      state.isInfoPopupOpen = false;
       state.isUserRegister = false;
       state.isTestSessionOpen = true;
     },
@@ -118,7 +100,6 @@ export const {
   setTestResultOpen,
   setSettingOpen,
   setTestStartOpen,
-  setInfoPopupOpen,
   setUserRegister,
   setTestSession,
   setDimPopup,

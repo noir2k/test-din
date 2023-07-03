@@ -1,4 +1,4 @@
-import { ColumnType, TestForm } from '@interfaces';
+import { TestForm } from '@interfaces';
 
 import Swal from 'sweetalert2';
 
@@ -9,6 +9,7 @@ export const ColumnName = {
   birthday: 'birthday',
   patient_no: 'patient_no',
   tester_name: 'tester_name',
+  sessionId: 'sessionId',
   receiver: 'receiver',
   fixed_type: 'fixed_type',
   direction: 'direction',
@@ -28,6 +29,7 @@ export const ColumnNameHeader = [
   { label: '생일', key: ColumnName.birthday },
   { label: '환자번호', key: ColumnName.patient_no },
   { label: '테스터명', key: ColumnName.tester_name },
+  { label: '테스트세션ID', key: ColumnName.sessionId },
   { label: '리시버', key: ColumnName.receiver },
   { label: '제시방법', key: ColumnName.fixed_type },
   { label: '제시방향', key: ColumnName.direction },
@@ -43,10 +45,11 @@ export const ColumnNameHeader = [
 type DataRangeType = { [key: string]: number[] };
 
 export const DataRange: DataRangeType = {
-  Normal: [-18, -5.28],
-  Mild: [-5.27, 0.27],
-  Moderate: [0.28, 0.68],
-  'Moderate to Severe': [0.69, 12],
+  Normal: [-18, -5.92],
+  Mild: [-5.91, 4.64],
+  Moderate: [4.63, -0.64],
+  'Moderate to Severe': [-0.65, 0.69],
+  'Severe 이상': [0.7, 12],
 };
 
 type OptionProps = { [key: string]: string };
@@ -84,24 +87,6 @@ export const SoundSetOptions: OptionProps = {
   '6': 'List 6',
 };
 
-export const columnToForm = (payload: ColumnType) => {
-  return {
-    user_name: payload.user_name,
-    gender: payload.gender,
-    birthday: payload.birthday,
-    patient_no: payload.patient_no,
-    tester_name: payload.tester_name,
-    receiver: payload.receiver,
-    fixed_type: payload.fixed_type,
-    direction: payload.direction,
-    scoring: payload.scoring,
-    memo: payload.memo,
-    sound_set: payload.sound_set,
-    test_date: payload.test_date,
-    test_result: payload.test_result,
-  };
-};
-
 export const formToColumn = (payload: TestForm, lastId: number) => {
   return {
     id: lastId + 1,
@@ -110,6 +95,7 @@ export const formToColumn = (payload: TestForm, lastId: number) => {
     birthday: payload.birthday,
     patient_no: payload.patient_no,
     tester_name: payload.tester_name,
+    sessionId: payload.sessionId,
     receiver: payload.receiver,
     fixed_type: payload.fixed_type,
     direction: payload.direction,
