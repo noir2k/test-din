@@ -30,14 +30,14 @@ const TestForm = () => {
 
   const testProgress = useAppSelector((state: RootState) => state.testProgress);
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const conf = window.electron.store.get('config');
-    if (conf && conf.soundInterval) {
-      setDelay(conf.soundInterval);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const conf = window.electron.store.get('config');
+  //   if (conf && conf.soundInterval) {
+  //     setDelay(conf.soundInterval);
+  //   }
+  // }, []);
 
   const { currentPage } = testProgress;
   const pages = createPages(testProgress.lastPage);

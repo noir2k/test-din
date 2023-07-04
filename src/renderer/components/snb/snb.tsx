@@ -83,6 +83,7 @@ const snb = () => {
 
     setLoading(false);
     setDisableTest(true);
+    dispatch(setNoticeOpen());
     dispatch(setUserInfo(userInfo));
     dispatch(setTestResult(data));
   };
@@ -90,7 +91,7 @@ const snb = () => {
   const handleFileLoad = (data: any) => {
     confirmCustom({
       title: '환자 정보 불러오기',
-      message: `기존의 환자 정보 및 테스트 세션이 초기화 됩니다.
+      message: `현재 진행중인 테스트 세션 및 환자 정보가 초기화 됩니다.
 
 진행하시겠습니까?`,
       callback: () => handleLoadFileInfo(data),
@@ -117,6 +118,7 @@ const snb = () => {
 
   const createUserInfo = () => {
     // setMoreData(false);
+    setDisableTest(false);
     setSelectedIndex(0);
     setLoading(false);
     dispatch(resetTestResult());
@@ -151,7 +153,7 @@ const snb = () => {
     } else {
       alertCustom({
         title: '테스트 세션 오류',
-        message: `테스트 세션이 없습니다.\n신규 테스트를 등록해주세요.`,
+        message: `저장된 테스트 세션이 없습니다.\n신규 테스트를 등록해주세요.`,
       });
     }
   };
@@ -160,7 +162,7 @@ const snb = () => {
     if (!isEmpty(userData)) {
       confirmCustom({
         title: '신규 환자 정보 등록 확인',
-        message: `이미 등록된 환자 정보가 있습니다.\n현재 환자 정보 및 테스트 세션이 초기화 됩니다.\n\n신규 환자를 등록하시겠습니까?`,
+        message: `이미 등록된 환자 정보가 있습니다.\n현재 진행중인 테스트 세션 및 환자 정보가 초기화 됩니다.\n\n신규 환자를 등록하시겠습니까?`,
         callback: () => createUserInfo(),
       });
     } else {
@@ -348,7 +350,11 @@ const snb = () => {
       <div className="child btn-wrapper">
         <button
           type="button"
-          className="test-start-btn text-xl"
+          className={
+            isDisableTest
+              ? 'test-start-btn deactive-btn text-xl'
+              : 'test-start-btn text-xl'
+          }
           onClick={testStartOpen}
         >
           <PencilSquareIcon className="h-8 w-8 text-white mr-1" />
