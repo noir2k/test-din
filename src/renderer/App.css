@@ -4,34 +4,40 @@
  */
 @font-face {
   font-family: 'LINESeed';
-  src: url(../../assets/fonts/LINESeedKR-Bd.ttf) format('truetype');
+  src: url('../../assets/fonts/woff2/LINESeedKR-Bd.woff2') format('woff2'),
+    url("../../assets/fonts/woff/LINESeedKR-Bd.woff") format("woff");
   unicode-range: U+AC00-D7A3;
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'LINESeed';
-  src: url(../../assets/fonts/LINESeedKR-Rg.ttf) format('truetype');
+  src: url('../../assets/fonts/woff2/LINESeedKR-Rg.woff2') format('woff2'),
+    url("../../assets/fonts/woff/LINESeedKR-Rg.woff") format("woff");
   unicode-range: U+AC00-D7A3;
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'FiraSans';
-  src: url(../../assets/fonts/FiraSans-Black.ttf) format('truetype');
-  font-weight: 900;
-}
-
-@font-face {
-  font-family: 'FiraSans';
-  src: url(../../assets/fonts/FiraSans-Bold.ttf) format('truetype');
+  font-family: 'Fira Sans';
+  src: url('../../assets/fonts/woff2/FiraSans-Bold.woff2') format('woff2'),
+    url("../../assets/fonts/woff/FiraSans-Bold.woff") format("woff");
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'FiraSans';
-  src: url(../../assets/fonts/FiraSans-Regular.ttf) format('truetype');
+  font-family: 'Fira Sans';
+  src: url('../../assets/fonts/woff2/FiraSans-Regular.woff2') format('woff2'),
+    url("../../assets/fonts/woff/FiraSans-Regular.woff") format("woff");
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 body {
@@ -41,7 +47,7 @@ body {
     rgba(207, 216, 234, 0.7) 100%
   );
   color: black;
-  font-family: 'LINESeed', 'FiraSans', sans-serif;
+  font-family: 'LINESeed', 'Fira Sans', sans-serif;
   overflow: hidden;
 }
 

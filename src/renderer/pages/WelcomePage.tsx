@@ -24,7 +24,9 @@ export default function Welcome() {
     <div className="flex flex-col items-center justify-center h-screen">
       <img width="192" alt="icon" src={smLogo} />
       <img width="640" height="100" alt="icon" src={lgLogo} />
-      <h2 className="my-10 text-4xl font-semibold">&nbsp;</h2>
+      <h2 className="my-10 text-4xl font-semibold">
+        <span className="hidden">환영합니다</span>
+      </h2>
       <button
         type="button"
         className="start-btn rounded-full"
