@@ -314,7 +314,7 @@ const ExamineeInfoForm = () => {
               <option value="-12">-12</option>
               <option value="-10">-10</option>
               <option value="-8">-8</option>
-              <option value="-6">-6(정상 권장 레벨)</option>
+              <option value="-6">-6(정상 청력 권장 레벨)</option>
               <option value="-4">-4(경도 권장 레벨)</option>
               <option value="-2">-2</option>
               <option value="0">0(중도, 중고도 권장 레벨)</option>
@@ -382,7 +382,13 @@ const ExamineeInfoForm = () => {
           {...register(`${ColumnName.memo}`)}
         />
       </div>
-
+      <input
+        type="hidden"
+        id={ColumnName.sessionId}
+        disabled={isDisabled}
+        defaultValue={userData.sessionId}
+        {...register(`${ColumnName.sessionId}`)}
+      />
       <div className="info-btn-wrapper">
         <button className="info-btn" type="button" onClick={handleReset}>
           입력초기화

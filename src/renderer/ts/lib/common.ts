@@ -113,6 +113,7 @@ type AlertPropType = {
   message: string | undefined;
   title?: string | undefined;
   callback?: () => void;
+  dissmiss?: () => void;
 };
 
 export const alertCustom = (prop: AlertPropType) => {
@@ -145,8 +146,13 @@ export const confirmCustom = (prop: AlertPropType) => {
       confirmButton: 'sweet_confirm_button',
     },
   }).then((result) => {
+    console.log(result);
     if (result.isConfirmed) {
       !!prop.callback && prop.callback();
+    }
+
+    if (result.isDismissed) {
+      !!prop.dissmiss && prop.dissmiss();
     }
   });
 };

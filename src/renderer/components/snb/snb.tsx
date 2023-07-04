@@ -95,6 +95,11 @@ const snb = () => {
 
 진행하시겠습니까?`,
       callback: () => handleLoadFileInfo(data),
+      dissmiss: () => {
+        if (importCsvRef.current) {
+          importCsvRef.current.value = '';
+        }
+      },
     });
   };
 
