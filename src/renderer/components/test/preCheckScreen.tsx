@@ -111,7 +111,7 @@ const PreCheckScreen = () => {
           <p className="max-value">100%</p>
         </div>
         <p className="current-value">{sliderVolume}</p>
-        <p className="text-sm">
+        <p className="text-sm mt-1">
           검사자는 연습 문항 실시하면서 환자의 MCL 레벨을 찾아내세요.
         </p>
       </div>

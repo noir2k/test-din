@@ -111,7 +111,8 @@ function CheckScreen() {
   useEffect(() => {
     const title = hooks.isTestStart
       ? '테스트 진행중'
-      : `본 검사를 실시합니다. 아래 시작 버튼을 누르세요`;
+      : `본 검사를 실시합니다.
+아래 시작 버튼을 누르세요.`;
     setTestTitle(title);
   }, [hooks.isTestStart]);
 

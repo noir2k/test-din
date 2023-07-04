@@ -4,33 +4,33 @@
  */
 @font-face {
   font-family: 'LINESeed';
-  src: url(../../assets/fonts/LINESeedKR-Bd.ttf) format('TrueType');
+  src: url(../../assets/fonts/LINESeedKR-Bd.ttf) format('truetype');
   unicode-range: U+AC00-D7A3;
   font-weight: 700;
 }
 
 @font-face {
   font-family: 'LINESeed';
-  src: url(../../assets/fonts/LINESeedKR-Rg.ttf) format('TrueType');
+  src: url(../../assets/fonts/LINESeedKR-Rg.ttf) format('truetype');
   unicode-range: U+AC00-D7A3;
   font-weight: 400;
 }
 
 @font-face {
   font-family: 'FiraSans';
-  src: url(../../assets/fonts/FiraSans-Black.ttf) format('TrueType');
+  src: url(../../assets/fonts/FiraSans-Black.ttf) format('truetype');
   font-weight: 900;
 }
 
 @font-face {
   font-family: 'FiraSans';
-  src: url(../../assets/fonts/FiraSans-Bold.ttf) format('TrueType');
+  src: url(../../assets/fonts/FiraSans-Bold.ttf) format('truetype');
   font-weight: 700;
 }
 
 @font-face {
   font-family: 'FiraSans';
-  src: url(../../assets/fonts/FiraSans-Regular.ttf) format('TrueType');
+  src: url(../../assets/fonts/FiraSans-Regular.ttf) format('truetype');
   font-weight: 400;
 }
 
@@ -777,6 +777,12 @@ span {
   width: 100%;
 }
 
+.slider-bar-inner > .min-value,
+.slider-bar-inner > .max-value,
+.slide-bar-wrapper > .current-value {
+  font-size: 20px;
+}
+
 .slider-bar-inner > .min-value {
   margin: 0px 32px 0px 0px;
 }
@@ -786,7 +792,7 @@ span {
 }
 
 .slide-bar-wrapper > .current-value {
-  margin-right: 16px;
+  margin-right: 20px;
 }
 
 input[type='range'] {

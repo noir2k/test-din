@@ -1,5 +1,6 @@
 module.exports = {
   extends: 'erb',
+  ignorePatterns: ['**/*.html', '**/*.ejs'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'html'],
   rules: {

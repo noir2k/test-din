@@ -42,7 +42,7 @@ import type { ConfigSchemaType } from './util';
 //   }
 // }
 
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 
 Store.initRenderer();
 const STORE = new Store();
@@ -291,50 +291,6 @@ const createWindow = async () => {
     collate: false,
     copies: 1,
   };
-
-  ipcMain.handle('printComponent', (event, url) => {
-    let win = new BrowserWindow({ show: false });
-
-    win.loadURL(url);
-
-    win.webContents.on('did-finish-load', () => {
-      win.webContents.print(printOptions, (success, failureReason) => {
-        log.log('Print Initiated in Main...');
-        if (!success) log.log(failureReason);
-      });
-    });
-    return 'shown print dialog';
-  });
-
-  ipcMain.handle('previewComponent', (event, url) => {
-    let win = new BrowserWindow({
-      title: 'Preview',
-      show: false,
-      autoHideMenuBar: true,
-    });
-    log.log(url);
-    win.loadURL(url);
-
-    win.webContents.once('did-finish-load', () => {
-      win.webContents.printToPDF(printOptions).then((data) => {
-        let buf = Buffer.from(data);
-        const _data = buf.toString('base64');
-        let pdfUrl = 'data:application/pdf;base64,' + _data;
-        log.log(pdfUrl);
-        win.on('ready-to-show', () => {
-          win.show();
-          win.setTitle('Preview');
-        });
-
-        win.on('closed', () => { win.destroy(); });
-        win.loadURL(pdfUrl);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    });
-    return 'shown preview window';
-  });
 
   // Remove this if your app does not use auto updates
   // new AppUpdater();
