@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
 
@@ -26,7 +25,7 @@ import { alertCustom, confirmCustom } from '@lib/common';
 
 import iconSpeaker from '@assets/images/icons/icon_speaker.png';
 
-const maxCount = 6;
+const maxCount = 30;
 const minVolumeLevel = -18;
 const maxVolumeLevel = 12;
 
