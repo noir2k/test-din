@@ -6,7 +6,10 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
+import { URL } from 'url';
 import path from 'path';
+import fs from 'fs';
+import crypto from 'crypto';
 
 import {
   app,
@@ -14,6 +17,7 @@ import {
   shell,
   ipcMain,
   dialog,
+  safeStorage,
   protocol,
   net,
   OpenDialogSyncOptions,
@@ -23,15 +27,25 @@ import Store from 'electron-store';
 import log from 'electron-log';
 import 'dotenv/config';
 
-import type { Database } from 'sql.js';
+// import type { Database } from 'sql.js';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
 } from 'electron-devtools-assembler';
 
 import MenuBuilder from './menu';
-import * as Util from './util';
-import type { ConfigSchemaType } from './util';
+
+// import * as Db from './modules/database';
+// import type { ConfigSchemaType } from './modules/database';
+
+import * as License from './modules/license';
+import type {
+  AppVer,
+  LicenseOpt,
+  ValidateLicenseResult,
+} from './modules/license';
+
+// const SecureElectronLicenseKeys = require('secure-electron-license-keys');
 
 // import { autoUpdater } from 'electron-updater';
 // class AppUpdater {
@@ -42,10 +56,14 @@ import type { ConfigSchemaType } from './util';
 //   }
 // }
 
+export type ConfigType = {
+  user?: string;
+};
+
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 
 Store.initRenderer();
-const STORE = new Store();
+export const STORE = new Store<ConfigType>();
 
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
@@ -86,31 +104,102 @@ if (isDebug) {
 
 // log.log(app.getPath('userData'));
 
-const _loadDefaultConfig = () => {
-  const config = STORE.get('config') as ConfigSchemaType;
-  if (!!config && !config.hasOwnProperty('soundInterval')) {
-    config.soundInterval = Util.defaultConfig.soundInterval;
-    STORE.set('config', config);
-  } else {
-    STORE.set('config', 0);
+const resolveHtmlPath = (htmlFileName: string) => {
+  if (process.env.NODE_ENV === 'development') {
+    const port = process.env.PORT || 1212;
+    const url = new URL(`http://localhost:${port}`);
+    url.pathname = htmlFileName;
+    return url.href;
   }
+
+  return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
 };
 
-const _loadData = (
-  db: Database,
-  channel: string,
-  event: Electron.IpcMainEvent,
-  result: {}[] | null | undefined
-) => {
-  if (result && result.length > 0) {
-    const rowCount = Util.rowCount(db);
-    STORE.set('rowCount', rowCount);
-    STORE.set('currentPage', 1);
-    event.sender.send(channel, result);
+const validateLicense = (options: LicenseOpt): ValidateLicenseResult => {
+  const validationResult = {
+    success: false,
+    expire: '',
+    appVersion: License.parseVersion(options.version),
+    message: '',
+  } as ValidateLicenseResult;
+
+  const publicKeyPath = path.join(options.root, 'public.key');
+  const licenseDataPath = path.join(options.root, 'license.data');
+  console.log('options', options);
+  console.log('STORE', STORE.get('config'));
+  console.log('STORE', STORE.get('config.user'));
+
+  if (fs.existsSync(publicKeyPath) && fs.existsSync(licenseDataPath)) {
+    const publicKey = fs.readFileSync(publicKeyPath);
+    const licenseData = fs.readFileSync(licenseDataPath);
+
+    try {
+      const decrypted = crypto.publicDecrypt(publicKey, licenseData);
+      const parseStr = JSON.parse(decrypted.toString('utf8'));
+
+      console.log('parseStr', parseStr);
+
+      validationResult.expire = parseStr.expire;
+
+      let expired = false;
+      if (parseStr.expire !== '' && parseStr.expire !== undefined) {
+        const expireDate = new Date(parseStr.expire);
+        const today = new Date();
+        expired = expireDate < today;
+      }
+
+      // check validation
+      if (
+        parseStr.major !== 'all' &&
+        parseStr.major !== validationResult.appVersion.major
+      ) {
+        validationResult.message = 'major version not matched';
+      } else if (
+        parseStr.minor !== 'all' &&
+        parseStr.minor !== validationResult.appVersion.minor
+      ) {
+        validationResult.message = 'minor version not matched';
+      } else if (
+        parseStr.patch !== 'all' &&
+        parseStr.patch !== validationResult.appVersion.patch
+      ) {
+        validationResult.message = 'patch version not matched';
+      } else if (parseStr.user !== STORE.get('config.user')) {
+        validationResult.message = 'user not matched';
+      } else if (expired) {
+        validationResult.message = 'license expired';
+      } else {
+        validationResult.success = true;
+        validationResult.message = 'OK';
+      }
+    } catch (err) {
+      validationResult.expire = '####-##-##';
+      validationResult.message = 'license file is invalid';
+      return validationResult;
+    }
   } else {
-    event.sender.send('load-data-failured', 'Empty Data');
+    validationResult.expire = '####-##-##';
+    validationResult.message = 'license file not found';
   }
+
+  return validationResult;
 };
+
+// const _loadData = (
+//   database: Database,
+//   channel: string,
+//   event: Electron.IpcMainEvent,
+//   result: {}[] | null | undefined
+// ) => {
+//   if (result && result.length > 0) {
+//     const rowCount = Db.rowCount(database);
+//     STORE.set('rowCount', rowCount);
+//     STORE.set('currentPage', 1);
+//     event.sender.send(channel, result);
+//   } else {
+//     event.sender.send('load-data-failured', 'Empty Data');
+//   }
+// };
 
 const createWindow = async () => {
   if (isDebug) {
@@ -129,12 +218,13 @@ const createWindow = async () => {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
+      nodeIntegration: true,
     },
     /** TODO: when release, remove comment */
     // resizable: false,
   });
 
-  mainWindow.loadURL(Util.resolveHtmlPath('index.html'));
+  mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -160,10 +250,8 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  const db = await Util.createDb();
-  await Util.initDbTable(db);
-  _loadDefaultConfig();
-  // Util.testDb(db);
+  // const database = await Db.createDb();
+  // await Db.initDbTable(database);
 
   /**
    * ipcMain event
@@ -174,102 +262,102 @@ const createWindow = async () => {
     event.reply('ipc', msgTemplate('pong'));
   });
 
-  ipcMain.on('show-open-sql', (event) => {
-    const options: OpenDialogSyncOptions = {
-      title: 'Open a file or folder',
-      defaultPath: '',
-      buttonLabel: 'Open',
-      filters: [{ name: 'sql', extensions: ['sql'] }],
-    };
+  // ipcMain.on('show-open-sql', (event) => {
+  //   const options: OpenDialogSyncOptions = {
+  //     title: 'Open a file or folder',
+  //     defaultPath: '',
+  //     buttonLabel: 'Open',
+  //     filters: [{ name: 'sql', extensions: ['sql'] }],
+  //   };
 
-    if (STORE.get('loadFilePath')) {
-      const defaultPath = STORE.get('loadFilePath') as string;
-      options.defaultPath = defaultPath;
-    }
+  //   if (STORE.get('loadFilePath')) {
+  //     const defaultPath = STORE.get('loadFilePath') as string;
+  //     options.defaultPath = defaultPath;
+  //   }
 
-    const filePaths = dialog.showOpenDialogSync(options);
+  //   const filePaths = dialog.showOpenDialogSync(options);
 
-    if (filePaths !== undefined && filePaths.length > 0) {
-      STORE.set('loadFilePath', filePaths[0]);
-      const result = Util.loadFromSql(db, filePaths[0]);
-      _loadData(db, 'sql-file-selected', event, result);
-    } else {
-      // event.sender.send('sql-file-canceled', 'File open canceled');
-    }
-  });
+  //   if (filePaths !== undefined && filePaths.length > 0) {
+  //     STORE.set('loadFilePath', filePaths[0]);
+  //     const result = Db.loadFromSql(fs, database, filePaths[0]);
+  //     _loadData(database, 'sql-file-selected', event, result);
+  //   } else {
+  //     // event.sender.send('sql-file-canceled', 'File open canceled');
+  //   }
+  // });
 
-  ipcMain.on('show-save-sql', (event) => {
-    const options = {
-      title: 'Save Database File',
-      buttonLabel: 'Save',
-      filters: [{ name: 'sql', extensions: ['sql'] }],
-    };
+  // ipcMain.on('show-save-sql', (event) => {
+  //   const options = {
+  //     title: 'Save Database File',
+  //     buttonLabel: 'Save',
+  //     filters: [{ name: 'sql', extensions: ['sql'] }],
+  //   };
 
-    const filePath = dialog.showSaveDialogSync(options);
+  //   const filePath = dialog.showSaveDialogSync(options);
 
-    if (filePath) {
-      const result = Util.findAll(db);
+  //   if (filePath) {
+  //     const result = Db.findAll(database);
 
-      if (result && result.length > 0) {
-        const sqlstr = Util.generateInsertQueryFromSelect(result);
-        const saved = Util.saveFile(filePath, sqlstr);
-        if (saved) {
-          event.sender.send('save-file-completed', 'File save completed');
-        } else {
-          event.sender.send('save-file-failured', 'File save Error');
-        }
-      } else {
-        dialog.showMessageBox({
-          message: 'No Data Found!',
-          buttons: ['OK'],
-        });
-      }
-    } else {
-      log.log('No file selected.');
-      // event.sender.send('no-file-selected', 'File open canceled');
-    }
-  });
+  //     if (result && result.length > 0) {
+  //       const sqlstr = Db.generateInsertQueryFromSelect(result);
+  //       const saved = Db.saveFile(fs, filePath, sqlstr);
+  //       if (saved) {
+  //         event.sender.send('save-file-completed', 'File save completed');
+  //       } else {
+  //         event.sender.send('save-file-failured', 'File save Error');
+  //       }
+  //     } else {
+  //       dialog.showMessageBox({
+  //         message: 'No Data Found!',
+  //         buttons: ['OK'],
+  //       });
+  //     }
+  //   } else {
+  //     log.log('No file selected.');
+  //     // event.sender.send('no-file-selected', 'File open canceled');
+  //   }
+  // });
 
-  ipcMain.on('next-page', (event) => {
-    const PAGE_COUNT = 15;
-    const rowCount = Number(STORE.get('rowCount'));
-    const currentPage = Number(STORE.get('currentPage'));
-    const offset = currentPage * PAGE_COUNT;
+  // ipcMain.on('next-page', (event) => {
+  //   const PAGE_COUNT = 15;
+  //   const rowCount = Number(STORE.get('rowCount'));
+  //   const currentPage = Number(STORE.get('currentPage'));
+  //   const offset = currentPage * PAGE_COUNT;
 
-    if (rowCount > offset) {
-      const result = Util.findByRegDate(db, offset.toString());
-      if (result && result.length > 0) {
-        event.sender.send('load-more-data', result);
-        STORE.set('currentPage', currentPage + 1);
-      } else {
-        log.log('No more data(1)');
-        event.sender.send('no-more-data', 'No more data(1)');
-      }
-    } else {
-      log.log('No more data(2)');
-      event.sender.send('no-more-data', 'No more data(2)');
-    }
-  });
+  //   if (rowCount > offset) {
+  //     const result = Db.findByRegDate(database, offset.toString());
+  //     if (result && result.length > 0) {
+  //       event.sender.send('load-more-data', result);
+  //       STORE.set('currentPage', currentPage + 1);
+  //     } else {
+  //       log.log('No more data(1)');
+  //       event.sender.send('no-more-data', 'No more data(1)');
+  //     }
+  //   } else {
+  //     log.log('No more data(2)');
+  //     event.sender.send('no-more-data', 'No more data(2)');
+  //   }
+  // });
 
-  ipcMain.on('graph-data', (event) => {
-    const result = Util.getGraphData(db);
-    log.log(result);
-    if (result && result.length > 0) {
-      event.sender.send('graph-data-result', result);
-    } else {
-      event.sender.send('load-data-failured', 'Empty Data');
-    }
-  });
+  // ipcMain.on('graph-data', (event) => {
+  //   const result = Db.getGraphData(database);
+  //   log.log(result);
+  //   if (result && result.length > 0) {
+  //     event.sender.send('graph-data-result', result);
+  //   } else {
+  //     event.sender.send('load-data-failured', 'Empty Data');
+  //   }
+  // });
 
-  ipcMain.on('delete-data', (event, arg) => {
-    const result = Util.deleteData(db, arg);
-    _loadData(db, 'reload-data', event, result);
-  });
+  // ipcMain.on('delete-data', (event, arg) => {
+  //   const result = Db.deleteData(database, arg);
+  //   _loadData(database, 'reload-data', event, result);
+  // });
 
-  ipcMain.on('update-user-name', (event, arg) => {
-    const result = Util.updateUserName(db, arg);
-    _loadData(db, 'update-user-name', event, result);
-  });
+  // ipcMain.on('update-user-name', (event, arg) => {
+  //   const result = Db.updateUserName(database, arg);
+  //   _loadData(database, 'update-user-name', event, result);
+  // });
 
   ipcMain.on('electron-store-get', async (event, val) => {
     event.returnValue = STORE.get(val);
@@ -279,18 +367,27 @@ const createWindow = async () => {
     STORE.set(key, val);
   });
 
-  const printOptions = {
-    silent: false,
-    printBackground: true,
-    color: true,
-    margin: {
-      marginType: 'printableArea',
-    },
-    landscape: false,
-    pagesPerSheet: 1,
-    collate: false,
-    copies: 1,
-  };
+  ipcMain.on('electron-store-get-obj', async (event, obj) => {
+    event.returnValue = STORE.get(obj);
+  });
+
+  ipcMain.on('electron-store-set-obj', async (event, obj) => {
+    STORE.set(obj);
+  });
+
+  ipcMain.on('electron-store-clear', async (event, obj) => {
+    STORE.clear();
+  });
+
+  ipcMain.on(License.validateLicenseRequest, (event, _args) => {
+    const result = validateLicense({
+      root: process.cwd(),
+      version: app.getVersion(),
+    });
+    console.log('result', result);
+
+    event.sender.send(License.validateLicenseResponse, result);
+  });
 
   // Remove this if your app does not use auto updates
   // new AppUpdater();
@@ -304,6 +401,8 @@ app.on('window-all-closed', () => {
   // after all windows have been closed
   if (process.platform !== 'darwin') {
     app.quit();
+  } else {
+    License.clearMainBindings(ipcMain);
   }
 });
 

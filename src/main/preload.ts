@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import * as License from './modules/license';
 
 const electronHandler = {
   ipcRenderer: {
@@ -33,11 +34,21 @@ const electronHandler = {
     get(key: string) {
       return ipcRenderer.sendSync('electron-store-get', key);
     },
-    set(property: string, val: any) {
-      ipcRenderer.send('electron-store-set', property, val);
+    set(key: string, val: any) {
+      ipcRenderer.send('electron-store-set', key, val);
+    },
+    getObj(key: string) {
+      return ipcRenderer.sendSync('electron-store-get-obj', key);
+    },
+    setObj(obj: object) {
+      ipcRenderer.send('electron-store-set-obj', obj);
+    },
+    clear() {
+      ipcRenderer.send('electron-store-clear');
     },
     // Other method you want to add like has(), reset(), etc.
   },
+  licenseKeys: License.preloadBindings(ipcRenderer),
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);

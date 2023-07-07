@@ -1,23 +1,11 @@
-import { URL } from 'url';
-import path from 'path';
-import fs from 'fs';
-
 import log from 'electron-log';
 
 import type { Database, QueryExecResult } from 'sql.js';
-import { getAssetPath } from './main';
+import { getAssetPath } from '../../main';
 
 const initSqlJs = require('sql.js');
 
 const tbName = 'test_din_history';
-
-export type ConfigSchemaType = {
-  soundInterval?: number;
-};
-
-export const defaultConfig: ConfigSchemaType = {
-  soundInterval: 3,
-};
 
 export interface ColumnType {
   id: number;
@@ -55,17 +43,6 @@ export const ColumnName = {
   test_date: 'test_date',
   test_result: 'test_result',
   reg_timestamp: 'reg_timestamp',
-};
-
-export const resolveHtmlPath = (htmlFileName: string) => {
-  if (process.env.NODE_ENV === 'development') {
-    const port = process.env.PORT || 1212;
-    const url = new URL(`http://localhost:${port}`);
-    url.pathname = htmlFileName;
-    return url.href;
-  }
-
-  return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
 };
 
 const _rowsFromSqlDataArray = (queryExecResult: QueryExecResult) => {
@@ -107,7 +84,7 @@ const _checkRegexSql = (queryText: string) => {
 };
 
 // NOT USED
-export const writeDb = (db: Database) => {
+export const writeDb = (fs: typeof import('fs'), db: Database) => {
   const data = db.export();
   fs.writeFileSync(getAssetPath('/db/test-din.db'), Buffer.from(data));
 };
@@ -127,7 +104,7 @@ export const createDb = async (): Promise<any> => {
   //   });
 };
 
-export const initDbTable = async (db: Database) => {
+export const initDbTable = async (fs: typeof import('fs'), db: Database) => {
   const sqlstr = fs.readFileSync(getAssetPath('/db/schema.sql'), 'utf8');
   db.run(sqlstr);
 };
@@ -157,12 +134,16 @@ export const findByRegDate = (db: Database, offset?: string) => {
   return _resultData(res);
 };
 
-export const loadFromSql = (db: Database, filePath: string) => {
+export const loadFromSql = (
+  fs: typeof import('fs'),
+  db: Database,
+  filePath: string
+) => {
   const sqlstr = fs.readFileSync(filePath, 'utf8');
 
   if (_checkRegexSql(sqlstr)) {
     log.info('check regex OK');
-    initDbTable(db);
+    initDbTable(fs, db);
     db.run(sqlstr);
     return findByRegDate(db);
   }
@@ -262,11 +243,15 @@ export const generateInsertQueryFromSelect = (
   return insertQuery;
 };
 
-export const isExistFile = (filePath: string) => {
+export const isExistFile = (fs: typeof import('fs'), filePath: string) => {
   return fs.existsSync(filePath);
 };
 
-export const saveFile = (filePath: string, queryText: string) => {
+export const saveFile = (
+  fs: typeof import('fs'),
+  filePath: string,
+  queryText: string
+) => {
   try {
     fs.writeFileSync(filePath, queryText, 'utf8');
     log.log('File saved:', filePath);
