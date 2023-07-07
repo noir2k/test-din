@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client';
-import log from 'electron-log/renderer';
 
 import { alertCustom } from '@lib/common';
 
@@ -24,4 +23,4 @@ window.electron.ipcRenderer.on('save-file-failured', (message) => {
   alertCustom({ message: message as string });
 });
 
-log.info('Log from the renderer process');
+console.info('Log from the renderer process');

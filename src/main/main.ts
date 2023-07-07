@@ -81,7 +81,6 @@ const isDebug =
 
 if (isDebug) {
   require('electron-debug')();
-  log.initialize({ preload: true });
 }
 
 // log.log(app.getPath('userData'));

@@ -10,7 +10,7 @@ const PreCheckSnb = () => {
     <div className="right-snb-wrapper">
       <div className="right-snb-title">
         <img src={iconSpeakerWhite} alt="white speaker icon" />
-        <p>검사 테스트</p>
+        <p>연습 및 MCL 확인</p>
       </div>
       <div className="right-snb-text">
         <p>

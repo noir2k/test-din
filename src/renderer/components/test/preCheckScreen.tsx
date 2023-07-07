@@ -27,9 +27,7 @@ const PreCheckScreen = () => {
   const [btnText, setBtnText] = useState('테스트시작');
   const [isBtnDisable, setBtnDisable] = useState(false);
 
-  const { volume, delay } = useAppSelector(
-    (state: RootState) => state.testProgress
-  );
+  const { volume } = useAppSelector((state: RootState) => state.testProgress);
 
   const dispatch = useAppDispatch();
 
@@ -48,20 +46,20 @@ const PreCheckScreen = () => {
   useEffect(() => {
     if (hooks.isTestComplete) {
       alertCustom({
-        title: '검사 완료',
-        message: `사전 테스트가 완료되었습니다.
-테스트완료 버튼을 클릭하여 본 테스트로 진행하세요.`,
+        title: '연습 완료',
+        message: `사전 연습이 완료되었습니다.
+연습완료 버튼을 클릭하여 본 테스트로 진행하세요.`,
         // callback: () => dispatch(nextPage())
       });
     }
     if (hooks.isTestStart && !hooks.isTestComplete) {
-      setBtnText('테스트진행중');
+      setBtnText('연습진행중');
       setBtnDisable(true);
     } else if (hooks.isTestStart && hooks.isTestComplete) {
       setBtnText('다시시작');
       setBtnDisable(false);
     } else if (!hooks.isTestStart && !hooks.isTestComplete) {
-      setBtnText('테스트시작');
+      setBtnText('연습시작');
       setBtnDisable(false);
     }
   }, [hooks.isTestStart, hooks.isTestComplete]);
@@ -82,9 +80,7 @@ const PreCheckScreen = () => {
   return (
     <>
       <RightSnb />
-      {play && (
-        <PlaySound mp3={soundFile} volume={sliderVolume} delay={delay} />
-      )}
+      {play && <PlaySound mp3={soundFile} volume={sliderVolume} />}
       <div className="pre-check-form-title">
         <p>
           이제 <span className="blue">3개의 연속된 숫자</span>가 들리게 됩니다.
@@ -150,7 +146,7 @@ const PreCheckScreen = () => {
             dispatch(nextPage());
           }}
         >
-          테스트건너뛰기
+          연습건너뛰기
         </button>
         <button
           className={
@@ -165,7 +161,7 @@ const PreCheckScreen = () => {
             dispatch(nextPage());
           }}
         >
-          테스트완료
+          연습완료
         </button>
       </div>
     </>
