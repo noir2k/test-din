@@ -211,16 +211,6 @@ function CheckScreen() {
         >
           중단
         </button>
-        {/* <button
-          className={hooks.isTestComplete
-            ? "test-complete-btn active-btn"
-            : "test-complete-btn"}
-          type="button"
-          disabled={!hooks.isTestComplete}
-          onClick={() => dispatch(nextPage())}
-        >
-          완료
-        </button> */}
       </div>
     </>
   );

@@ -43,7 +43,6 @@ const MainPage = () => {
     // dispatch(setTestResult(temp.data));
 
     if (!isEmpty(temp) && !isEmpty(temp.user) && !isEmpty(temp.data)) {
-      console.log('loadData :: temp');
       confirmCustom({
         title: '임시 정보 불러오기',
         message: `프로그램 종료전 진행하던 테스트가 있습니다.

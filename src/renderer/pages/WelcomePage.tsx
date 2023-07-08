@@ -144,7 +144,6 @@ export default function Welcome() {
   };
 
   useEffect(() => {
-    console.log('react-route');
     window.electron.ipcRenderer.sendMessage('react-route', ['WelcomePage']);
   }, []);
 
