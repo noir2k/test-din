@@ -9,6 +9,7 @@ module.exports = {
     'global-require': 'off',
     'no-console': 'off',
     'no-plusplus': 'off',
+    'no-lonely-if': 'off',
     'no-undef': 'off',
     'no-unused-vars': 'off',
     'no-unused-expressions': 'off',

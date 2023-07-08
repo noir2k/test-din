@@ -9,7 +9,6 @@ import CSVReader from 'react-csv-reader';
 
 import {
   HomeIcon,
-  Cog6ToothIcon,
   InboxIcon,
   PrinterIcon,
   PencilSquareIcon,

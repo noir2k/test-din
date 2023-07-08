@@ -3,7 +3,7 @@ import * as License from './modules/license';
 
 const electronHandler = {
   ipcRenderer: {
-    sendMessage(channel: string, args: any[]) {
+    sendMessage(channel: string, args?: any[]) {
       ipcRenderer.send(channel, args);
     },
     on(channel: string, func: (...args: any[]) => void) {
@@ -17,7 +17,7 @@ const electronHandler = {
     once(channel: string, func: (...args: any[]) => void) {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
     },
-    async invoke(channel: string, args: any[]) {
+    async invoke(channel: string, args?: any[]) {
       return await ipcRenderer.invoke(channel, args);
     },
     removeListener(channel: string, func: (...args: any[]) => void) {

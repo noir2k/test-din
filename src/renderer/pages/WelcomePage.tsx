@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Link } from 'react-router-dom';
+
 import smLogo from '@assets/images/logo/main_sm_logo.png';
 import lgLogo from '@assets/images/logo/main_lg_logo.png';
 
@@ -141,6 +142,11 @@ export default function Welcome() {
   const handleReload = () => {
     window.location.reload();
   };
+
+  useEffect(() => {
+    console.log('react-route');
+    window.electron.ipcRenderer.sendMessage('react-route', ['WelcomePage']);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
