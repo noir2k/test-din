@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import smLogo from '@assets/images/logo/main_sm_logo.png';
 import lgLogo from '@assets/images/logo/main_lg_logo.png';
-import { useState } from 'react';
 
 function Alert() {
   return (
@@ -19,6 +20,11 @@ function Alert() {
 export default function Welcome() {
   // licenseStatus === 1 → 라이센스 확인 완료
   const [licenseStatus, setLicenseStatus] = useState(0);
+
+  useEffect(() => {
+    console.log('react-route');
+    window.electron.ipcRenderer.sendMessage('react-route', ['WelcomePage']);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">

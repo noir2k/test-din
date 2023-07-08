@@ -147,17 +147,31 @@ const createWindow = async () => {
   });
 
   mainWindow.on('close', (event: Electron.Event) => {
-    // const response = dialog.showMessageBoxSync(mainWindow!, {
-    //   type: 'question',
-    //   buttons: ['종료', '취소'],
-    //   defaultId: 1,
-    //   cancelId: 1,
-    //   title: '아이해브 청력테스트 Pro',
-    //   message: '프로그램을 종료하시겠습니까?',
-    // });
+    const response = dialog.showMessageBoxSync(mainWindow!, {
+      type: 'question',
+      buttons: ['종료', '취소'],
+      defaultId: 1,
+      cancelId: 1,
+      title: '아이해브 청력테스트 Pro',
+      message: '프로그램을 종료하시겠습니까?',
+    });
 
-    // if (response === 1) event.preventDefault();
-    // else mainWindow = null;
+    if (response === 1) {
+      event.preventDefault();
+    } else {
+      if (STORE.get('react-route') === 'MainPage') {
+        if (mainWindow) {
+          mainWindow.webContents.send('app-close');
+        } else {
+          mainWindow = null;
+        }
+      } else {
+        mainWindow = null;
+      }
+    }
+  });
+
+  mainWindow.on('closed', (event: Electron.Event) => {
     mainWindow = null;
   });
 
@@ -281,26 +295,22 @@ const createWindow = async () => {
     _loadData(db, 'update-user-name', event, result);
   });
 
-  ipcMain.on('electron-store-get', async (event, val) => {
-    event.returnValue = STORE.get(val);
+  ipcMain.on('react-route', async (_, arg) => {
+    STORE.set('react-route', arg[0]);
   });
 
-  ipcMain.on('electron-store-set', async (event, key, val) => {
-    STORE.set(key, val);
+  ipcMain.handle('set:temp', async (_, arg) => {
+    STORE.set('temp', arg[0]);
   });
 
-  const printOptions = {
-    silent: false,
-    printBackground: true,
-    color: true,
-    margin: {
-      marginType: 'printableArea',
-    },
-    landscape: false,
-    pagesPerSheet: 1,
-    collate: false,
-    copies: 1,
-  };
+  ipcMain.handle('get:temp', async (_, arg) => {
+    const temp = STORE.get('temp');
+    return temp;
+  });
+
+  ipcMain.on('electron-store-clear', async (_) => {
+    STORE.clear();
+  });
 
   // Remove this if your app does not use auto updates
   // new AppUpdater();
@@ -309,12 +319,6 @@ const createWindow = async () => {
 /**
  * Add event listeners...
  */
-app.on('before-quit', (e: Electron.Event) => {
-  log.log('before-quit');
-  log.log(e);
-  // e.preventDefault();
-});
-
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed

@@ -15,7 +15,7 @@ import './App.css';
 // import '@assets/fonts/woff/LINESeedKR-Bd.woff';
 // import '@assets/fonts/woff/LINESeedKR-Rg.woff';
 
-import Welcome from './pages/WelcomePage';
+import WelcomePage from './pages/WelcomePage';
 import MainPage from './pages/MainPage';
 
 export default function App() {
@@ -23,7 +23,7 @@ export default function App() {
     <Router>
       <Provider store={store}>
         <Routes>
-          <Route path="/" element={<Welcome />} />
+          <Route path="/" element={<WelcomePage />} />
           <Route path="/main-page" element={<MainPage />} />
         </Routes>
       </Provider>

@@ -20,6 +20,7 @@ const TestComplete = () => {
     {} as TestForm
   );
 
+  const userData = useAppSelector((state: RootState) => state.userData);
   const testForm = useAppSelector((state: RootState) => state.testForm);
   const testResult = useAppSelector((state: RootState) => state.testResult);
 
@@ -44,6 +45,15 @@ const TestComplete = () => {
   useEffect(() => {
     setTestFormResult(testForm);
   }, []);
+
+  useEffect(() => {
+    window.electron.ipcRenderer.invoke('set:temp', [
+      {
+        user: userData,
+        data: testResult.data,
+      },
+    ]);
+  }, [testResult.data.length]);
 
   return (
     <>
