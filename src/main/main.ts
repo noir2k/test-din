@@ -99,7 +99,6 @@ const isDebug =
 
 if (isDebug) {
   require('electron-debug')();
-  log.initialize({ preload: true });
 }
 
 // log.log(app.getPath('userData'));
@@ -237,7 +236,18 @@ const createWindow = async () => {
     }
   });
 
-  mainWindow.on('closed', () => {
+  mainWindow.on('close', (event: Electron.Event) => {
+    // const response = dialog.showMessageBoxSync(mainWindow!, {
+    //   type: 'question',
+    //   buttons: ['종료', '취소'],
+    //   defaultId: 1,
+    //   cancelId: 1,
+    //   title: '아이해브 청력테스트 Pro',
+    //   message: '프로그램을 종료하시겠습니까?',
+    // });
+
+    // if (response === 1) event.preventDefault();
+    // else mainWindow = null;
     mainWindow = null;
   });
 
@@ -396,6 +406,12 @@ const createWindow = async () => {
 /**
  * Add event listeners...
  */
+app.on('before-quit', (e: Electron.Event) => {
+  log.log('before-quit');
+  log.log(e);
+  // e.preventDefault();
+});
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed

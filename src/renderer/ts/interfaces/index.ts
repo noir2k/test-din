@@ -27,7 +27,7 @@ export interface TestForm {
   scoring: string;
   memo: string;
   sound_set: number;
-  test_date: string;
+  test_datetime: string;
   test_result: number;
   reg_timestamp?: string;
 }

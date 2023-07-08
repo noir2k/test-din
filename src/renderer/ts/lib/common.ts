@@ -1,6 +1,7 @@
 import { TestForm } from '@interfaces';
 
 import Swal from 'sweetalert2';
+import dayjs from 'dayjs';
 
 export const ColumnName = {
   id: 'id',
@@ -17,13 +18,14 @@ export const ColumnName = {
   scoring: 'scoring',
   memo: 'memo',
   sound_set: 'sound_set',
-  test_date: 'test_date',
+  test_datetime: 'test_datetime',
   test_result: 'test_result',
   reg_timestamp: 'reg_timestamp',
 };
 
 export const ColumnNameHeader = [
   { label: 'INDEX', key: ColumnName.id },
+  { label: '시험일시', key: ColumnName.test_datetime },
   { label: '환자명', key: ColumnName.user_name },
   { label: '성별', key: ColumnName.gender },
   { label: '생일', key: ColumnName.birthday },
@@ -37,7 +39,6 @@ export const ColumnNameHeader = [
   { label: '채점방식', key: ColumnName.scoring },
   { label: '노트', key: ColumnName.memo },
   { label: '검사목록', key: ColumnName.sound_set },
-  { label: '시험날짜', key: ColumnName.test_date },
   { label: '시험결과(DIN-SRT/db SNR)', key: ColumnName.test_result },
   { label: 'timestamp', key: ColumnName.reg_timestamp },
 ];
@@ -103,9 +104,9 @@ export const formToColumn = (payload: TestForm, lastId: number) => {
     volume_level: payload.volume_level,
     memo: payload.memo,
     sound_set: payload.sound_set,
-    test_date: payload.test_date,
+    test_datetime: payload.test_datetime,
     test_result: payload.test_result,
-    reg_timestamp: new Date().getTime(),
+    reg_timestamp: dayjs(payload.test_datetime).unix(),
   };
 };
 

@@ -5,12 +5,11 @@ import { Howl, HowlErrorCallback } from 'howler';
 export type PlayProps = {
   mp3: string;
   volume: number;
-  delay: number;
   onEnd?: () => void | undefined;
 };
 
 const PlaySound = (props: PlayProps) => {
-  const { mp3, volume, delay, onEnd } = props;
+  const { mp3, volume, onEnd } = props;
   const vol = volume / 100;
   const option = {
     volume: vol,
@@ -32,10 +31,6 @@ const PlaySound = (props: PlayProps) => {
     const howl = new Howl(option);
     console.log('PLAY_BEFORE');
     howl.play();
-    // setTimeout(() => {
-    //   console.log('PLAY_DELAYED', howl);
-    //   howl.play();
-    // }, delay * 1000);
 
     return () => {
       console.log('PLAY_STOP');

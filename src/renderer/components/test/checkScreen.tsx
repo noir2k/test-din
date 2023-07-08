@@ -25,7 +25,7 @@ import { alertCustom, confirmCustom } from '@lib/common';
 
 import iconSpeaker from '@assets/images/icons/icon_speaker.png';
 
-const maxCount = 30;
+const maxCount = 6;
 const minVolumeLevel = -18;
 const maxVolumeLevel = 12;
 
@@ -36,9 +36,7 @@ function CheckScreen() {
   const [soundFile, setSoundFile] = useState('');
   const [testTitle, setTestTitle] = useState('테스트 진행중');
 
-  const { volume, delay } = useAppSelector(
-    (state: RootState) => state.testProgress
-  );
+  const { volume } = useAppSelector((state: RootState) => state.testProgress);
   const testForm = useAppSelector((state: RootState) => state.testForm);
   const scoreData = useAppSelector((state: RootState) => state.scoreData);
 
@@ -165,7 +163,6 @@ function CheckScreen() {
         <PlaySound
           mp3={soundFile}
           volume={volume}
-          delay={delay}
           onEnd={() => setPlay(false)}
         />
       )}

@@ -10,7 +10,7 @@ const PreCheckSnb = () => {
     <div className="right-snb-wrapper">
       <div className="right-snb-title">
         <img src={iconSpeakerWhite} alt="white speaker icon" />
-        <p>검사 테스트</p>
+        <p>연습 및 MCL 확인</p>
       </div>
       <div className="right-snb-text">
         <p>
@@ -39,7 +39,7 @@ const CheckSnb = () => {
         <p>검사 사운드 세트: {_soundSet}</p>
         <p>사운드 제시 방향: {_direction}</p>
         <p>채점 방식: {_scoring}</p>
-        {testForm.test_date && <p>날짜 : {testForm.test_date}</p>}
+        {testForm.test_datetime && <p>날짜 : {testForm.test_datetime}</p>}
         {testForm.test_result && <p>점수 : {testForm.test_result}</p>}
       </div>
     </div>

@@ -4,7 +4,6 @@ const initialState = {
   currentPage: 0,
   lastPage: 4,
   volume: 50,
-  delay: 0,
 };
 
 const testProgressSlice = createSlice({
@@ -24,14 +23,11 @@ const testProgressSlice = createSlice({
     setVolume: (state, action) => {
       state.volume = action.payload;
     },
-    setDelay: (state, action) => {
-      state.delay = action.payload;
-    },
     resetProgress: () => initialState,
   },
 });
 
-export const { nextPage, prevPage, setVolume, setDelay, resetProgress } =
+export const { nextPage, prevPage, setVolume, resetProgress } =
   testProgressSlice.actions;
 
 export default testProgressSlice.reducer;
