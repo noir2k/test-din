@@ -22,7 +22,6 @@ export default function Welcome() {
   const [licenseStatus, setLicenseStatus] = useState(0);
 
   useEffect(() => {
-    console.log('react-route');
     window.electron.ipcRenderer.sendMessage('react-route', ['WelcomePage']);
   }, []);
 

@@ -1,4 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
+import {
+  // useEffect,
+  useState,
+  useRef,
+} from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
 
 import type { RootState } from '@store/index';
@@ -16,14 +20,14 @@ import {
   UserPlusIcon,
 } from '@heroicons/react/24/outline';
 
-import useInfiniteScroll from '@hook/useInfiniteScroll';
+// import useInfiniteScroll from '@hook/useInfiniteScroll';
 import ExamineeCard from '@components/main/examineeCard';
 import { resetForm } from '@store/slices/testFormProvider';
 import { resetProgress } from '@store/slices/testProgressProvider';
 
 import {
   setTestResult,
-  setMergeResult,
+  // setMergeResult,
   resetTestResult,
 } from '@store/slices/testResultProvider';
 
@@ -251,7 +255,7 @@ const snb = () => {
                 ref={importCsvRef}
                 cssClass="csv-reader-input"
                 onFileLoaded={handleFileLoad}
-                // onError={this.handleDarkSideForce}
+                // onError={}
                 parserOptions={papaparseOptions}
               />
             </div>

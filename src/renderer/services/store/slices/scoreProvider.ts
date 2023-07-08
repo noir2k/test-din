@@ -39,6 +39,7 @@ const shuffleIndex = (maxCount: number) => {
     arr.push(i);
   }
 
+  // for Shuffle Test
   // arr.sort(() => Math.random() - 0.5);
   // console.log("shuffleIndex", arr);
   return arr;

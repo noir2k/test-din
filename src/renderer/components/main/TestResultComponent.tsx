@@ -8,8 +8,6 @@ import { setReplaceResult } from '@store/slices/testResultProvider';
 
 import { setDimPopup } from '@store/slices/navigateProvicer';
 
-import { XMarkIcon } from '@heroicons/react/24/outline';
-
 import isEmpty from 'lodash.isempty';
 
 import { TestForm } from '@interfaces';
