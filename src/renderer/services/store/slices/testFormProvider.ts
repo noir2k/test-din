@@ -1,4 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+
+import dayjs from 'dayjs';
+
 import { TestForm } from '@interfaces';
 
 import type { ScoreItemType } from './scoreProvider';
@@ -29,10 +32,10 @@ const testFormSlice = createSlice({
       Object.assign(state, action.payload);
     },
     setTestResult: (state, action) => {
-      const testDate = new Date().toISOString().split('T')[0];
+      const testDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
       const res = calculateResult(action.payload);
 
-      state.test_date = testDate;
+      state.test_datetime = testDate;
       state.test_result = res;
     },
     resetForm: () => initialState,

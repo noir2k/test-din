@@ -20,7 +20,6 @@ const TestComplete = () => {
     {} as TestForm
   );
 
-  const userData = useAppSelector((state: RootState) => state.userData);
   const testForm = useAppSelector((state: RootState) => state.testForm);
   const testResult = useAppSelector((state: RootState) => state.testResult);
 

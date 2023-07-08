@@ -3,8 +3,8 @@ import { useAppSelector } from '@hook/index';
 
 import type { RootState } from '@store/index';
 
+import dayjs from 'dayjs';
 import { useReactToPrint } from 'react-to-print';
-
 import { CSVLink } from 'react-csv';
 import Html2Pdf from 'js-html2pdf';
 import hash from 'object-hash';
@@ -64,7 +64,6 @@ interface PropsType {
   maxCount: number;
 }
 
-const TIME_ZONE = 9 * 60 * 60 * 1000;
 const PAGE_BREAK = 6;
 
 const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
@@ -76,7 +75,7 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
     scoring,
     test_result,
     memo,
-    reg_timestamp,
+    test_datetime,
   } = item;
 
   const [estimate, setEstimate] = useState('');
@@ -100,11 +99,6 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
   if (isPageBreak) {
     sessionItemClass += ' lastItem';
   }
-  const date = new Date(Number(reg_timestamp));
-  const testDate = new Date(date.getTime() + TIME_ZONE)
-    .toISOString()
-    .replace('T', ' ')
-    .slice(0, -5);
 
   useEffect(() => {
     setEstimate(findEst(test_result));
@@ -163,7 +157,7 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
           </div>
         )}
         <div className="col-span-10 time-td">
-          <span>{testDate}</span>
+          <span>{test_datetime}</span>
         </div>
       </div>
       {isPageBreak && <div className="html2pdf__page-break" />}
@@ -177,8 +171,8 @@ const TestSession = () => {
   const userData = useAppSelector((state: RootState) => state.userData);
   const testResult = useAppSelector((state: RootState) => state.testResult);
   const { data } = testResult;
-
-  const fileName = `${userData.user_name}(${userData.patient_no})`;
+  const datetime = dayjs(data[0].test_datetime).format('YYYYMMDD_HHmmss');
+  const fileName = `${datetime}_${userData.user_name}(${userData.patient_no})`;
 
   const handlePrintPDF = useReactToPrint({
     content: () => componentRef.current,
@@ -202,7 +196,7 @@ const TestSession = () => {
           pagebreak: {
             mode: ['avoid-all', 'css', 'legacy'],
           },
-          filename: `${fileName}_din_test.pdf`,
+          filename: `${fileName}.pdf`,
           image: { type: 'jpeg', quality: 0.95 },
           html2canvas: {
             scale: 4, // for PDF resolution
@@ -271,7 +265,7 @@ const TestSession = () => {
           <CSVLink
             data={testResult.data}
             headers={ColumnNameHeader}
-            filename={`${fileName}_din_test.csv`}
+            filename={`${fileName}.csv`}
           >
             CSV 저장
           </CSVLink>

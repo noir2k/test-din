@@ -33,7 +33,7 @@ export interface ColumnType {
   scoring: string;
   memo: string;
   sound_set: number;
-  test_date: string;
+  test_datetime: string;
   test_result: number;
   reg_timestamp: number;
 }
@@ -52,7 +52,7 @@ export const ColumnName = {
   scoring: 'scoring',
   memo: 'memo',
   sound_set: 'sound_set',
-  test_date: 'test_date',
+  test_datetime: 'test_datetime',
   test_result: 'test_result',
   reg_timestamp: 'reg_timestamp',
 };
@@ -175,7 +175,7 @@ export const getGraphData = (db: Database) => {
     ${ColumnName.id},
     ${ColumnName.direction},
     ${ColumnName.scoring},
-    ${ColumnName.test_date},
+    ${ColumnName.test_datetime},
     ${ColumnName.test_result},
     ${ColumnName.reg_timestamp}
   FROM ${tbName} ORDER BY ${ColumnName.reg_timestamp} DESC LIMIT 6`;
@@ -197,7 +197,7 @@ export const insertData = (db: Database, data: ColumnType) => {
     ${ColumnName.scoring},
     ${ColumnName.memo},
     ${ColumnName.sound_set},
-    ${ColumnName.test_date},
+    ${ColumnName.test_datetime},
     ${ColumnName.test_result},
     ${ColumnName.reg_timestamp}
     ) VALUES (
@@ -211,7 +211,7 @@ export const insertData = (db: Database, data: ColumnType) => {
     ${data.scoring},
     ${data.memo},
     ${data.sound_set},
-    ${data.test_date},
+    ${data.test_datetime},
     ${data.test_result},
     ${data.reg_timestamp}
     );\n`;

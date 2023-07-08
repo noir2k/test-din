@@ -317,8 +317,8 @@ const ExamineeInfoForm = () => {
               <option value="-6">-6(정상 청력 권장 레벨)</option>
               <option value="-4">-4(경도 권장 레벨)</option>
               <option value="-2">-2</option>
-              <option value="0">0(중도, 중고도 권장 레벨)</option>
-              <option value="2">+2(고도 이상 권장 레벨)</option>
+              <option value="0">0(중도 권장 레벨)</option>
+              <option value="2">+2(중고도 권장 레벨)</option>
               <option value="4">+4</option>
               <option value="6">+6</option>
               <option value="8">+8</option>
@@ -336,7 +336,7 @@ const ExamineeInfoForm = () => {
             </label>
             <select
               id={ColumnName.scoring}
-              defaultValue="digit"
+              defaultValue="triplet"
               className="info-input-item-input"
               {...register(`${ColumnName.scoring}`)}
             >

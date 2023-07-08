@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS "test_din_history" (
 	"scoring"	TEXT NOT NULL,
 	"memo" TEXT,
 	"sound_set"	INTEGER NOT NULL,
-	"test_date"	TEXT,
+	"test_datetime"	TEXT,
 	"test_result"	REAL,
 	"reg_timestamp"	INTEGER NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)

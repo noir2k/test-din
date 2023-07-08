@@ -100,7 +100,7 @@ const TestResult = ({ data, setData }: PropsType) => {
           <div className="flex-row flex-wrap leading-8">
             <div>
               <span className="font-bold">Test Date:</span>&nbsp;{' '}
-              {result.test_date}
+              {result.test_datetime}
             </div>
             <div>
               <span className="font-bold">Tested by:</span>&nbsp;{' '}

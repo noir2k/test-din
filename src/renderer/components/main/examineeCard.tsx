@@ -46,7 +46,7 @@ function ExamineeCard({ item, index }: PropType) {
           {/* {item.fixed_type} */}
           {item.direction}({item.receiver}){' '}
         </p>
-        <p>{item.test_date}</p>
+        <p>{item.test_datetime}</p>
       </div>
       <div className="delete-btn-wrapper">
         <button
