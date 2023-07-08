@@ -14,6 +14,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     'no-underscore-dangle': 'off',
     'no-prototype-builtins': 'off',
+    'no-return-await': 'off',
     'no-restricted-syntax': 'off',
     'new-cap': 'off',
     'promise/catch-or-return': 'off',

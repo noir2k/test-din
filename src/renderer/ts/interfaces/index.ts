@@ -31,7 +31,3 @@ export interface TestForm {
   test_result: number;
   reg_timestamp?: string;
 }
-
-export type ConfigSchemaType = {
-  soundInterval?: number;
-};

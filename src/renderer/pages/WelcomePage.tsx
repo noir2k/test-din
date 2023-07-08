@@ -79,22 +79,20 @@ export default function Welcome() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => {
-    window.electron.store.setObj({ config: { user: data.register } });
+  const onSubmit = async (data: any) => {
+    await window.electron.ipcRenderer.invoke('set:conf', [
+      {
+        user: data.register,
+      },
+    ]);
     window.location.reload();
   };
 
   useEffect(() => {
     window.electron.licenseKeys.send(validateLicenseRequest);
-    // const user = window.electron.store.get('config.user');
-    // console.log('config.user', user);
   }, []);
 
   useEffect(() => {
-    // window.electron.ipcRenderer.on('electron-store-get', (arg) => {
-    //   console.log('electron-store-get', arg);
-    // });
-
     window.electron.licenseKeys.onReceive(
       validateLicenseResponse,
       (data: any) => {
@@ -111,9 +109,9 @@ export default function Welcome() {
     return () => window.electron.licenseKeys.clearRendererBindings();
   });
 
-  const handleStart = () => {
+  const handleStart = async () => {
     // window.electron.licenseKeys.send(validateLicenseRequest);
-    const user = window.electron.store.get('config.user');
+    const user = await window.electron.ipcRenderer.invoke('get:conf', ['user']);
     console.log('config.user', user);
 
     if (user === undefined) {
@@ -123,12 +121,16 @@ export default function Welcome() {
     }
   };
 
-  const handleSetConf = () => {
-    window.electron.store.setObj({ config: { user: 'noir2k@gmail.com' } });
+  const handleSetConf = async () => {
+    await window.electron.ipcRenderer.invoke('set:conf', [
+      {
+        user: 'noir2k@mail.com',
+      },
+    ]);
   };
 
-  const handleGetConf = () => {
-    const user = window.electron.store.get('config.user');
+  const handleGetConf = async () => {
+    const user = await window.electron.ipcRenderer.invoke('get:conf', ['user']);
     console.log('config.user', user);
   };
 

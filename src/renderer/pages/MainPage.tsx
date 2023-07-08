@@ -9,7 +9,6 @@ import bgCircle4 from '@assets/images/bg_circle_4.png';
 import Notice from '@components/main/notice';
 import TestForm from '@components/test/testForm';
 import TestResult from '@components/main/TestResultComponent';
-import Setting from '@components/main/SettingComponent';
 import Snb from '@components/snb/snb';
 import UserRegister from '@components/main/UserRegister';
 import TestSession from '@components/main/TestSessionComponent';
@@ -19,7 +18,6 @@ const MainPage = () => {
     isNoticeOpen,
     isTestResultOpen,
     isTestStartOpen,
-    isSettingOpen,
     isUserRegister,
     isTestSessionOpen,
     isDimPopupOpen,
@@ -40,7 +38,6 @@ const MainPage = () => {
               {isUserRegister && <UserRegister />}
               {isTestResultOpen && <TestResult />}
               {isTestStartOpen && <TestForm />}
-              {isSettingOpen && <Setting />}
               {isTestSessionOpen && <TestSession />}
             </div>
             <div className="main-contents main-contents-bg">

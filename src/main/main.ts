@@ -56,14 +56,10 @@ import type {
 //   }
 // }
 
-export type ConfigType = {
-  user?: string;
-};
-
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 
 Store.initRenderer();
-export const STORE = new Store<ConfigType>();
+export const STORE = new Store();
 
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
@@ -267,6 +263,7 @@ const createWindow = async () => {
    * ipcMain event
    * */
   ipcMain.on('ipc', async (event, arg) => {
+    console.log('ipc', arg);
     const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
     log.log(msgTemplate(arg));
     event.reply('ipc', msgTemplate('pong'));
@@ -369,20 +366,12 @@ const createWindow = async () => {
   //   _loadData(database, 'update-user-name', event, result);
   // });
 
-  ipcMain.on('electron-store-get', async (event, val) => {
-    event.returnValue = STORE.get(val);
+  ipcMain.handle('set:conf', async (_, arg) => {
+    STORE.set({ config: arg[0] });
   });
 
-  ipcMain.on('electron-store-set', async (event, key, val) => {
-    STORE.set(key, val);
-  });
-
-  ipcMain.on('electron-store-get-obj', async (event, obj) => {
-    event.returnValue = STORE.get(obj);
-  });
-
-  ipcMain.on('electron-store-set-obj', async (event, obj) => {
-    STORE.set(obj);
+  ipcMain.handle('get:conf', (event, arg) => {
+    return STORE.get(`config.${arg[0]}`);
   });
 
   ipcMain.on('electron-store-clear', async (event, obj) => {

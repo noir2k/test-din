@@ -31,7 +31,6 @@ import {
 import {
   setNoticeOpen,
   setUserRegister,
-  setSettingOpen,
   setTestStartOpen,
   setTestSession,
 } from '@store/slices/navigateProvicer';
@@ -257,14 +256,6 @@ const snb = () => {
                 parserOptions={papaparseOptions}
               />
             </div>
-            {/* <div
-              className="cursor-pointer"
-              onClick={() => {
-                dispatch(setSettingOpen());
-              }}
-            >
-              <Cog6ToothIcon className="h-8 w-8 text-black" />
-            </div> */}
           </div>
           <div className="snb-btn-container">
             <div className="snb-column-child-container">
