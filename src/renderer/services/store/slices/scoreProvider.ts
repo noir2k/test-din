@@ -13,6 +13,7 @@ export type ScoreItemType = {
 };
 
 type ScoreConfigType = {
+  fixed_type: string;
   direction: string;
   scoring: string;
   sound_set: number;
@@ -29,7 +30,7 @@ const initialState = {
 
 const ext = '.mp3';
 const preType = 'NF';
-const filePath = 'static://sounds/';
+const resPath = 'static://sounds';
 
 const soundSetGroupSize = 30;
 
@@ -45,9 +46,9 @@ const shuffleIndex = (maxCount: number) => {
   return arr;
 };
 
-const getType = (direction: string) => {
-  return 'NFLR';
-  // return (preType + direction).toUpperCase()
+const getType = (fixed_type: string, direction: string) => {
+  // return 'NF/LR';
+  return `${fixed_type}/${direction}`.toUpperCase();
 };
 
 const resultScore = (
@@ -75,21 +76,22 @@ export const getAnswers = (key: string | number) =>
 type SoundType = {
   count: number;
   volumeLevel: number;
+  fixed_type: string;
   direction: string;
   soundSet: number;
 };
 
 export const getSound = (sound: SoundType) => {
-  const type = getType(sound.direction);
+  const { fixed_type, direction, volumeLevel, soundSet, count } = sound;
+  const path = `${fixed_type}/${direction}`.toUpperCase();
+  const file = `${fixed_type}${direction}`.toUpperCase();
 
-  const soundSetGroup = soundSetGroupSize * (sound.soundSet - 1);
-  const count = sound.count + soundSetGroup;
+  const soundSetGroup = soundSetGroupSize * (soundSet - 1);
+  const cnt = count + soundSetGroup;
 
-  const fileName = `${filePath + type}/${type}[${
-    sound.volumeLevel
-  }]${count}${ext}`;
+  const fileName = `${resPath}/${path}/${file}[${volumeLevel}]${cnt}${ext}`;
 
-  console.log('getSound', fileName);
+  // console.log('getSound', fileName);
   return fileName;
 };
 
@@ -112,6 +114,7 @@ const answerSlice = createSlice({
       const fileName = getSound({
         count: itemNo,
         volumeLevel: _volumeLevel,
+        fixed_type: state.scoreConfig.fixed_type,
         direction: state.scoreConfig.direction,
         soundSet: state.scoreConfig.sound_set,
       });
@@ -122,7 +125,7 @@ const answerSlice = createSlice({
         volume_level: Number(_volumeLevel),
         fileName,
       };
-
+      // console.log('setScoreItem', scoreItem);
       state.scoreItems = state.scoreItems.concat(scoreItem);
     },
     setScoreItemResult: (state, action) => {

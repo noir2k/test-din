@@ -147,7 +147,6 @@ export const confirmCustom = (prop: AlertPropType) => {
       confirmButton: 'sweet_confirm_button',
     },
   }).then((result) => {
-    console.log(result);
     if (result.isConfirmed) {
       !!prop.callback && prop.callback();
     }

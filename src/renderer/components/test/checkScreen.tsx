@@ -74,7 +74,7 @@ function CheckScreen() {
   };
 
   const handleTestComplete = () => {
-    console.log(scoreData.scoreItems);
+    // console.log(scoreData.scoreItems);
     dispatch(setTestResult(scoreData.scoreItems));
     dispatch(nextPage());
   };
@@ -90,6 +90,7 @@ function CheckScreen() {
     } else {
       dispatch(
         setScoreConfig({
+          fixed_type: testForm.fixed_type,
           volume_level: testForm.volume_level,
           direction: testForm.direction,
           sound_set: testForm.sound_set,
