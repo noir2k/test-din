@@ -10,7 +10,12 @@ import Html2Pdf from 'js-html2pdf';
 import hash from 'object-hash';
 
 import { TestForm } from '@interfaces';
-import { ColumnNameHeader, FixedTypeOptions, findEst } from '@lib/common';
+import {
+  ColumnNameHeader,
+  FixedTypeOptions,
+  findEst,
+  findMargin,
+} from '@lib/common';
 
 const TestSessionHeader = () => {
   return (
@@ -79,6 +84,7 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
   } = item;
 
   const [estimate, setEstimate] = useState('');
+  const [margin, setMargin] = useState({});
   const [barColor, setBarColor] = useState('');
   const [fontColor, setFontColor] = useState('');
   const [dirStr, setDirStr] = useState(['B', 'B']);
@@ -101,7 +107,11 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
   }
 
   useEffect(() => {
-    setEstimate(findEst(test_result));
+    const est = findEst(test_result);
+    const mar = findMargin(est, test_result);
+
+    setMargin(mar);
+    setEstimate(est);
     if (direction === 'L' || direction === 'LSRN') {
       setBarColor('bg-blue-500');
       setFontColor('font-bold text-blue-500');
@@ -128,22 +138,28 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
           <span className="text-2xl float-none">{test_result.toFixed(2)}</span>
         </div>
         <div className="row-span-2">
-          {estimate === 'Normal' && <div className={`${barColor} bar-div`} />}
+          {estimate === 'Normal' && (
+            <div style={margin} className={`${barColor} bar-div`} />
+          )}
         </div>
         <div className="row-span-2">
-          {estimate === 'Mild' && <div className={`${barColor} bar-div`} />}
+          {estimate === 'Mild' && (
+            <div style={margin} className={`${barColor} bar-div`} />
+          )}
         </div>
         <div className="row-span-2">
-          {estimate === 'Moderate' && <div className={`${barColor} bar-div`} />}
+          {estimate === 'Moderate' && (
+            <div style={margin} className={`${barColor} bar-div`} />
+          )}
         </div>
         <div className="row-span-2">
           {estimate === 'Moderate to Severe' && (
-            <div className={`${barColor} bar-div`} />
+            <div style={margin} className={`${barColor} bar-div`} />
           )}
         </div>
         <div className="row-span-2">
           {estimate === 'Severe 이상' && (
-            <div className={`${barColor} bar-div`} />
+            <div style={margin} className={`${barColor} bar-div`} />
           )}
         </div>
         <div className={fontColor}>{dirStr[0]}</div>

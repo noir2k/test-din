@@ -47,9 +47,9 @@ type DataRangeType = { [key: string]: number[] };
 
 export const DataRange: DataRangeType = {
   Normal: [-18, -5.92],
-  Mild: [-5.91, 4.64],
-  Moderate: [4.63, -0.64],
-  'Moderate to Severe': [-0.65, 0.69],
+  Mild: [-5.91, -4.64],
+  Moderate: [-4.63, -0.64],
+  'Moderate to Severe': [-0.63, 0.69],
   'Severe 이상': [0.7, 12],
 };
 
@@ -167,4 +167,20 @@ export const findEst = (value: number | undefined) => {
     }
   }
   return 'ERROR';
+};
+
+export const findMargin = (key: string, value: number | undefined) => {
+  const MAXL = 190;
+  const range = DataRange[key];
+  const length = range[1] - range[0];
+  const rate = MAXL / length;
+  if (value) {
+    const v = Math.floor((value - range[0]) * rate - MAXL / 2);
+    if (v === 0) {
+      return '';
+    }
+    return { marginLeft: `${v}%` };
+  }
+
+  return '';
 };
