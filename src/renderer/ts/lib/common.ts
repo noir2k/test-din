@@ -41,7 +41,7 @@ export const ColumnNameHeader = [
   { label: '노트', key: ColumnName.memo },
   { label: '검사목록', key: ColumnName.sound_set },
   { label: '시험결과(DIN-SRT/db SNR)', key: ColumnName.test_result },
-  { label: 'Hearing Estimate Level', key: ColumnName.test_estimate },
+  { label: 'Estimated Hearing Level', key: ColumnName.test_estimate },
   { label: 'timestamp', key: ColumnName.reg_timestamp },
 ];
 

@@ -11,7 +11,7 @@ import { setDimPopup } from '@store/slices/navigateProvicer';
 import isEmpty from 'lodash.isempty';
 
 import { TestForm } from '@interfaces';
-import { ColumnName, findEst } from '@lib/common';
+import { ColumnName } from '@lib/common';
 
 interface PropsType {
   data?: TestForm;
@@ -22,7 +22,6 @@ const TestResult = ({ data, setData }: PropsType) => {
   const [isEditMemoShow, setEditMemoShow] = useState(false);
   const [memoStr, setMemoStr] = useState<string | undefined>('');
   const [result, setResult] = useState<TestForm>({} as TestForm);
-  const [estimate, setEstimate] = useState('');
 
   const prevResultRef = useRef<TestForm>(result);
 
@@ -71,13 +70,11 @@ const TestResult = ({ data, setData }: PropsType) => {
 
   useEffect(() => {
     if (!!data && !isEmpty(data) && !!setData) {
-      setEstimate(findEst(data.test_result));
       setResult(data);
     } else if (
       !isEmpty(navigate.itemResult) &&
       !isEmpty(navigate.itemResult.data)
     ) {
-      setEstimate(findEst(navigate.itemResult.data.test_result));
       setResult(navigate.itemResult.data);
     }
   }, [data, navigate.itemResult]);
@@ -144,7 +141,7 @@ const TestResult = ({ data, setData }: PropsType) => {
             </div>
             <div>
               <span className="font-bold">Esimated Hearing Level:</span>&nbsp;{' '}
-              {estimate}
+              {result.test_estimate}
             </div>
           </div>
           <hr />
