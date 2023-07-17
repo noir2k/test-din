@@ -35,6 +35,7 @@ export interface ColumnType {
   sound_set: number;
   test_datetime: string;
   test_result: number;
+  test_estimate: string;
   reg_timestamp: number;
 }
 
@@ -54,6 +55,7 @@ export const ColumnName = {
   sound_set: 'sound_set',
   test_datetime: 'test_datetime',
   test_result: 'test_result',
+  test_estimate: 'test_estimate',
   reg_timestamp: 'reg_timestamp',
 };
 
@@ -199,6 +201,7 @@ export const insertData = (db: Database, data: ColumnType) => {
     ${ColumnName.sound_set},
     ${ColumnName.test_datetime},
     ${ColumnName.test_result},
+    ${ColumnName.test_estimate},
     ${ColumnName.reg_timestamp}
     ) VALUES (
     ${data.id},
@@ -213,6 +216,7 @@ export const insertData = (db: Database, data: ColumnType) => {
     ${data.sound_set},
     ${data.test_datetime},
     ${data.test_result},
+    ${data.test_estimate},
     ${data.reg_timestamp}
     );\n`;
   sqlstr += `COMMIT;`;

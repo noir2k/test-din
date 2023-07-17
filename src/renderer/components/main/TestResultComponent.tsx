@@ -27,6 +27,8 @@ const TestResult = ({ data, setData }: PropsType) => {
   const prevResultRef = useRef<TestForm>(result);
 
   const navigate = useAppSelector((state: RootState) => state.navigate);
+  const userData = useAppSelector((state: RootState) => state.userData);
+  const testResult = useAppSelector((state: RootState) => state.testResult);
 
   const dispatch = useAppDispatch();
 
@@ -47,6 +49,15 @@ const TestResult = ({ data, setData }: PropsType) => {
     }
     showEditMemo(false);
   };
+
+  useEffect(() => {
+    window.electron.ipcRenderer.invoke('set:temp', [
+      {
+        user: userData,
+        data: testResult.data,
+      },
+    ]);
+  }, [testResult]);
 
   useEffect(() => {
     setMemoStr('');

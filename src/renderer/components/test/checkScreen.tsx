@@ -25,7 +25,7 @@ import { alertCustom, confirmCustom } from '@lib/common';
 
 import iconSpeaker from '@assets/images/icons/icon_speaker.png';
 
-const maxCount = 15;
+const maxCount = 30;
 const minVolumeLevel = -18;
 const maxVolumeLevel = 12;
 

@@ -79,6 +79,7 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
     sound_set,
     scoring,
     test_result,
+    test_estimate,
     memo,
     test_datetime,
   } = item;
@@ -112,16 +113,23 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
 
     setMargin(mar);
     setEstimate(est);
+
     if (direction === 'L' || direction === 'LSRN') {
       setBarColor('bg-blue-500');
       setFontColor('font-bold text-blue-500');
-      if (direction === 'L') setDirStr(['L', 'L']);
-      else if (direction === 'LSRN') setDirStr(['L', 'R']);
+      if (direction === 'L') {
+        setDirStr(['L', 'L']);
+      } else if (direction === 'LSRN') {
+        setDirStr(['L', 'R']);
+      }
     } else if (direction === 'R' || direction === 'LNRS') {
       setBarColor('bg-red-500');
       setFontColor('font-bold text-red-500');
-      if (direction === 'R') setDirStr(['R', 'R']);
-      else if (direction === 'LNRS') setDirStr(['R', 'L']);
+      if (direction === 'R') {
+        setDirStr(['R', 'R']);
+      } else if (direction === 'LNRS') {
+        setDirStr(['R', 'L']);
+      }
     } else if (direction === 'LR') {
       setBarColor('bg-green-500');
       setFontColor('font-bold text-green-500');
@@ -163,7 +171,7 @@ const TestSessionItem = ({ item, index, maxCount }: PropsType) => {
           )}
         </div>
         <div className={fontColor}>{dirStr[0]}</div>
-        <div>{dirStr[0]}</div>
+        <div>{dirStr[1]}</div>
         <div>{sound_set}</div>
         <div>{scoring[0].toUpperCase()}</div>
 
