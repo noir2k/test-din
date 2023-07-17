@@ -125,7 +125,7 @@ const answerSlice = createSlice({
         volume_level: Number(_volumeLevel),
         fileName,
       };
-      // console.log('setScoreItem', scoreItem);
+      console.log('setScoreItem', scoreItem);
       state.scoreItems = state.scoreItems.concat(scoreItem);
     },
     setScoreItemResult: (state, action) => {
@@ -136,6 +136,7 @@ const answerSlice = createSlice({
       const answer = getAnswers(itemNo);
       const result = resultScore(state.scoreConfig.scoring, answer, digits);
 
+      console.log('setScoreItemResult', result, answer, digits);
       scoreItem.isPass = result;
       scoreItem.answer = answer;
       scoreItem.userAnswer = digits;

@@ -492,6 +492,7 @@ a:hover {
 .popup-contents > .popup-title > img,
 span {
   float: left;
+  white-space: pre-wrap;
 }
 
 .popup-contents > .popup-title > img {
@@ -863,9 +864,9 @@ input[type='range']:active::-webkit-slider-runnable-track {
 .number-input {
   width: 70px;
   text-align: center;
-  font-size: 28px;
+  font-size: 44px;
   border-bottom: 2px solid black;
-  padding: 10px;
+  font-weight: bold;
 }
 
 .render-number-wrapper {
@@ -1236,6 +1237,8 @@ input[type='range']:active::-webkit-slider-runnable-track {
   border-radius: 10px;
   box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.25);
   padding: 24px;
+  overflow-y: auto;
+  max-height: 700px;
 }
 
 .test-result-wrapper hr {
