@@ -20,6 +20,7 @@ export const ColumnName = {
   sound_set: 'sound_set',
   test_datetime: 'test_datetime',
   test_result: 'test_result',
+  test_estimate: 'test_estimate',
   reg_timestamp: 'reg_timestamp',
 };
 
@@ -40,6 +41,7 @@ export const ColumnNameHeader = [
   { label: '노트', key: ColumnName.memo },
   { label: '검사목록', key: ColumnName.sound_set },
   { label: '시험결과(DIN-SRT/db SNR)', key: ColumnName.test_result },
+  { label: 'Estimated Hearing Level', key: ColumnName.test_estimate },
   { label: 'timestamp', key: ColumnName.reg_timestamp },
 ];
 
@@ -47,9 +49,9 @@ type DataRangeType = { [key: string]: number[] };
 
 export const DataRange: DataRangeType = {
   Normal: [-18, -5.92],
-  Mild: [-5.91, 4.64],
-  Moderate: [4.63, -0.64],
-  'Moderate to Severe': [-0.65, 0.69],
+  Mild: [-5.91, -4.64],
+  Moderate: [-4.63, -0.64],
+  'Moderate to Severe': [-0.63, 0.69],
   'Severe 이상': [0.7, 12],
 };
 
@@ -106,6 +108,7 @@ export const formToColumn = (payload: TestForm, lastId: number) => {
     sound_set: payload.sound_set,
     test_datetime: payload.test_datetime,
     test_result: payload.test_result,
+    test_estimate: payload.test_estimate,
     reg_timestamp: dayjs(payload.test_datetime).unix(),
   };
 };
@@ -147,7 +150,6 @@ export const confirmCustom = (prop: AlertPropType) => {
       confirmButton: 'sweet_confirm_button',
     },
   }).then((result) => {
-    console.log(result);
     if (result.isConfirmed) {
       !!prop.callback && prop.callback();
     }
@@ -168,4 +170,20 @@ export const findEst = (value: number | undefined) => {
     }
   }
   return 'ERROR';
+};
+
+export const findMargin = (key: string, value: number | undefined) => {
+  const MAXL = 190;
+  const range = DataRange[key];
+  const length = range[1] - range[0];
+  const rate = MAXL / length;
+  if (value) {
+    const v = Math.floor((value - range[0]) * rate - MAXL / 2);
+    if (v === 0) {
+      return '';
+    }
+    return { marginLeft: `${v}%` };
+  }
+
+  return '';
 };

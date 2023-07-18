@@ -50,7 +50,7 @@ const ExamineeInfoForm = () => {
     setValue(ColumnName.fixed_type, 'NF');
     setValue(ColumnName.direction, 'LR');
     setValue(ColumnName.volume_level, 0);
-    setValue(ColumnName.scoring, 'digit');
+    setValue(ColumnName.scoring, 'triplet');
     setValue(ColumnName.sound_set, '1');
     setValue(ColumnName.memo, '');
   };

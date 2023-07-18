@@ -29,5 +29,6 @@ export interface TestForm {
   sound_set: number;
   test_datetime: string;
   test_result: number;
+  test_estimate: string;
   reg_timestamp?: string;
 }
