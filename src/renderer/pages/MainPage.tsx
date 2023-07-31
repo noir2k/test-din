@@ -39,9 +39,6 @@ const MainPage = () => {
 
   const loadTempData = async () => {
     const temp = await window.electron.ipcRenderer.invoke('get:temp');
-    // dispatch(setUserInfo(temp.user));
-    // dispatch(setTestResult(temp.data));
-
     if (!isEmpty(temp) && !isEmpty(temp.user) && !isEmpty(temp.data)) {
       confirmCustom({
         title: '임시 정보 불러오기',

@@ -1,7 +1,12 @@
 import { useAppSelector } from '@hook/index';
 import type { RootState } from '@store/index';
 
-import { ScoringOptions, SoundSetOptions, DirectionOptions } from '@lib/common';
+import {
+  ScoringOptions,
+  SoundSetOptions,
+  DirectionOptions,
+  FixedTypeOptions,
+} from '@lib/common';
 
 import iconSpeakerWhite from '@assets/images/icons/icon_speaker_white.png';
 
@@ -27,6 +32,7 @@ const CheckSnb = () => {
   const testForm = useAppSelector((state: RootState) => state.testForm);
 
   const _soundSet = SoundSetOptions[testForm.sound_set?.toString() ?? ''];
+  const _fixedType = FixedTypeOptions[testForm.fixed_type ?? ''];
   const _direction = DirectionOptions[testForm.direction ?? ''];
   const _scoring = ScoringOptions[testForm.scoring ?? ''];
 
@@ -37,10 +43,15 @@ const CheckSnb = () => {
       </div>
       <div className="right-snb-text on-test">
         <p>검사 사운드 세트: {_soundSet}</p>
+        <p>사운드 제시 방식: {_fixedType}</p>
         <p>사운드 제시 방향: {_direction}</p>
         <p>채점 방식: {_scoring}</p>
+        {testForm.test_result && testForm.test_estimate && (
+          <p>
+            점수 : {testForm.test_result}({testForm.test_estimate})
+          </p>
+        )}
         {testForm.test_datetime && <p>날짜 : {testForm.test_datetime}</p>}
-        {testForm.test_result && <p>점수 : {testForm.test_result}</p>}
       </div>
     </div>
   );

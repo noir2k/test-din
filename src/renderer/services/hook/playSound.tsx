@@ -23,19 +23,31 @@ const PlaySound = (props: PlayProps) => {
       console.log('onplayerror', id, error);
     },
     onend: () => {
-      if (typeof onEnd === 'function') onEnd();
+      if (typeof onEnd === 'function') {
+        console.log('onEnd');
+        // onEnd();
+      }
     },
   };
+
+  const howl = new Howl(option);
+
   useEffect(() => {
-    const howl = new Howl(option);
     console.log('PLAY_BEFORE');
     howl.play();
 
     return () => {
-      console.log('PLAY_STOP');
+      console.log('PLAY_STOP::unmount');
       howl.stop();
     };
   }, [mp3]);
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('PLAY_STOP::unmount');
+  //     howl.stop();
+  //   };
+  // }, []);
 
   return null;
 };
