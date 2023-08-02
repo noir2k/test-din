@@ -29,7 +29,6 @@ const initialState = {
 };
 
 const ext = '.mp3';
-const preType = 'NF';
 const resPath = 'static://sounds';
 
 const soundSetGroupSize = 30;
@@ -44,11 +43,6 @@ const shuffleIndex = (maxCount: number) => {
   // arr.sort(() => Math.random() - 0.5);
   // console.log("shuffleIndex", arr);
   return arr;
-};
-
-const getType = (fixed_type: string, direction: string) => {
-  // return 'NF/LR';
-  return `${fixed_type}/${direction}`.toUpperCase();
 };
 
 const resultScore = (
@@ -70,8 +64,10 @@ const resultScore = (
   return isPass;
 };
 
-export const getAnswers = (key: string | number) =>
-  initialState.answers[key as keyof AnswerDataType];
+export const getAnswers = (key: string | number, soundSet: number) => {
+  const soundSetGroup = soundSetGroupSize * (soundSet - 1) + Number(key);
+  return initialState.answers[soundSetGroup.toString() as keyof AnswerDataType];
+};
 
 type SoundType = {
   count: number;
@@ -86,12 +82,11 @@ export const getSound = (sound: SoundType) => {
   const path = `${fixed_type}/${direction}`.toUpperCase();
   const file = `${fixed_type}${direction}`.toUpperCase();
 
-  const soundSetGroup = soundSetGroupSize * (soundSet - 1);
-  const cnt = count + soundSetGroup;
+  const soundSetGroup = soundSetGroupSize * (soundSet - 1) + count;
 
-  const fileName = `${resPath}/${path}/${file}[${volumeLevel}]${cnt}${ext}`;
+  const fileName = `${resPath}/${path}/${file}[${volumeLevel}]${soundSetGroup}${ext}`;
 
-  // console.log('getSound', fileName);
+  console.log('getSound', fileName);
   return fileName;
 };
 
@@ -125,7 +120,7 @@ const answerSlice = createSlice({
         volume_level: Number(_volumeLevel),
         fileName,
       };
-      console.log('setScoreItem', scoreItem);
+      // console.log('setScoreItem', scoreItem);
       state.scoreItems = state.scoreItems.concat(scoreItem);
     },
     setScoreItemResult: (state, action) => {
@@ -133,10 +128,16 @@ const answerSlice = createSlice({
       const index = countTest - 1;
       const scoreItem = state.scoreItems[index];
       const { itemNo } = scoreItem;
-      const answer = getAnswers(itemNo);
+      const answer = getAnswers(itemNo, state.scoreConfig.sound_set);
+      // console.log(
+      //   'setScoreItemResult1',
+      //   state.scoreConfig.sound_set,
+      //   itemNo,
+      //   answer
+      // );
       const result = resultScore(state.scoreConfig.scoring, answer, digits);
 
-      console.log('setScoreItemResult', result, answer, digits);
+      console.log('setScoreItemResult2', result, answer, digits);
       scoreItem.isPass = result;
       scoreItem.answer = answer;
       scoreItem.userAnswer = digits;

@@ -36,9 +36,12 @@ const ExamineeInfoForm = () => {
     register,
     handleSubmit,
     formState: { isSubmitting },
+    watch,
     setValue,
     setFocus,
   } = useForm();
+
+  const watchFixedType = watch(ColumnName.fixed_type, 'NF');
 
   const onSubmit = (data: any) => {
     dispatch(setTestForm(data));
@@ -262,7 +265,11 @@ const ExamineeInfoForm = () => {
               id={ColumnName.fixed_type}
               defaultValue="NF"
               className="info-input-item-input"
-              {...register(`${ColumnName.fixed_type}`)}
+              {...register(`${ColumnName.fixed_type}`, {
+                onChange: () => {
+                  setValue(ColumnName.volume_level, 0);
+                },
+              })}
             >
               {Object.entries(FixedTypeOptions).map(([k, v]) => (
                 <option key={k} value={k}>
@@ -308,8 +315,8 @@ const ExamineeInfoForm = () => {
               className="info-input-item-input"
               {...register(`${ColumnName.volume_level}`)}
             >
-              <option value="-18">-18</option>
-              <option value="-16">-16</option>
+              {watchFixedType === 'NF' && <option value="-18">-18</option>}
+              {watchFixedType === 'NF' && <option value="-16">-16</option>}
               <option value="-14">-14</option>
               <option value="-12">-12</option>
               <option value="-10">-10</option>

@@ -26,7 +26,8 @@ import { alertCustom, confirmCustom } from '@lib/common';
 import iconSpeaker from '@assets/images/icons/icon_speaker.png';
 
 const maxCount = 30;
-const minVolumeLevel = -18;
+const minVolumeLevel_NF = -18;
+const minVolumeLevel_SF = -14;
 const maxVolumeLevel = 12;
 
 function CheckScreen() {
@@ -140,6 +141,8 @@ function CheckScreen() {
       const beforeIndex = index - 1;
       if (scoreData.scoreItems[beforeIndex].isPass) {
         const biasVolumn = scoreData.scoreItems[beforeIndex].volume_level - 2;
+        const minVolumeLevel =
+          testForm.fixed_type === 'NF' ? minVolumeLevel_NF : minVolumeLevel_SF;
         bias = biasVolumn < minVolumeLevel ? minVolumeLevel : biasVolumn;
       } else {
         const biasVolumn = scoreData.scoreItems[beforeIndex].volume_level + 2;
@@ -164,7 +167,7 @@ function CheckScreen() {
         <PlaySound
           mp3={soundFile}
           volume={volume}
-          onEnd={() => setPlay(false)}
+          // onEnd={() => setPlay(false)}
         />
       )}
       <div className="check-form-title">
