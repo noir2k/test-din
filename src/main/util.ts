@@ -246,24 +246,22 @@ export const updateUserName = (db: Database, userName: string) => {
 export const generateInsertQueryFromSelect = (
   selectResult: QueryExecResult[]
 ) => {
-  const columns = Object.values(selectResult[0].columns);
-  const values = Object.values(selectResult[0].values);
-
-  let insertQuery = `BEGIN TRANSACTION;\n`;
-  for (const value of values) {
-    insertQuery += `INSERT INTO ${tbName} (`;
-    for (const column of columns) {
-      insertQuery += `'${column}', `;
-    }
-    insertQuery = `${insertQuery.slice(0, -2)}) VALUES (`;
-    for (const v of value) {
-      insertQuery += typeof v === 'string' ? `'${v}', ` : `${v}, `;
-    }
-    insertQuery = `${insertQuery.slice(0, -2)});\n`;
-  }
-  insertQuery += `COMMIT;`;
-
-  return insertQuery;
+  // const columns = Object.values(selectResult[0].columns);
+  // const values = Object.values(selectResult[0].values);
+  // let insertQuery = `BEGIN TRANSACTION;\n`;
+  // for (const value of values) {
+  //   insertQuery += `INSERT INTO ${tbName} (`;
+  //   for (const column of columns) {
+  //     insertQuery += `'${column}', `;
+  //   }
+  //   insertQuery = `${insertQuery.slice(0, -2)}) VALUES (`;
+  //   for (const v of value) {
+  //     insertQuery += typeof v === 'string' ? `'${v}', ` : `${v}, `;
+  //   }
+  //   insertQuery = `${insertQuery.slice(0, -2)});\n`;
+  // }
+  // insertQuery += `COMMIT;`;
+  // return insertQuery;
 };
 
 export const isExistFile = (filePath: string) => {

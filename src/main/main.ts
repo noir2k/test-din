@@ -223,35 +223,32 @@ const createWindow = async () => {
   });
 
   ipcMain.on('show-save-sql', (event) => {
-    const options = {
-      title: 'Save Database File',
-      buttonLabel: 'Save',
-      filters: [{ name: 'sql', extensions: ['sql'] }],
-    };
-
-    const filePath = dialog.showSaveDialogSync(options);
-
-    if (filePath) {
-      const result = Util.findAll(db);
-
-      if (result && result.length > 0) {
-        const sqlstr = Util.generateInsertQueryFromSelect(result);
-        const saved = Util.saveFile(filePath, sqlstr);
-        if (saved) {
-          event.sender.send('save-file-completed', 'File save completed');
-        } else {
-          event.sender.send('save-file-failured', 'File save Error');
-        }
-      } else {
-        dialog.showMessageBox({
-          message: 'No Data Found!',
-          buttons: ['OK'],
-        });
-      }
-    } else {
-      log.log('No file selected.');
-      // event.sender.send('no-file-selected', 'File open canceled');
-    }
+    // const options = {
+    //   title: 'Save Database File',
+    //   buttonLabel: 'Save',
+    //   filters: [{ name: 'sql', extensions: ['sql'] }],
+    // };
+    // const filePath = dialog.showSaveDialogSync(options);
+    // if (filePath) {
+    //   const result = Util.findAll(db);
+    //   if (result && result.length > 0) {
+    //     const sqlstr = Util.generateInsertQueryFromSelect(result);
+    //     const saved = Util.saveFile(filePath, sqlstr);
+    //     if (saved) {
+    //       event.sender.send('save-file-completed', 'File save completed');
+    //     } else {
+    //       event.sender.send('save-file-failured', 'File save Error');
+    //     }
+    //   } else {
+    //     dialog.showMessageBox({
+    //       message: 'No Data Found!',
+    //       buttons: ['OK'],
+    //     });
+    //   }
+    // } else {
+    //   log.log('No file selected.');
+    //   // event.sender.send('no-file-selected', 'File open canceled');
+    // }
   });
 
   ipcMain.on('next-page', (event) => {
