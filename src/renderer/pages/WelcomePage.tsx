@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import smLogo from '@assets/images/logo/main_sm_logo.png';
-import lgLogo from '@assets/images/logo/main_lg_logo.png';
+import ihabTextLogo from '@assets/images/logo/ihab_text_logo.png';
+import kdinTextLogo from '@assets/images/logo/kdin_text_logo.png';
+import ihabCorpLogo from '@assets/images/logo/ihab_corp_logo.png';
 
 function Alert() {
   return (
-    <div className="alert-wrapper">
-      <div className="alert-inner">
-        <p className="alert-text">라이센스 확인 완료!</p>
-        <Link to="/main-page" className="alert-btn">
-          확인
-        </Link>
+    <div className="alert-dim">
+      <div className="alert-wrapper">
+        <div className="alert-inner">
+          <p className="alert-text">라이센스 확인 완료!</p>
+          <Link to="/main-page" className="alert-btn">
+            확인
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -27,18 +30,22 @@ export default function Welcome() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <img width="192" alt="icon" src={smLogo} />
-      <img width="640" height="100" alt="icon" src={lgLogo} />
-      <h2 className="my-10 text-4xl font-semibold">&nbsp;</h2>
+      <div className="flex main-logo">
+        <img className="img-50 mr-6" alt="ihabTextLogo" src={ihabTextLogo} />
+        <img className="img-50" alt="kdinTextLogo" src={kdinTextLogo} />
+      </div>
       <button
         type="button"
-        className="start-btn rounded-full"
+        className="btn-template rounded-full"
         onClick={() => {
           setLicenseStatus(1);
         }}
       >
-        START
+        시작하기
       </button>
+      <div className="flex justify-center bottom-logo">
+        <img className="img-50" alt="ihabCorpLogo" src={ihabCorpLogo} />
+      </div>
       {licenseStatus === 1 && <Alert />}
     </div>
   );
