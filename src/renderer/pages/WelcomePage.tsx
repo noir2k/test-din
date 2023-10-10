@@ -36,7 +36,7 @@ export default function Welcome() {
       </div>
       <button
         type="button"
-        className="btn-template rounded-full"
+        className="btn-template-square rounded-full"
         onClick={() => {
           setLicenseStatus(1);
         }}

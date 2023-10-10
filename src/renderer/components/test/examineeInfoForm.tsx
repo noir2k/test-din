@@ -123,13 +123,13 @@ const ExamineeInfoForm = () => {
   return (
     <form className="w-full" onSubmit={handleSubmit(onSubmit, onError)}>
       <div className="info-form-title">
-        <p>청력테스트를 위한 기본 정보를 입력해 주세요.</p>
+        <p>테스트 정보 등록</p>
       </div>
 
       <div className="info-input-wrapper">
         <ul className="info-input-inner">
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">01</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star">*</p>
             <label
               htmlFor={ColumnName.user_name}
               className="info-input-item-subject"
@@ -147,27 +147,29 @@ const ExamineeInfoForm = () => {
               })}
             />
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">02</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star">*</p>
             <label
               htmlFor={ColumnName.gender}
               className="info-input-item-subject"
             >
               성별
             </label>
-            <select
-              id={ColumnName.gender}
-              disabled={isDisabled}
-              defaultValue={userData.gender}
-              className="info-input-item-input"
-              {...register(`${ColumnName.gender}`)}
-            >
-              <option value="M">남성</option>
-              <option value="F">여성</option>
-            </select>
+            <div className="select-box">
+              <select
+                id={ColumnName.gender}
+                disabled={isDisabled}
+                defaultValue={userData.gender}
+                className="info-input-item-input select-disabled"
+                {...register(`${ColumnName.gender}`)}
+              >
+                <option value="M">남성</option>
+                <option value="F">여성</option>
+              </select>
+            </div>
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">03</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star">*</p>
             <label
               htmlFor={ColumnName.birthday}
               className="info-input-item-subject"
@@ -194,8 +196,8 @@ const ExamineeInfoForm = () => {
               })}
             />
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">04</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star">*</p>
             <label
               htmlFor={ColumnName.patient_no}
               className="info-input-item-subject"
@@ -213,8 +215,8 @@ const ExamineeInfoForm = () => {
               className="info-input-item-input"
             />
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">05</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star">*</p>
             <label
               htmlFor={ColumnName.tester_name}
               className="info-input-item-subject"
@@ -232,75 +234,82 @@ const ExamineeInfoForm = () => {
               className="info-input-item-input"
             />
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">06</p>
+          <hr className="hr-divider" />
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star invisible">*</p>
             <label
               htmlFor={ColumnName.receiver}
               className="info-input-item-subject"
             >
               리시버
             </label>
-            <select
-              id={ColumnName.receiver}
-              defaultValue="Headphone"
-              {...register(`${ColumnName.receiver}`)}
-              className="info-input-item-input"
-            >
-              {Object.entries(ReceiverOptions).map(([k, v]) => (
-                <option key={k} value={k}>
-                  {v}
-                </option>
-              ))}
-            </select>
+            <div className="select-box">
+              <select
+                id={ColumnName.receiver}
+                defaultValue="Headphone"
+                {...register(`${ColumnName.receiver}`)}
+                className="info-input-item-input"
+              >
+                {Object.entries(ReceiverOptions).map(([k, v]) => (
+                  <option key={k} value={k}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">07</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star invisible">*</p>
             <label
               htmlFor={ColumnName.fixed_type}
               className="info-input-item-subject"
             >
               제시방식
             </label>
-            <select
-              id={ColumnName.fixed_type}
-              defaultValue="NF"
-              className="info-input-item-input"
-              {...register(`${ColumnName.fixed_type}`, {
-                onChange: () => {
-                  setValue(ColumnName.volume_level, 0);
-                },
-              })}
-            >
-              {Object.entries(FixedTypeOptions).map(([k, v]) => (
-                <option key={k} value={k}>
-                  {v}
-                </option>
-              ))}
-            </select>
+            <div className="select-box">
+              <select
+                id={ColumnName.fixed_type}
+                defaultValue="NF"
+                className="info-input-item-input"
+                {...register(`${ColumnName.fixed_type}`, {
+                  onChange: () => {
+                    setValue(ColumnName.volume_level, 0);
+                  },
+                })}
+              >
+                {Object.entries(FixedTypeOptions).map(([k, v]) => (
+                  <option key={k} value={k}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">08</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star invisible">*</p>
             <label
               htmlFor={ColumnName.direction}
               className="info-input-item-subject"
             >
               제시방향
             </label>
-            <select
-              id={ColumnName.direction}
-              defaultValue="LR"
-              className="info-input-item-input"
-              {...register(`${ColumnName.direction}`)}
-            >
-              {Object.entries(DirectionOptions).map(([k, v]) => (
-                <option key={k} value={k}>
-                  {v}
-                </option>
-              ))}
-            </select>
+            <div className="select-box">
+              <select
+                id={ColumnName.direction}
+                defaultValue="LR"
+                className="info-input-item-input"
+                {...register(`${ColumnName.direction}`)}
+              >
+                {Object.entries(DirectionOptions).map(([k, v]) => (
+                  <option key={k} value={k}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">09</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star invisible">*</p>
             <label
               htmlFor={ColumnName.volume_level}
               className="info-input-item-subject"
@@ -309,86 +318,96 @@ const ExamineeInfoForm = () => {
               <br />
               (db SNR)
             </label>
-            <select
-              id={ColumnName.volume_level}
-              defaultValue="0"
-              className="info-input-item-input"
-              {...register(`${ColumnName.volume_level}`)}
-            >
-              {watchFixedType === 'NF' && <option value="-18">-18</option>}
-              {watchFixedType === 'NF' && <option value="-16">-16</option>}
-              <option value="-14">-14</option>
-              <option value="-12">-12</option>
-              <option value="-10">-10</option>
-              <option value="-8">-8</option>
-              <option value="-6">-6(정상 청력 권장 레벨)</option>
-              <option value="-4">-4(경도 권장 레벨)</option>
-              <option value="-2">-2</option>
-              <option value="0">0(중도 권장 레벨)</option>
-              <option value="2">+2(중고도 권장 레벨)</option>
-              <option value="4">+4</option>
-              <option value="6">+6</option>
-              <option value="8">+8</option>
-              <option value="10">+10</option>
-              <option value="12">+12</option>
-            </select>
+            <div className="select-box">
+              <select
+                id={ColumnName.volume_level}
+                defaultValue="0"
+                className="info-input-item-input"
+                {...register(`${ColumnName.volume_level}`)}
+              >
+                {watchFixedType === 'NF' && <option value="-18">-18</option>}
+                {watchFixedType === 'NF' && <option value="-16">-16</option>}
+                <option value="-14">-14</option>
+                <option value="-12">-12</option>
+                <option value="-10">-10</option>
+                <option value="-8">-8</option>
+                <option value="-6">-6(정상 청력 권장 레벨)</option>
+                <option value="-4">-4(경도 권장 레벨)</option>
+                <option value="-2">-2</option>
+                <option value="0">0(중도 권장 레벨)</option>
+                <option value="2">+2(중고도 권장 레벨)</option>
+                <option value="4">+4</option>
+                <option value="6">+6</option>
+                <option value="8">+8</option>
+                <option value="10">+10</option>
+                <option value="12">+12</option>
+              </select>
+            </div>
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">10</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star invisible">*</p>
             <label
               htmlFor={ColumnName.scoring}
               className="info-input-item-subject"
             >
               채점방식
             </label>
-            <select
-              id={ColumnName.scoring}
-              defaultValue="triplet"
-              className="info-input-item-input"
-              {...register(`${ColumnName.scoring}`)}
-            >
-              {Object.entries(ScoringOptions).map(([k, v]) => (
-                <option key={k} value={k}>
-                  {v}
-                </option>
-              ))}
-            </select>
+            <div className="select-box">
+              <select
+                id={ColumnName.scoring}
+                defaultValue="triplet"
+                className="info-input-item-input"
+                {...register(`${ColumnName.scoring}`)}
+              >
+                {Object.entries(ScoringOptions).map(([k, v]) => (
+                  <option key={k} value={k}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
           </li>
-          <li className="info-input-item">
-            <p className="info-input-item-order-number">11</p>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star invisible">*</p>
             <label
               htmlFor={ColumnName.sound_set}
               className="info-input-item-subject"
             >
               검사목록
             </label>
-            <select
-              id={ColumnName.sound_set}
-              className="info-input-item-input"
-              defaultValue="1"
-              {...register(`${ColumnName.sound_set}`)}
+            <div className="select-box">
+              <select
+                id={ColumnName.sound_set}
+                className="info-input-item-input"
+                defaultValue="1"
+                {...register(`${ColumnName.sound_set}`)}
+              >
+                {Object.entries(SoundSetOptions).map(([k, v]) => (
+                  <option key={k} value={k}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </li>
+          <li className="info-input-item m-bottom">
+            <p className="info-input-item-star invisible">*</p>
+            <label
+              htmlFor={ColumnName.memo}
+              className="info-input-item-subject"
             >
-              {Object.entries(SoundSetOptions).map(([k, v]) => (
-                <option key={k} value={k}>
-                  {v}
-                </option>
-              ))}
-            </select>
+              참고사항
+            </label>
+            <textarea
+              id={ColumnName.memo}
+              className="info-input-item-input info-memo-input"
+              placeholder="참고사항을 입력해주세요."
+              {...register(`${ColumnName.memo}`)}
+            />
           </li>
         </ul>
       </div>
 
-      <div className="info-memo-wraper">
-        <label htmlFor={ColumnName.memo} className="hidden">
-          참고사항
-        </label>
-        <textarea
-          id={ColumnName.memo}
-          className="info-memo-input"
-          placeholder="참고사항을 입력해주세요."
-          {...register(`${ColumnName.memo}`)}
-        />
-      </div>
       <input
         type="hidden"
         id={ColumnName.sessionId}
@@ -397,10 +416,18 @@ const ExamineeInfoForm = () => {
         {...register(`${ColumnName.sessionId}`)}
       />
       <div className="info-btn-wrapper">
-        <button className="info-btn" type="button" onClick={handleReset}>
-          입력초기화
+        <button
+          className="btn-template btn-small btn-gray rounded-full"
+          type="button"
+          onClick={handleReset}
+        >
+          초기화
         </button>
-        <button className="info-btn" type="submit" disabled={isSubmitting}>
+        <button
+          className="btn-template btn-small rounded-full"
+          type="submit"
+          disabled={isSubmitting}
+        >
           저장
         </button>
       </div>

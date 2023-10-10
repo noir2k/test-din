@@ -1,10 +1,10 @@
 module.exports = {
-  extends: 'erb',
+  extends: ['erb', 'prettier'],
   ignorePatterns: ['**/*.html', '**/*.ejs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'html'],
+  plugins: ['@typescript-eslint', 'prettier', 'html'],
   rules: {
-    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    'prettier/prettier': 'error',
     camelcase: 'off',
     'global-require': 'off',
     'no-console': 'off',

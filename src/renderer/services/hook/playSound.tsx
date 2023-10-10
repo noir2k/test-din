@@ -24,8 +24,8 @@ const PlaySound = (props: PlayProps) => {
     },
     onend: () => {
       if (typeof onEnd === 'function') {
-        console.log('onEnd');
-        // onEnd();
+        // console.log('onEnd');
+        onEnd();
       }
     },
   };

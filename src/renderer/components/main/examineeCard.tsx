@@ -8,8 +8,6 @@ import { setRemoveResult } from '@store/slices/testResultProvider';
 import { TestForm } from '@interfaces';
 import { confirmCustom } from '@lib/common';
 
-import { TrashIcon } from '@heroicons/react/24/outline';
-
 import NoteIcon from '@assets/images/icons/icon_note.svg';
 
 interface PropType {
@@ -69,14 +67,6 @@ function ExamineeCard({ item, index, selected }: PropType) {
         >
           삭제
         </div>
-        {/* <button
-          type="button"
-          className="delete-btn bg-transparent"
-          onClick={deleteItem}
-        >
-          <TrashIcon className="h-4 w-4 text-white mr-1" />
-          <span>삭제</span>
-        </button> */}
       </div>
     </div>
   );

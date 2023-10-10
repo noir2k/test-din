@@ -8,13 +8,10 @@ import {
   FixedTypeOptions,
 } from '@lib/common';
 
-import iconSpeakerWhite from '@assets/images/icons/icon_speaker_white.png';
-
 const PreCheckSnb = () => {
   return (
     <div className="right-snb-wrapper">
       <div className="right-snb-title">
-        <img src={iconSpeakerWhite} alt="white speaker icon" />
         <p>연습 및 MCL 확인</p>
       </div>
       <div className="right-snb-text">

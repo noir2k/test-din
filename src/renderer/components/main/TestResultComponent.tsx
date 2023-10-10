@@ -13,6 +13,12 @@ import isEmpty from 'lodash.isempty';
 import { TestForm } from '@interfaces';
 import { ColumnName } from '@lib/common';
 
+import AddUserIcon from '@assets/images/icons/icon_add_user.svg';
+import UserIcon from '@assets/images/icons/icon_user.svg';
+import HeadphoneIcon from '@assets/images/icons/icon_headphone.svg';
+import BookmarkIcon from '@assets/images/icons/icon_bookmark.svg';
+import NoteIcon from '@assets/images/icons/icon_note.svg';
+
 interface PropsType {
   data?: TestForm;
   setData?: (data: TestForm) => void;
@@ -82,79 +88,109 @@ const TestResult = ({ data, setData }: PropsType) => {
   return (
     <>
       <div className="test-result-wrapper">
-        <div className="inner">
-          <div className="flex-col leading-12 mb-3 text-center">
-            <div className="text-xl font-bold">아이해브 청력테스트 Pro</div>
-            <div className="text-lg font-bold">
-              [Korean Digit-In-Noise test]
+        <div className="test-result-wrapper-inner">
+          <div className="test-result-wrapper-item">
+            <div>
+              <AddUserIcon
+                width={36}
+                height={36}
+                viewBox="0 0 32 32"
+                fill="#000000"
+              />
+            </div>
+            <div>
+              <p>ID</p>
+              <p>Name</p>
+              <p>Sex/Birth</p>
+            </div>
+            <div>
+              <p className="font-bold">{result.patient_no}</p>
+              <p className="font-bold">{result.user_name}</p>
+              <p className="font-bold">
+                {result.gender} / {result.birthday}
+              </p>
             </div>
           </div>
-          <hr />
-          <div className="flex-row flex-wrap leading-8">
+          <div className="test-result-wrapper-item">
             <div>
-              <span className="font-bold">ID:</span>&nbsp; {result.patient_no}
+              <UserIcon
+                width={32}
+                height={32}
+                viewBox="0 0 32 32"
+                fill="#000000"
+              />
             </div>
             <div>
-              <span className="font-bold">Name:</span>&nbsp; {result.user_name}
+              <p>Test Date</p>
+              <p>Tested by</p>
             </div>
             <div>
-              <span className="font-bold">Sex/Birth:</span>&nbsp;{' '}
-              {result.gender} / {result.birthday}
-            </div>
-          </div>
-          <hr />
-          <div className="flex-row flex-wrap leading-8">
-            <div>
-              <span className="font-bold">Test Date:</span>&nbsp;{' '}
-              {result.test_datetime}
-            </div>
-            <div>
-              <span className="font-bold">Tested by:</span>&nbsp;{' '}
-              {result.tester_name}
+              <p className="font-bold">{result.test_datetime}</p>
+              <p className="font-bold">{result.tester_name}</p>
             </div>
           </div>
-          <hr />
-          <div className="flex-row flex-wrap leading-8">
+          <div className="test-result-wrapper-item">
             <div>
-              <span className="font-bold">Reciever:</span>&nbsp;{' '}
-              {result.receiver}
+              <HeadphoneIcon
+                width={32}
+                height={32}
+                viewBox="0 0 32 32"
+                fill="#000000"
+              />
             </div>
             <div>
-              <span className="font-bold">Mode:</span>&nbsp; {result.fixed_type}
+              <p>Reciever</p>
+              <p>Mode</p>
+              <p>Stim Type</p>
+              <p>Score</p>
+              <p>List</p>
             </div>
             <div>
-              <span className="font-bold">Stim Type:</span>&nbsp;{' '}
-              {result.direction}
-            </div>
-            <div>
-              <span className="font-bold">Score:</span>&nbsp; {result.scoring}
-            </div>
-            <div>
-              <span className="font-bold">List:</span>&nbsp; {result.sound_set}
-            </div>
-          </div>
-          <hr />
-          <div className="flex-row flex-wrap leading-8">
-            <div>
-              <span className="font-bold">DIN SRT:</span>&nbsp;{' '}
-              {result.test_result}db
-            </div>
-            <div>
-              <span className="font-bold">Esimated Hearing Level:</span>&nbsp;{' '}
-              {result.test_estimate}
+              <p className="font-bold">{result.receiver}</p>
+              <p className="font-bold">{result.fixed_type}</p>
+              <p className="font-bold">{result.direction}</p>
+              <p className="font-bold">{result.scoring}</p>
+              <p className="font-bold">{result.sound_set}</p>
             </div>
           </div>
-          <hr />
-          <div className="flex-row flex-wrap leading-8">
+          <div className="test-result-wrapper-item">
             <div>
-              <span className="font-bold">NOTE:</span>
-              <br /> {result.memo}
+              <BookmarkIcon
+                width={32}
+                height={32}
+                viewBox="0 0 32 32"
+                fill="#000000"
+              />
+            </div>
+            <div>
+              <p>DIN SRT</p>
+              <p>Esimated Hearing Level</p>
+            </div>
+            <div>
+              <p className="font-bold">{result.test_result}</p>
+              <p className="font-bold">{result.test_estimate}</p>
+            </div>
+          </div>
+          <div className="test-result-wrapper-item">
+            <div>
+              <NoteIcon
+                width={32}
+                height={34}
+                viewBox="0 0 32 34"
+                fill="#000000"
+              />
+            </div>
+            <div>
+              <p>Note</p>
+            </div>
+            <div>
+              <p className="font-bold">{result.memo}</p>
             </div>
           </div>
         </div>
         <div className="test-result-btn-wrapper">
           <button
-            className="test-result-btn"
+            className="btn-template btn-small btn-deep-gray"
             type="button"
             onClick={() => showEditMemo(true)}
           >

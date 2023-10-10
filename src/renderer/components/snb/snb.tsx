@@ -282,7 +282,7 @@ const snb = () => {
                       : 'snb-menu-text-hide'
                   }
                 >
-                  다운로드
+                  불러오기
                 </span>
                 <div
                   className="cursor-pointer"

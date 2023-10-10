@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@hook/index';
 
 import { RootState } from '@store/index';
@@ -10,15 +10,13 @@ import isEmpty from 'lodash.isempty';
 import type { FieldError } from 'react-hook-form';
 
 import { setNoticeOpen } from '@store/slices/navigateProvicer';
-
 import { setUserInfo } from '@store/slices/userDataProvider';
-
 import { setReplaceUserInfo } from '@store/slices/testResultProvider';
 
 import { UserInfo } from '@interfaces';
 import { ColumnName, alertCustom } from '@lib/common';
 
-import { IdentificationIcon } from '@heroicons/react/24/solid';
+import UserInfoImage from '@assets/images/user_info_bottom.svg';
 
 type ErrorMessageType = {
   [key: string]: FieldError;
@@ -29,6 +27,8 @@ const UserRegister = () => {
   const navigate = useAppSelector((state: RootState) => state.navigate);
 
   const dispatch = useAppDispatch();
+
+  const [registerStatus, setRegisterStatus] = useState('등록');
 
   const { register, handleSubmit, setValue, setFocus } = useForm();
 
@@ -41,7 +41,7 @@ const UserRegister = () => {
   const onSubmit = (data: any) => {
     const userInfoData = data as UserInfo;
     alertCustom({
-      title: '환자 정보 등록/수정',
+      title: `환자 정보 ${registerStatus}`,
       message: '환자 정보가 등록/수정 되었습니다.',
       callback: () => handleAfterSubmit(userInfoData),
     });
@@ -131,22 +131,22 @@ const UserRegister = () => {
   useEffect(() => {
     if (navigate.isRegister) {
       handleReset();
+      setRegisterStatus('등록');
+    } else {
+      setRegisterStatus('수정');
     }
   }, [navigate.isRegister]);
 
   return (
     <div className="test-contents-wrapper">
-      <form className="w-500" onSubmit={handleSubmit(onSubmit, onError)}>
-        <div className="user-register-title">
-          <IdentificationIcon className="h-8 w-8 text-white" />
-          &nbsp;&nbsp;&nbsp;
-          <p>환자 정보 등록 / 수정</p>
-          <br />
-        </div>
-        <div className="info-input-wrapper user-reg-input">
+      <div className="user-register-title">
+        <p>환자 정보 {registerStatus}</p>
+        <span>아래 항목을 입력해 주십시오</span>
+      </div>
+      <div className="info-input-wrapper user-reg-input">
+        <form className="w-full" onSubmit={handleSubmit(onSubmit, onError)}>
           <ul className="info-input-inner">
             <li className="info-input-item">
-              <p className="info-input-item-order-number">01</p>
               <label
                 htmlFor={ColumnName.user_name}
                 className="info-input-item-subject"
@@ -164,25 +164,25 @@ const UserRegister = () => {
               />
             </li>
             <li className="info-input-item">
-              <p className="info-input-item-order-number">02</p>
               <label
                 htmlFor={ColumnName.gender}
                 className="info-input-item-subject"
               >
                 성별
               </label>
-              <select
-                id={ColumnName.gender}
-                defaultValue={userData.gender}
-                className="info-input-item-input"
-                {...register(`${ColumnName.gender}`)}
-              >
-                <option value="M">남성</option>
-                <option value="F">여성</option>
-              </select>
+              <div className="select-box">
+                <select
+                  id={ColumnName.gender}
+                  defaultValue={userData.gender}
+                  className="info-input-item-input"
+                  {...register(`${ColumnName.gender}`)}
+                >
+                  <option value="M">남성</option>
+                  <option value="F">여성</option>
+                </select>
+              </div>
             </li>
             <li className="info-input-item">
-              <p className="info-input-item-order-number">03</p>
               <label
                 htmlFor={ColumnName.birthday}
                 className="info-input-item-subject"
@@ -210,7 +210,6 @@ const UserRegister = () => {
               />
             </li>
             <li className="info-input-item">
-              <p className="info-input-item-order-number">04</p>
               <label
                 htmlFor={ColumnName.patient_no}
                 className="info-input-item-subject"
@@ -228,7 +227,6 @@ const UserRegister = () => {
               />
             </li>
             <li className="info-input-item">
-              <p className="info-input-item-order-number">05</p>
               <label
                 htmlFor={ColumnName.tester_name}
                 className="info-input-item-subject"
@@ -246,24 +244,26 @@ const UserRegister = () => {
               />
             </li>
           </ul>
-          <ul className="modal-btn-wrapper">
-            <li>
-              <button className="btn-apply" type="submit">
-                확인
-              </button>
-              <button
-                className="btn-cancel"
-                type="button"
-                onClick={() => {
-                  dispatch(setNoticeOpen());
-                }}
-              >
-                닫기
-              </button>
-            </li>
-          </ul>
-        </div>
-      </form>
+          <div className="info-input-btn">
+            <button
+              className="btn-template btn-small btn-gray rounded-full"
+              type="submit"
+              onClick={() => {
+                dispatch(setNoticeOpen());
+              }}
+            >
+              홈으로
+            </button>
+            <button
+              className="btn-template btn-small rounded-full"
+              type="submit"
+            >
+              확인
+            </button>
+          </div>
+        </form>
+        <UserInfoImage className="info-input-bottom" />
+      </div>
     </div>
   );
 };
