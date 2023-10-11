@@ -28,7 +28,9 @@ const TestSessionHeader = () => {
           (dB SNR)
         </div>
       </div>
-      <div className="col-span-5 font-bold text-lg">Estimated Hearing Level</div>
+      <div className="col-span-5 font-bold text-lg">
+        Estimated Hearing Level
+      </div>
       <div>Signal</div>
       <div>Noise</div>
       <div>List</div>

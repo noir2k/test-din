@@ -9,7 +9,6 @@ import { nextPage, setVolume } from '@store/slices/testProgressProvider';
 
 import { alertCustom } from '@lib/common';
 
-import RightSnb from '@components/snb/rightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
 
@@ -133,7 +132,6 @@ const PreCheckScreen = () => {
 
   return (
     <>
-      <RightSnb />
       {play && <PlaySound mp3={soundFile} volume={sliderVolume} />}
       <div className="pre-check-form-wrapper">
         <div className="pre-check-form-title">
