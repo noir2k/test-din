@@ -4,7 +4,19 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'prettier', 'html'],
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        trailingComma: 'all',
+        bracketSpacing: true,
+        printWidth: off,
+        tabWidth: 2,
+        semi: true,
+        arrowParens: 'avoid',
+        endOfLine: 'auto',
+      },
+    ],
     camelcase: 'off',
     'global-require': 'off',
     'no-console': 'off',
