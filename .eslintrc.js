@@ -10,7 +10,6 @@ module.exports = {
         singleQuote: true,
         trailingComma: 'all',
         bracketSpacing: true,
-        printWidth: off,
         tabWidth: 2,
         semi: true,
         arrowParens: 'avoid',
