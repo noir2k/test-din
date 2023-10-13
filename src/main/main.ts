@@ -152,7 +152,7 @@ const createWindow = async () => {
       buttons: ['종료', '취소'],
       defaultId: 1,
       cancelId: 1,
-      title: '아이해브 청력테스트 Pro',
+      title: 'iHab K-DiN Pro',
       message: '프로그램을 종료하시겠습니까?',
     });
 

@@ -56,14 +56,14 @@ export default class MenuBuilder {
       label: 'Electron',
       submenu: [
         {
-          label: 'About TEST-DIN',
+          label: 'About K-DiN Pro',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide TEST-DIN',
+          label: 'Hide K-DiN Pro',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
