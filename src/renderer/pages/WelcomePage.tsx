@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import ihabTextLogo from '@assets/images/logo/ihab_text_logo.png';
 import kdinTextLogo from '@assets/images/logo/kdin_text_logo.png';
@@ -20,8 +20,12 @@ interface AlertPropType {
 }
 
 const Alert = ({ licenseStatus, setShowAlert }: AlertPropType) => {
+  const navigate = useNavigate();
   const handleAlertBtnClick = () => {
     setShowAlert(false);
+    if (licenseStatus) {
+      navigate('/main-page');
+    }
   };
 
   const handleClearConf = () => {
@@ -35,9 +39,6 @@ const Alert = ({ licenseStatus, setShowAlert }: AlertPropType) => {
         {licenseStatus ? (
           <>
             <p className="alert-text">라이센스 확인 완료!</p>
-            <Link to="/main-page" className="alert-btn">
-              확인
-            </Link>
             <button
               type="button"
               className="alert-btn"
@@ -156,7 +157,7 @@ export default function Welcome() {
       </div>
       <h2 className="my-10 text-4xl font-semibold">&nbsp;</h2>
       <div className="license-version">
-        <p>Licensed by : {licenseStatMsg}</p>
+        <p>Licensed : {licenseStatMsg}</p>
         <p>Expire: {licenseExpire}</p>
         <p>App Version : {packageInfo.version}</p>
       </div>
@@ -166,12 +167,15 @@ export default function Welcome() {
       {/* {licenseStatus === 1 && <Alert />} */}
       <button
         type="button"
-        className="start-btn rounded-full"
-        onClick={handleStart}
+        className="btn-template-square rounded-full"
+        onClick={() => {
+          handleStart();
+          // setLicenseStatus(1);
+        }}
       >
         시작하기
       </button>
-      <div className="flex flex-column mt-2">
+      {/* <div className="flex flex-column mt-2">
         <button
           type="button"
           className="start-btn rounded-full m-2"
@@ -200,7 +204,7 @@ export default function Welcome() {
         >
           RELOAD
         </button>
-      </div>
+      </div> */}
       {showAlert && (
         <Alert licenseStatus={licenseStatus} setShowAlert={setShowAlert} />
       )}

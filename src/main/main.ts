@@ -131,7 +131,7 @@ const validateLicense = (options: LicenseOpt): ValidateLicenseResult => {
       const decrypted = crypto.publicDecrypt(publicKey, licenseData);
       const parseStr = JSON.parse(decrypted.toString('utf8'));
 
-      console.log('parseStr', parseStr);
+      // console.log('parseStr', parseStr);
 
       validationResult.expire = parseStr.expire;
 
