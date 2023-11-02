@@ -16,22 +16,21 @@ import {
   dialog,
   protocol,
   net,
-  OpenDialogSyncOptions,
+  // OpenDialogSyncOptions,
 } from 'electron';
 
 import Store from 'electron-store';
 import log from 'electron-log';
 import 'dotenv/config';
 
-import type { Database } from 'sql.js';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
 } from 'electron-devtools-assembler';
 
 import MenuBuilder from './menu';
-import * as Util from './util';
-import type { ConfigSchemaType } from './util';
+
+// import * as Db from './modules/database';
 
 // import { autoUpdater } from 'electron-updater';
 // class AppUpdater {
@@ -83,33 +82,18 @@ if (isDebug) {
   require('electron-debug')();
 }
 
+const resolveHtmlPath = (htmlFileName: string) => {
+  if (process.env.NODE_ENV === 'development') {
+    const port = process.env.PORT || 1212;
+    const url = new URL(`http://localhost:${port}`);
+    url.pathname = htmlFileName;
+    return url.href;
+  }
+
+  return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
+};
+
 // log.log(app.getPath('userData'));
-
-const _loadDefaultConfig = () => {
-  const config = STORE.get('config') as ConfigSchemaType;
-  if (!!config && !config.hasOwnProperty('soundInterval')) {
-    config.soundInterval = Util.defaultConfig.soundInterval;
-    STORE.set('config', config);
-  } else {
-    STORE.set('config', 0);
-  }
-};
-
-const _loadData = (
-  db: Database,
-  channel: string,
-  event: Electron.IpcMainEvent,
-  result: {}[] | null | undefined
-) => {
-  if (result && result.length > 0) {
-    const rowCount = Util.rowCount(db);
-    STORE.set('rowCount', rowCount);
-    STORE.set('currentPage', 1);
-    event.sender.send(channel, result);
-  } else {
-    event.sender.send('load-data-failured', 'Empty Data');
-  }
-};
 
 const createWindow = async () => {
   if (isDebug) {
@@ -133,7 +117,7 @@ const createWindow = async () => {
     // resizable: false,
   });
 
-  mainWindow.loadURL(Util.resolveHtmlPath('index.html'));
+  mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -184,10 +168,9 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  const db = await Util.createDb();
-  await Util.initDbTable(db);
-  _loadDefaultConfig();
-  // Util.testDb(db);
+  // const db = await Db.createDb();
+  // await db.initDbTable(db);
+  // Db.testDb(db);
 
   /**
    * ipcMain event
@@ -198,99 +181,85 @@ const createWindow = async () => {
     event.reply('ipc', msgTemplate('pong'));
   });
 
-  ipcMain.on('show-open-sql', (event) => {
-    const options: OpenDialogSyncOptions = {
-      title: 'Open a file or folder',
-      defaultPath: '',
-      buttonLabel: 'Open',
-      filters: [{ name: 'sql', extensions: ['sql'] }],
-    };
+  // ipcMain.on('show-open-sql', (event) => {
+  //   const options: OpenDialogSyncOptions = {
+  //     title: 'Open a file or folder',
+  //     defaultPath: '',
+  //     buttonLabel: 'Open',
+  //     filters: [{ name: 'sql', extensions: ['sql'] }],
+  //   };
+  //   if (STORE.get('loadFilePath')) {
+  //     const defaultPath = STORE.get('loadFilePath') as string;
+  //     options.defaultPath = defaultPath;
+  //   }
+  //   const filePaths = dialog.showOpenDialogSync(options);
+  //   if (filePaths !== undefined && filePaths.length > 0) {
+  //     STORE.set('loadFilePath', filePaths[0]);
+  //     const result = Util.loadFromSql(db, filePaths[0]);
+  //     _loadData(db, 'sql-file-selected', event, result);
+  //   } else {
+  //     // event.sender.send('sql-file-canceled', 'File open canceled');
+  //   }
+  // });
 
-    if (STORE.get('loadFilePath')) {
-      const defaultPath = STORE.get('loadFilePath') as string;
-      options.defaultPath = defaultPath;
-    }
+  // ipcMain.on('show-save-sql', (event) => {
+  //   const options = {
+  //     title: 'Save Database File',
+  //     buttonLabel: 'Save',
+  //     filters: [{ name: 'sql', extensions: ['sql'] }],
+  //   };
+  //   const filePath = dialog.showSaveDialogSync(options);
+  //   if (filePath) {
+  //     const result = Util.findAll(db);
+  //     if (result && result.length > 0) {
+  //       const sqlstr = Util.generateInsertQueryFromSelect(result);
+  //       const saved = Util.saveFile(filePath, sqlstr);
+  //       if (saved) {
+  //         event.sender.send('save-file-completed', 'File save completed');
+  //       } else {
+  //         event.sender.send('save-file-failured', 'File save Error');
+  //       }
+  //     } else {
+  //       dialog.showMessageBox({
+  //         message: 'No Data Found!',
+  //         buttons: ['OK'],
+  //       });
+  //     }
+  //   } else {
+  //     log.log('No file selected.');
+  //     // event.sender.send('no-file-selected', 'File open canceled');
+  //   }
+  // });
 
-    const filePaths = dialog.showOpenDialogSync(options);
+  // ipcMain.on('next-page', (event) => {
+  //   const PAGE_COUNT = 15;
+  //   const rowCount = Number(STORE.get('rowCount'));
+  //   const currentPage = Number(STORE.get('currentPage'));
+  //   const offset = currentPage * PAGE_COUNT;
+  //   if (rowCount > offset) {
+  //     const result = Util.findByRegDate(db, offset.toString());
+  //     if (result && result.length > 0) {
+  //       event.sender.send('load-more-data', result);
+  //       STORE.set('currentPage', currentPage + 1);
+  //     } else {
+  //       log.log('No more data(1)');
+  //       event.sender.send('no-more-data', 'No more data(1)');
+  //     }
+  //   } else {
+  //     log.log('No more data(2)');
+  //     event.sender.send('no-more-data', 'No more data(2)');
+  //   }
+  // });
 
-    if (filePaths !== undefined && filePaths.length > 0) {
-      STORE.set('loadFilePath', filePaths[0]);
-      const result = Util.loadFromSql(db, filePaths[0]);
-      _loadData(db, 'sql-file-selected', event, result);
-    } else {
-      // event.sender.send('sql-file-canceled', 'File open canceled');
-    }
-  });
+  // ipcMain.on('delete-data', (event, arg) => {
+  //   const result = Util.deleteData(db, arg);
+  //   _loadData(db, 'reload-data', event, result);
+  // });
 
-  ipcMain.on('show-save-sql', (event) => {
-    // const options = {
-    //   title: 'Save Database File',
-    //   buttonLabel: 'Save',
-    //   filters: [{ name: 'sql', extensions: ['sql'] }],
-    // };
-    // const filePath = dialog.showSaveDialogSync(options);
-    // if (filePath) {
-    //   const result = Util.findAll(db);
-    //   if (result && result.length > 0) {
-    //     const sqlstr = Util.generateInsertQueryFromSelect(result);
-    //     const saved = Util.saveFile(filePath, sqlstr);
-    //     if (saved) {
-    //       event.sender.send('save-file-completed', 'File save completed');
-    //     } else {
-    //       event.sender.send('save-file-failured', 'File save Error');
-    //     }
-    //   } else {
-    //     dialog.showMessageBox({
-    //       message: 'No Data Found!',
-    //       buttons: ['OK'],
-    //     });
-    //   }
-    // } else {
-    //   log.log('No file selected.');
-    //   // event.sender.send('no-file-selected', 'File open canceled');
-    // }
-  });
-
-  ipcMain.on('next-page', (event) => {
-    const PAGE_COUNT = 15;
-    const rowCount = Number(STORE.get('rowCount'));
-    const currentPage = Number(STORE.get('currentPage'));
-    const offset = currentPage * PAGE_COUNT;
-
-    if (rowCount > offset) {
-      const result = Util.findByRegDate(db, offset.toString());
-      if (result && result.length > 0) {
-        event.sender.send('load-more-data', result);
-        STORE.set('currentPage', currentPage + 1);
-      } else {
-        log.log('No more data(1)');
-        event.sender.send('no-more-data', 'No more data(1)');
-      }
-    } else {
-      log.log('No more data(2)');
-      event.sender.send('no-more-data', 'No more data(2)');
-    }
-  });
-
-  ipcMain.on('graph-data', (event) => {
-    const result = Util.getGraphData(db);
-    log.log(result);
-    if (result && result.length > 0) {
-      event.sender.send('graph-data-result', result);
-    } else {
-      event.sender.send('load-data-failured', 'Empty Data');
-    }
-  });
-
-  ipcMain.on('delete-data', (event, arg) => {
-    const result = Util.deleteData(db, arg);
-    _loadData(db, 'reload-data', event, result);
-  });
-
-  ipcMain.on('update-user-name', (event, arg) => {
-    const result = Util.updateUserName(db, arg);
-    _loadData(db, 'update-user-name', event, result);
-  });
+  // ipcMain.on('update-user-name', (event, arg) => {
+  //   const result = Util.updateUserName(db, arg);
+  //   _loadData(db, 'update-user-name', event, result);
+  // });
 
   ipcMain.on('react-route', async (_, arg) => {
     STORE.set('react-route', arg[0]);
