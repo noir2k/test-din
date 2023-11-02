@@ -156,11 +156,14 @@ export default function Welcome() {
       </div>
       <h2 className="my-10 text-4xl font-semibold">&nbsp;</h2>
       <div className="license-version">
-        <p>License status : {licenseStatMsg}</p>
+        <p>Licensed by : {licenseStatMsg}</p>
         <p>Expire: {licenseExpire}</p>
         <p>App Version : {packageInfo.version}</p>
-        <p>Copyright by iHab lab</p>
       </div>
+      <div className="flex justify-center bottom-logo">
+        <img className="img-50" alt="ihabCorpLogo" src={ihabCorpLogo} />
+      </div>
+      {/* {licenseStatus === 1 && <Alert />} */}
       <button
         type="button"
         className="start-btn rounded-full"
@@ -202,7 +205,7 @@ export default function Welcome() {
         <Alert licenseStatus={licenseStatus} setShowAlert={setShowAlert} />
       )}
       {showRegUser && (
-        <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+        <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="register-user-wrapper">
             <div className="edit-note-inner">
               <input
@@ -237,10 +240,6 @@ export default function Welcome() {
           </div>
         </form>
       )}
-      <div className="flex justify-center bottom-logo">
-        <img className="img-50" alt="ihabCorpLogo" src={ihabCorpLogo} />
-      </div>
-      {/* {licenseStatus === 1 && <Alert />} */}
     </div>
   );
 }

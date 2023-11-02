@@ -1408,3 +1408,91 @@ input[type='range']:active::-webkit-slider-runnable-track {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+.license-version {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0 10px 10px 0;
+}
+
+.license-version p {
+  text-align: right;
+  font-size: 12px;
+  color: #383838;
+}
+
+.register-form {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #38383844;
+}
+
+.register-user-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 45%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 640px;
+  box-sizing: border-box;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1001;
+}
+
+.register-user-input {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  padding: 12px 16px;
+  resize: none;
+}
+
+.reset-register-user {
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: underline;
+  position: absolute;
+  top: 76px;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.register-alert {
+  font-size: 12px;
+  margin: 8px 0 0 4px;
+}
+
+.register-user-confirm {
+  text-align: center;
+  font-weight: 700;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.register-user-confirm button {
+  border-radius: 0 0 12px 12px;
+  background: #568af0;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+}
+
+.register-confirm-btn,
+.register-cancel-btn {
+  border-radius: 0 0 0 12px !important;
+}
+
+.register-cancel-btn {
+  border-radius: 0 0 12px 0 !important;
+  background-color: #24abff !important;
+}
