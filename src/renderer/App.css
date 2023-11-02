@@ -2,10 +2,10 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
- @font-face {
+@font-face {
   font-family: 'LINESeed';
   src: url('../../assets/fonts/woff2/LINESeedKR-Bd.woff2') format('woff2'),
-    url("../../assets/fonts/woff/LINESeedKR-Bd.woff") format("woff");
+    url('../../assets/fonts/woff/LINESeedKR-Bd.woff') format('woff');
   unicode-range: U+AC00-D7A3;
   font-weight: 700;
   font-style: normal;
@@ -15,7 +15,7 @@
 @font-face {
   font-family: 'LINESeed';
   src: url('../../assets/fonts/woff2/LINESeedKR-Rg.woff2') format('woff2'),
-    url("../../assets/fonts/woff/LINESeedKR-Rg.woff") format("woff");
+    url('../../assets/fonts/woff/LINESeedKR-Rg.woff') format('woff');
   unicode-range: U+AC00-D7A3;
   font-weight: 400;
   font-style: normal;
@@ -25,7 +25,7 @@
 @font-face {
   font-family: 'Fira Sans';
   src: url('../../assets/fonts/woff2/FiraSans-Bold.woff2') format('woff2'),
-    url("../../assets/fonts/woff/FiraSans-Bold.woff") format("woff");
+    url('../../assets/fonts/woff/FiraSans-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -34,7 +34,7 @@
 @font-face {
   font-family: 'Fira Sans';
   src: url('../../assets/fonts/woff2/FiraSans-Regular.woff2') format('woff2'),
-    url("../../assets/fonts/woff/FiraSans-Regular.woff") format("woff");
+    url('../../assets/fonts/woff/FiraSans-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -92,7 +92,7 @@ img {
 .btn-template-square {
   width: 162px;
   height: 50px;
-  background-color: #40A0FF;
+  background-color: #40a0ff;
   color: white;
   font-size: 20px;
   font-weight: 400;
@@ -110,7 +110,7 @@ img {
 }
 
 .btn-template.btn-gray {
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
 }
 
 .btn-template.btn-deep-gray {
@@ -124,7 +124,8 @@ img {
   background-repeat: no-repeat;
 }
 
-.img-50, .img-33 {
+.img-50,
+.img-33 {
   height: fit-content;
 }
 
@@ -137,7 +138,7 @@ img {
 }
 
 .main-color {
-  color: #40A0FF;
+  color: #40a0ff;
 }
 
 .main-frame-logo {
@@ -184,7 +185,7 @@ img {
 }
 
 .snb-container-wrapper {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   width: 100%;
   height: 100%;
   display: flex;
@@ -244,7 +245,7 @@ img {
   line-height: 20px;
   font-size: 10px;
   font-weight: 600;
-  color: #40A0FF;
+  color: #40a0ff;
 }
 
 .snb-menu-text-show {
@@ -286,7 +287,7 @@ img {
   color: black;
 }
 
-.user-info-span{
+.user-info-span {
   float: none;
   display: flex;
   justify-content: center;
@@ -301,16 +302,20 @@ img {
   margin-right: 32px;
   padding-bottom: 20px;
   border-bottom: 2px solid transparent;
-  border-image: -webkit-linear-gradient(to left,
+  border-image: -webkit-linear-gradient(
+    to left,
     rgba(0, 0, 0, 0.5) 0%,
     rgba(75, 75, 75, 0.5) 25%,
     rgba(128, 128, 128, 0.5) 50%,
-    rgba(128, 128, 128, 1) 100%);
-  border-image: linear-gradient(to left,
+    rgba(128, 128, 128, 1) 100%
+  );
+  border-image: linear-gradient(
+    to left,
     rgba(0, 0, 0, 0.5) 0%,
     rgba(75, 75, 75, 0.5) 25%,
     rgba(128, 128, 128, 0.5) 50%,
-    rgba(128, 128, 128, 1) 100%);
+    rgba(128, 128, 128, 1) 100%
+  );
   border-image-slice: 1;
 }
 
@@ -321,13 +326,13 @@ img {
   background: transparent;
   font-size: 14px;
   font-weight: 400;
-  color: #5F5F5F;
+  color: #5f5f5f;
   margin: 0 auto !important;
   text-align: end;
 }
 
 .snb-modify-btn:hover {
-  color: #40A0FF;
+  color: #40a0ff;
 }
 
 .snb-delete-btn:hover {
@@ -350,7 +355,7 @@ img {
 .test-start-btn {
   width: 100%;
   height: 58px;
-  background: #40A0FF;
+  background: #40a0ff;
   color: white;
   border-radius: 99px;
 }
@@ -361,18 +366,18 @@ img {
 }
 
 .snb-icon {
-  fill: #5F5F5F;
-  color: #5F5F5F;
+  fill: #5f5f5f;
+  color: #5f5f5f;
 }
 
 .snb-icon:hover {
-  fill: #40A0FF;
-  color: #40A0FF;
+  fill: #40a0ff;
+  color: #40a0ff;
 }
 
 .snb-icon-active {
-  fill: #40A0FF;
-  color: #40A0FF;
+  fill: #40a0ff;
+  color: #40a0ff;
 }
 
 /* examineeData.tsx */
@@ -387,22 +392,26 @@ img {
   padding-top: 24px;
   padding-bottom: 12px;
   border-bottom: 1px solid transparent;
-  border-image: -webkit-linear-gradient(to left,
+  border-image: -webkit-linear-gradient(
+    to left,
     rgba(0, 0, 0, 0.5) 0%,
     rgba(75, 75, 75, 0.5) 25%,
     rgba(128, 128, 128, 0.5) 50%,
-    rgba(128, 128, 128, 1) 100%);
-  border-image: linear-gradient(to left,
+    rgba(128, 128, 128, 1) 100%
+  );
+  border-image: linear-gradient(
+    to left,
     rgba(0, 0, 0, 0.5) 0%,
     rgba(75, 75, 75, 0.5) 25%,
     rgba(128, 128, 128, 0.5) 50%,
-    rgba(128, 128, 128, 1) 100%);
+    rgba(128, 128, 128, 1) 100%
+  );
   border-image-slice: 1;
 }
 
 /* testForm.tsx */
 .test-form-wrapper {
-  width: 960px;
+  width: 98%;
   height: 1024px;
   display: flex;
   justify-content: center;
@@ -485,7 +494,7 @@ img {
 .alert-btn {
   display: block;
   color: white;
-  background-color: #40A0FF;
+  background-color: #40a0ff;
   width: 100%;
   height: 50px;
   margin: 0 auto;
@@ -547,7 +556,6 @@ img {
 
 /* examineePopup.tsx */
 
-
 span {
   float: left;
   white-space: pre-wrap;
@@ -569,11 +577,10 @@ span {
 } */
 
 .info-input-item > .info-input-item-star {
-  color: #40A0FF;
+  color: #40a0ff;
   font-weight: 700;
   margin-right: 4px;
 }
-
 
 .info-input-item > .info-input-item-subject {
   width: 100px;
@@ -609,11 +616,11 @@ span {
 }
 
 .user-register-title > span {
-  color: #40A0FF;
+  color: #40a0ff;
 }
 
 .selected-item > svg {
-  fill: #40A0FF;
+  fill: #40a0ff;
 }
 
 /* examineeInfoForm.tsx */
@@ -672,16 +679,20 @@ span {
   width: 100%;
   margin-bottom: 8px;
   border-bottom: 1px solid transparent;
-  border-image: -webkit-linear-gradient(to left,
+  border-image: -webkit-linear-gradient(
+    to left,
     rgba(0, 0, 0, 0.5) 0%,
     rgba(75, 75, 75, 0.5) 25%,
     rgba(128, 128, 128, 0.5) 50%,
-    rgba(128, 128, 128, 1) 100%);
-  border-image: linear-gradient(to left,
+    rgba(128, 128, 128, 1) 100%
+  );
+  border-image: linear-gradient(
+    to left,
     rgba(0, 0, 0, 0.5) 0%,
     rgba(75, 75, 75, 0.5) 25%,
     rgba(128, 128, 128, 0.5) 50%,
-    rgba(128, 128, 128, 1) 100%);
+    rgba(128, 128, 128, 1) 100%
+  );
   border-image-slice: 1;
 }
 
@@ -715,7 +726,7 @@ span {
 .select-box::before,
 .select-box::after {
   --size: 0.3rem;
-  content: "";
+  content: '';
   position: absolute;
   right: 1rem;
   pointer-events: none;
@@ -772,7 +783,6 @@ span {
   justify-content: space-evenly;
 }
 
-
 .pre-check-form-title,
 .check-form-title {
   width: 100%;
@@ -792,7 +802,7 @@ span {
 .pre-check-form-title > p > span {
   float: none;
   font-weight: 600;
-  color: #40A0FF;
+  color: #40a0ff;
 }
 
 .slide-bar-wrapper {
@@ -856,21 +866,21 @@ span {
   align-items: center;
   gap: 14px;
   border-radius: 25.5px;
-  background: #40A0FF;
+  background: #40a0ff;
   color: white;
   font-size: 12px;
   font-weight: 700;
 }
 
 .slider-bar-inner-baloon-arrow {
-  content: "";
+  content: '';
   position: absolute;
   top: -16px;
   left: 130px;
   pointer-events: none;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  border-bottom: 16px solid #40A0FF;
+  border-bottom: 16px solid #40a0ff;
 }
 
 input[type='range'] {
@@ -884,7 +894,7 @@ input[type='range']::-webkit-slider-thumb {
   appearance: none;
   border-radius: 50%;
   background-color: rgb(255, 255, 255);
-  border: 6px solid #40A0FF;
+  border: 6px solid #40a0ff;
   cursor: pointer;
   height: 28px;
   width: 28px;
@@ -894,7 +904,7 @@ input[type='range']::-webkit-slider-thumb {
 
 input[type='range']:active::-webkit-slider-thumb {
   background-color: rgb(255, 255, 255);
-  border: 6px solid #40A0FF;
+  border: 6px solid #40a0ff;
   cursor: pointer;
   height: 27px;
   width: 27px;
@@ -941,8 +951,8 @@ input[type='range']:active::-webkit-slider-runnable-track {
   font-size: 64px;
   font-weight: bold;
   border-radius: 15px;
-  border: 3px solid var(--Main-Color, #40A0FF);
-  background: #FFF;
+  border: 3px solid var(--Main-Color, #40a0ff);
+  background: #fff;
   margin-left: 7px;
   margin-right: 7px;
 }
@@ -978,15 +988,14 @@ input[type='range']:active::-webkit-slider-runnable-track {
   float: left;
 }
 
-
 .test-btn-wrapper > .test-start-btn {
-  background-color: #40A0FF;
+  background-color: #40a0ff;
   margin: 0px 30px 0px 0px;
 }
 
 /* useNumberInput.tsx */
 .active-btn {
-  background-color: #40A0FF !important;
+  background-color: #40a0ff !important;
   color: white !important;
 }
 
@@ -1017,7 +1026,7 @@ input[type='range']:active::-webkit-slider-runnable-track {
 }
 
 .number-btn-wrapper > .confirm-btn {
-  background-color: #40A0FF !important;
+  background-color: #40a0ff !important;
   color: white !important;
   font-size: 24px;
 }
@@ -1105,7 +1114,7 @@ input[type='range']:active::-webkit-slider-runnable-track {
 .result-btn-wrapper > button {
   width: 320px;
   height: 50px;
-  background: #40A0FF;
+  background: #40a0ff;
   color: white;
   border-radius: 20px;
   margin: 0px 0px 12px 0px;
@@ -1231,13 +1240,12 @@ input[type='range']:active::-webkit-slider-runnable-track {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white  ;
+  color: white;
 }
 
-.edit-note-confirm button
-{
+.edit-note-confirm button {
   border-radius: 0 0 12px 12px;
-  background: #40A0FF;
+  background: #40a0ff;
   width: 100%;
   height: 100%;
   padding: 12px;
@@ -1336,7 +1344,7 @@ input[type='range']:active::-webkit-slider-runnable-track {
   border-bottom-width: 2px;
 }
 
-.session-item-grid> div {
+.session-item-grid > div {
   border: 1px solid #8d8d8d7d;
   width: 100%;
   height: 100%;
@@ -1382,21 +1390,21 @@ input[type='range']:active::-webkit-slider-runnable-track {
 }
 
 .sweet_confirm_button {
-  background-color: #40A0FF !important;
-  box-shadow: 0 0 0 3px rgba(86, 138, 240, .5) !important;
+  background-color: #40a0ff !important;
+  box-shadow: 0 0 0 3px rgba(86, 138, 240, 0.5) !important;
 }
 
 .csv-reader-input {
   display: none;
 }
 
-.csv-reader-input input[type="file"] {
+.csv-reader-input input[type='file'] {
   position: absolute;
   width: 1px;
   height: 1px;
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip:rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   border: 0;
 }
