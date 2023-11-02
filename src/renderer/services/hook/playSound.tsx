@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Howl, HowlErrorCallback } from 'howler';
-// Tone.js
 
 export type PlayProps = {
   mp3: string;
@@ -25,8 +24,8 @@ const PlaySound = (props: PlayProps) => {
     },
     onend: () => {
       if (typeof onEnd === 'function') {
-        console.log('onEnd');
-        // onEnd();
+        // console.log('onEnd');
+        onEnd();
       }
     },
   };

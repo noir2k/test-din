@@ -10,6 +10,9 @@ const testProgressSlice = createSlice({
   name: 'testProgress',
   initialState,
   reducers: {
+    setPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
     nextPage: (state) => {
       if (state.currentPage < state.lastPage) {
         state.currentPage++;
@@ -27,7 +30,7 @@ const testProgressSlice = createSlice({
   },
 });
 
-export const { nextPage, prevPage, setVolume, resetProgress } =
+export const { setPage, nextPage, prevPage, setVolume, resetProgress } =
   testProgressSlice.actions;
 
 export default testProgressSlice.reducer;

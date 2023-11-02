@@ -17,13 +17,19 @@ import {
   resetScore,
 } from '@store/slices/scoreProvider';
 
-import RightSnb from '@components/snb/rightSnb';
 import useNumberInput from '@hook/useNumberInput';
 import PlaySound from '@hook/playSound';
 
-import { alertCustom, confirmCustom } from '@lib/common';
+import {
+  alertCustom,
+  confirmCustom,
+  ScoringOptions,
+  SoundSetOptions,
+  DirectionOptions,
+  FixedTypeOptions,
+} from '@lib/common';
 
-import iconSpeaker from '@assets/images/icons/icon_speaker.png';
+import HeadphoneLargeIcon from '@assets/images/icons/icon_headphone_large.svg';
 
 const maxCount = 30;
 const minVolumeLevel_NF = -18;
@@ -40,6 +46,11 @@ function CheckScreen() {
   const { volume } = useAppSelector((state: RootState) => state.testProgress);
   const testForm = useAppSelector((state: RootState) => state.testForm);
   const scoreData = useAppSelector((state: RootState) => state.scoreData);
+
+  const _soundSet = SoundSetOptions[testForm.sound_set?.toString() ?? ''];
+  const _fixedType = FixedTypeOptions[testForm.fixed_type ?? ''];
+  const _direction = DirectionOptions[testForm.direction ?? ''];
+  const _scoring = ScoringOptions[testForm.scoring ?? ''];
 
   const dispatch = useAppDispatch();
 
@@ -162,16 +173,36 @@ function CheckScreen() {
 
   return (
     <>
-      <RightSnb />
       {play && (
         <PlaySound
           mp3={soundFile}
           volume={volume}
-          // onEnd={() => setPlay(false)}
+          onEnd={() => setPlay(false)}
         />
       )}
       <div className="check-form-title">
-        <img src={iconSpeaker} alt="speaker icon" />
+        <div className="check-form-header">
+          <div className="check-form-header-start">
+            <p>검사 현황</p>
+          </div>
+          <div className="check-form-header-mid">
+            <p>검사 사운드 세트</p>
+            <p>사운드 제시 방식</p>
+            <p>사운드 제시 방향</p>
+            <p>채점 방식</p>
+          </div>
+          <div className="check-form-header-end">
+            <p>{_soundSet}</p>
+            <p>{_fixedType}</p>
+            <p>{_direction}</p>
+            <p>{_scoring}</p>
+          </div>
+        </div>
+        <div className="check-form-headphone-icon">
+          <HeadphoneLargeIcon
+            className={play ? 'visible' : 'hidden invisible'}
+          />
+        </div>
         <p style={{ whiteSpace: 'pre' }}>{testTitle}</p>
       </div>
 
@@ -200,7 +231,9 @@ function CheckScreen() {
       <div className="test-btn-wrapper">
         <button
           className={
-            hooks.isTestStart ? 'test-start-btn deactive-btn' : 'test-start-btn'
+            hooks.isTestStart
+              ? 'btn-template btn-small deactive-btn'
+              : 'btn-template btn-small'
           }
           disabled={hooks.isTestStart}
           type="button"
@@ -209,7 +242,11 @@ function CheckScreen() {
           시작
         </button>
         <button
-          className="test-abort-btn abort-btn"
+          className={
+            hooks.isTestStart
+              ? 'btn-template btn-small active-btn'
+              : 'btn-template btn-small btn-deep-gray'
+          }
           type="button"
           onClick={handleAbort}
         >

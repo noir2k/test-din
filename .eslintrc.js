@@ -1,10 +1,28 @@
 module.exports = {
-  extends: 'erb',
+  extends: ['erb', 'prettier'],
   ignorePatterns: ['**/*.html', '**/*.ejs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'html'],
+  plugins: ['@typescript-eslint', 'prettier', 'html'],
   rules: {
-    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        trailingComma: 'es5',
+        bracketSameLine: false,
+        bracketSpacing: true,
+        printWidth: 80,
+        proseWrap: 'always',
+        tabWidth: 2,
+        semi: true,
+        arrowParens: 'always',
+        endOfLine: 'auto',
+        parser: 'typescript',
+      },
+      {
+        usePrettierrc: false,
+      },
+    ],
     camelcase: 'off',
     'global-require': 'off',
     'no-console': 'off',

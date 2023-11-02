@@ -1,7 +1,9 @@
-import { useAppSelector } from '@hook/index';
+import { useAppSelector, useAppDispatch } from '@hook/index';
 import type { RootState } from '@store/index';
 
-import hash from 'object-hash';
+// for development
+// import hash from 'object-hash';
+// import { setPage } from '@store/slices/testProgressProvider';
 
 import ExamineeInfoForm from './examineeInfoForm';
 import PreCheckScreen from './preCheckScreen';
@@ -9,6 +11,8 @@ import CheckScreen from './checkScreen';
 import TestComplete from './testComplete';
 
 const TestForm = () => {
+  const dispatch = useAppDispatch();
+
   const createPages = (length: number): number[] => {
     const array: number[] = [];
     for (let i = 0; i < length; i++) {
@@ -25,18 +29,19 @@ const TestForm = () => {
   return (
     <div className="test-form-wrapper">
       <div className="test-form-inner">
-        <div className="progress-bar">
+        {/* <div className="progress-bar">
           {pages.map((a, index) => {
             return (
               <div
                 key={hash(index).toString()}
                 className={currentPage === index ? 'dot active' : 'dot'}
+                onClick={() => dispatch(setPage(index))}
               >
                 <p className="hidden">진행 단계 표시</p>
               </div>
             );
           })}
-        </div>
+        </div> */}
         <div className="test-contents-wrapper">
           {currentPage === 0 && <ExamineeInfoForm />}
           {currentPage === 1 && <PreCheckScreen />}

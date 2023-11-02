@@ -277,7 +277,7 @@ const TestSession = () => {
         </div>
       </div>
       <div className="print-button-wrapper">
-        <button type="button" className="csv-print-btn">
+        <button type="button" className="btn-template btn-small btn-deep-gray">
           <CSVLink
             data={testResult.data}
             headers={ColumnNameHeader}
@@ -288,7 +288,7 @@ const TestSession = () => {
         </button>
         <button
           type="button"
-          className="pdf-print-btn"
+          className="btn-template btn-small"
           onClick={handlePrintPDF}
         >
           PDF 저장

@@ -11,14 +11,7 @@ import isEmpty from 'lodash.isempty';
 import hash from 'object-hash';
 import CSVReader from 'react-csv-reader';
 
-import {
-  HomeIcon,
-  InboxIcon,
-  PrinterIcon,
-  PencilSquareIcon,
-  UserIcon,
-  UserPlusIcon,
-} from '@heroicons/react/24/outline';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
 // import useInfiniteScroll from '@hook/useInfiniteScroll';
 import ExamineeCard from '@components/main/examineeCard';
@@ -43,6 +36,12 @@ import { setUserInfo, resetUserInfo } from '@store/slices/userDataProvider';
 import { UserInfo, TestForm } from '@interfaces';
 import { ColumnNameHeader, alertCustom, confirmCustom } from '@lib/common';
 
+import HomeIcon from '@assets/images/icons/icon_home.svg';
+import AddUserIcon from '@assets/images/icons/icon_add_user.svg';
+import PrinterIcon from '@assets/images/icons/icon_printer.svg';
+import DownloadIcon from '@assets/images/icons/icon_download.svg';
+import ProfileIcon from '@assets/images/icons/icon_profile.svg';
+
 // const PAGE_COUNT = 15;
 const headerArr = ColumnNameHeader.map((item) => {
   return item.key;
@@ -55,6 +54,9 @@ const snb = () => {
   // const [isMoreData, setMoreData] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isDisableTest, setDisableTest] = useState(false);
+  const [isAddUserFocused, setAddUserFocus] = useState(false);
+  const [isDownloadFocused, setDownloadFocus] = useState(false);
+  const [isPrinterFocused, setPrinterFocus] = useState(false);
 
   const userData = useAppSelector((state: RootState) => state.userData);
   const testResult = useAppSelector((state: RootState) => state.testResult);
@@ -227,138 +229,193 @@ const snb = () => {
 
   return (
     <div id="snb" className="snb-container">
-      <div className="child snb-setting-wrapper">
-        <div className="snb-column-container">
-          <div className="snb-icons-container">
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                dispatch(setNoticeOpen());
-              }}
-            >
-              <HomeIcon className="h-8 w-8 text-black" />
-            </div>
-            {/**
-             * TODO: when release, remove this code
-             * DISABLE import sql for release
-             */}
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                setLoading(true);
-                importCsvRef.current!.click();
-                // window.electron.ipcRenderer.sendMessage('show-open-sql', []);
-              }}
-            >
-              <InboxIcon className="h-8 w-8 text-black" />
-              <CSVReader
-                ref={importCsvRef}
-                cssClass="csv-reader-input"
-                onFileLoaded={handleFileLoad}
-                // onError={}
-                parserOptions={papaparseOptions}
-              />
-            </div>
-          </div>
-          <div className="snb-btn-container">
-            <div className="snb-column-child-container">
-              <button
-                type="button"
-                className="snb-column-child-btn btn-blue"
-                onClick={userRegister}
+      <div className="snb-container-wrapper">
+        <div className="child snb-setting-wrapper">
+          <div className="snb-column-container">
+            <div className="snb-icons-container">
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  dispatch(setNoticeOpen());
+                }}
               >
-                <span>
-                  <UserPlusIcon className="h-4 w-4 text-white mr-1" />
+                {/* <img alt="homeIconUrl" src={HomeIcon} /> */}
+                <HomeIcon className="snb-icon" />
+              </div>
+            </div>
+            <div className="snb-btn-container">
+              <div
+                className="snb-column-child-container"
+                onMouseEnter={() => {
+                  setAddUserFocus(true);
+                }}
+                onMouseLeave={() => {
+                  setAddUserFocus(false);
+                }}
+              >
+                <span
+                  className={
+                    isAddUserFocused
+                      ? 'snb-menu-text-show'
+                      : 'snb-menu-text-hide'
+                  }
+                >
                   신규환자등록
                 </span>
-              </button>
-            </div>
-            {/* <div className="snb-column-child-container">
-              <label htmlFor="backupData">
-                <button
-                  type="button"
-                  className="snb-column-child-btn btn-backup"
+                <div className="cursor-pointer" onClick={userRegister}>
+                  <AddUserIcon className="snb-icon" />
+                </div>
+              </div>
+              <div
+                className="snb-column-child-container"
+                onMouseEnter={() => {
+                  setDownloadFocus(true);
+                }}
+                onMouseLeave={() => {
+                  setDownloadFocus(false);
+                }}
+              >
+                <span
+                  className={
+                    isDownloadFocused
+                      ? 'snb-menu-text-show'
+                      : 'snb-menu-text-hide'
+                  }
+                >
+                  불러오기
+                </span>
+                <div
+                  className="cursor-pointer"
                   onClick={() => {
-                    window.electron.ipcRenderer.sendMessage(
-                      'show-save-sql',
-                      []
-                    );
+                    setLoading(true);
+                    importCsvRef.current!.click();
+                    // window.electron.ipcRenderer.sendMessage('show-open-sql', []);
                   }}
                 >
-                  저장하기
-                </button>
-              </label>
-            </div> */}
-            <div className="snb-column-child-container">
-              <button
-                type="button"
-                className="snb-column-child-btn btn-print"
-                onClick={handleOpenTestSession}
+                  <DownloadIcon className="snb-icon" />
+                  <CSVReader
+                    ref={importCsvRef}
+                    cssClass="csv-reader-input"
+                    onFileLoaded={handleFileLoad}
+                    // onError={}
+                    parserOptions={papaparseOptions}
+                  />
+                </div>
+              </div>
+              {/**
+               * TODO: when release, remove this code
+               * DISABLE import sql for release
+               */}
+              {/* <div className="snb-column-child-container">
+                <label htmlFor="backupData">
+                  <button
+                    type="button"
+                    className="snb-column-child-btn btn-backup"
+                    onClick={() => {
+                      window.electron.ipcRenderer.sendMessage(
+                        'show-save-sql',
+                        []
+                      );
+                    }}
+                  >
+                    저장하기
+                  </button>
+                </label>
+              </div> */}
+              <div
+                className="snb-column-child-container"
+                onMouseEnter={() => {
+                  setPrinterFocus(true);
+                }}
+                onMouseLeave={() => {
+                  setPrinterFocus(false);
+                }}
               >
-                <span>
-                  <PrinterIcon className="h-4 w-4 text-white mr-1" />
+                <span
+                  className={
+                    isPrinterFocused
+                      ? 'snb-menu-text-show'
+                      : 'snb-menu-text-hide'
+                  }
+                >
                   결과지 출력
                 </span>
-              </button>
+                <div className="cursor-pointer" onClick={handleOpenTestSession}>
+                  <PrinterIcon className="snb-icon" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="child snb-data-wrapper">
-        <div className="examinee-data-wrapper">
-          <div className="data-text ml-5">
-            <span className="user-info-span">
-              <UserIcon className="h-8 w-8 text-white mr-1" />
-              <p>
-                {isEmpty(userData)
-                  ? '환자명 (환자번호)'
-                  : `${userData.user_name} (${userData.patient_no})`}
-              </p>
-            </span>
+        <div className="child snb-data-wrapper">
+          <div className="examinee-data-wrapper">
+            <div className="data-text">
+              <span className="user-info-span">
+                <ProfileIcon className="snb-icon mr-4" />
+                <p>
+                  {isEmpty(userData)
+                    ? '환자명 (환자번호)'
+                    : `${userData.user_name} (${userData.patient_no})`}
+                </p>
+              </span>
+            </div>
+            {/* <button
+              type="button"
+              className="bg-transparent snb-column-child-btn snb-modify-btn"
+              disabled={isEmpty(userData)}
+              onClick={() => {
+                if (!isEmpty(userData)) {
+                  dispatch(setUserRegister(false));
+                }
+              }}
+            > */}
+            <div
+              className="cursor-pointer snb-column-child-btn snb-modify-btn"
+              onClick={() => {
+                if (!isEmpty(userData)) {
+                  dispatch(setUserRegister(false));
+                }
+              }}
+            >
+              수정
+            </div>
+            {/* </button> */}
           </div>
+        </div>
+        <div className="child import-success-screen overflow-y-auto">
+          <div>
+            {!isEmpty(testResult.data) &&
+              testResult.data.map((item, index) => (
+                <div
+                  key={hash(item)}
+                  id={hash(item)}
+                  className={selectedIndex === item.id ? 'selected-item' : ''}
+                  onClick={() => setSelectedIndex(item.id)}
+                >
+                  <ExamineeCard
+                    item={item}
+                    index={index}
+                    selected={selectedIndex === item.id}
+                  />
+                </div>
+              ))}
+          </div>
+          {/* <div className="scroll-end" ref={setTarget} /> */}
+        </div>
+        <div className="child btn-wrapper">
           <button
             type="button"
-            className="bg-transparent snb-column-child-btn snb-modify-btn"
-            disabled={isEmpty(userData)}
-            onClick={() => {
-              if (!isEmpty(userData)) {
-                dispatch(setUserRegister(false));
-              }
-            }}
+            className={
+              isDisableTest
+                ? 'test-start-btn deactive-btn text-xl'
+                : 'test-start-btn text-xl'
+            }
+            onClick={testStartOpen}
           >
-            수정
+            <PencilSquareIcon className="h-8 w-8 text-white mr-1" />
+            <span>테스트시작</span>
           </button>
         </div>
-      </div>
-      <div className="child import-success-screen overflow-y-auto">
-        <div>
-          {!isEmpty(testResult.data) &&
-            testResult.data.map((item, index) => (
-              <div
-                key={hash(item)}
-                id={hash(item)}
-                className={selectedIndex === item.id ? 'selected-item' : ''}
-                onClick={() => setSelectedIndex(item.id)}
-              >
-                <ExamineeCard item={item} index={index} />
-              </div>
-            ))}
-        </div>
-        {/* <div className="scroll-end" ref={setTarget} /> */}
-      </div>
-      <div className="child btn-wrapper">
-        <button
-          type="button"
-          className={
-            isDisableTest
-              ? 'test-start-btn deactive-btn text-xl'
-              : 'test-start-btn text-xl'
-          }
-          onClick={testStartOpen}
-        >
-          <PencilSquareIcon className="h-8 w-8 text-white mr-1" />
-          <span>시작하기</span>
-        </button>
       </div>
     </div>
   );

@@ -30,6 +30,11 @@ const configuration: webpack.Configuration = {
           },
         },
       },
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ['@svgr/webpack'],
+      },
     ],
   },
 
@@ -48,12 +53,6 @@ const configuration: webpack.Configuration = {
     alias: {
       '@': webpackPaths.srcPath,
     },
-    fallback: {
-      path: require.resolve('path-browserify'),
-      stream: require.resolve('stream-browserify'),
-      crypto: require.resolve('crypto-browserify'),
-      fs: false,
-    },
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
     modules: [webpackPaths.srcPath, 'node_modules'],
     // There is no need to add aliases here, the paths in tsconfig get mirrored
@@ -61,10 +60,6 @@ const configuration: webpack.Configuration = {
   },
 
   plugins: [
-    // new webpack.ProvidePlugin({
-    //   process: 'process/browser',
-    //   Buffer: ['buffer', 'Buffer'],
-    // }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
     }),

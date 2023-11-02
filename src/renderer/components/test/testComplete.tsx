@@ -7,13 +7,17 @@ import { setInsertResult } from '@store/slices/testResultProvider';
 
 import { setNoticeOpen } from '@store/slices/navigateProvicer';
 
-import RightSnb from '@components/snb/rightSnb';
 import TestResult from '@components/main/TestResultComponent';
 
 import { TestForm } from '@interfaces';
-import { formToColumn, alertCustom } from '@lib/common';
-
-import iconSpeaker from '@assets/images/icons/icon_speaker.png';
+import {
+  formToColumn,
+  alertCustom,
+  ScoringOptions,
+  SoundSetOptions,
+  DirectionOptions,
+  FixedTypeOptions,
+} from '@lib/common';
 
 const TestComplete = () => {
   const [testFormResult, setTestFormResult] = useState<TestForm>(
@@ -23,6 +27,11 @@ const TestComplete = () => {
   const userData = useAppSelector((state: RootState) => state.userData);
   const testForm = useAppSelector((state: RootState) => state.testForm);
   const testResult = useAppSelector((state: RootState) => state.testResult);
+
+  const _soundSet = SoundSetOptions[testForm.sound_set?.toString() ?? ''];
+  const _fixedType = FixedTypeOptions[testForm.fixed_type ?? ''];
+  const _direction = DirectionOptions[testForm.direction ?? ''];
+  const _scoring = ScoringOptions[testForm.scoring ?? ''];
 
   const dispatch = useAppDispatch();
 
@@ -57,14 +66,41 @@ const TestComplete = () => {
 
   return (
     <>
-      <RightSnb />
-      <div className="result-form-title">
-        <img src={iconSpeaker} alt="speaker icon" />
+      <div className="check-form-title">
+        <div className="check-form-header">
+          <div className="check-form-header-start">
+            <p>검사 현황</p>
+          </div>
+          <div className="check-form-header-mid">
+            <p>검사 사운드 세트</p>
+            <p>사운드 제시 방식</p>
+            <p>사운드 제시 방향</p>
+            <p>채점 방식</p>
+          </div>
+          <div className="check-form-header-end">
+            <p>{_soundSet}</p>
+            <p>{_fixedType}</p>
+            <p>{_direction}</p>
+            <p>{_scoring}</p>
+          </div>
+          <div className="check-form-header-result">
+            <p>DIN SRT</p>
+            <p>날짜</p>
+          </div>
+          <div className="check-form-header-result-value">
+            <p>{testFormResult.test_result} dB</p>
+            <p>{testFormResult.test_datetime}</p>
+          </div>
+        </div>
         <p>테스트 결과</p>
       </div>
       <TestResult data={testFormResult} setData={setTestFormResult} />
       <div className="result-btn-wrapper">
-        <button type="button" onClick={saveTestResult}>
+        <button
+          type="button"
+          className="btn-template btn-small"
+          onClick={saveTestResult}
+        >
           저장 후 종료
         </button>
       </div>

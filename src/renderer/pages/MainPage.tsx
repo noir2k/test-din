@@ -5,11 +5,6 @@ import { RootState } from '@store/index';
 
 import isEmpty from 'lodash.isempty';
 
-import bgCircle1 from '@assets/images/bg_circle_1.png';
-import bgCircle2 from '@assets/images/bg_circle_2.png';
-import bgCircle3 from '@assets/images/bg_circle_3.png';
-import bgCircle4 from '@assets/images/bg_circle_4.png';
-
 import Notice from '@components/main/notice';
 import TestForm from '@components/test/testForm';
 import TestResult from '@components/main/TestResultComponent';
@@ -21,6 +16,8 @@ import { setTestResult } from '@store/slices/testResultProvider';
 import { setUserInfo } from '@store/slices/userDataProvider';
 
 import { confirmCustom } from '@lib/common';
+
+import ihabMainLogo from '@assets/images/logo/ihab_logo.png';
 
 const MainPage = () => {
   const {
@@ -88,33 +85,14 @@ const MainPage = () => {
               id="mainContent"
               className="main-contents flex justify-center items-center"
             >
+              <div className="flex main-frame-logo">
+                <img className="img-33" alt="ihabMainLogo" src={ihabMainLogo} />
+              </div>
               {isNoticeOpen && <Notice />}
               {isUserRegister && <UserRegister />}
               {isTestResultOpen && <TestResult />}
               {isTestStartOpen && <TestForm />}
               {isTestSessionOpen && <TestSession />}
-            </div>
-            <div className="main-contents main-contents-bg">
-              <img
-                className="absolute bottom-0"
-                src={bgCircle1}
-                alt="background decoration"
-              />
-              <img
-                className="absolute top-0 right-0"
-                src={bgCircle2}
-                alt="background decoration"
-              />
-              <img
-                className="absolute right-0 bottom-0"
-                src={bgCircle3}
-                alt="background decoration"
-              />
-              <img
-                className="absolute bg-circle-4"
-                src={bgCircle4}
-                alt="background decoration"
-              />
             </div>
           </main>
         </div>

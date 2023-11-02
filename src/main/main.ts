@@ -17,10 +17,9 @@ import {
   shell,
   ipcMain,
   dialog,
-  safeStorage,
   protocol,
   net,
-  OpenDialogSyncOptions,
+  // OpenDialogSyncOptions,
 } from 'electron';
 
 import Store from 'electron-store';
@@ -196,6 +195,8 @@ const validateLicense = (options: LicenseOpt): ValidateLicenseResult => {
 //   }
 // };
 
+// log.log(app.getPath('userData'));
+
 const createWindow = async () => {
   if (isDebug) {
     await installExtensions();
@@ -206,7 +207,7 @@ const createWindow = async () => {
     show: false,
     width: 1440,
     height: 1024,
-    minWidth: 1024,
+    minWidth: 1280,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       devTools: true,
@@ -238,7 +239,7 @@ const createWindow = async () => {
       buttons: ['종료', '취소'],
       defaultId: 1,
       cancelId: 1,
-      title: '아이해브 청력테스트 Pro',
+      title: 'iHab K-DiN Pro',
       message: '프로그램을 종료하시겠습니까?',
     });
 
@@ -272,6 +273,7 @@ const createWindow = async () => {
 
   // const database = await Db.createDb();
   // await Db.initDbTable(database);
+  // Db.testDb(database);
 
   /**
    * ipcMain event
@@ -290,18 +292,15 @@ const createWindow = async () => {
   //     buttonLabel: 'Open',
   //     filters: [{ name: 'sql', extensions: ['sql'] }],
   //   };
-
   //   if (STORE.get('loadFilePath')) {
   //     const defaultPath = STORE.get('loadFilePath') as string;
   //     options.defaultPath = defaultPath;
   //   }
-
   //   const filePaths = dialog.showOpenDialogSync(options);
-
   //   if (filePaths !== undefined && filePaths.length > 0) {
   //     STORE.set('loadFilePath', filePaths[0]);
-  //     const result = Db.loadFromSql(fs, database, filePaths[0]);
-  //     _loadData(database, 'sql-file-selected', event, result);
+  //     const result = Util.loadFromSql(db, filePaths[0]);
+  //     _loadData(db, 'sql-file-selected', event, result);
   //   } else {
   //     // event.sender.send('sql-file-canceled', 'File open canceled');
   //   }
@@ -313,15 +312,12 @@ const createWindow = async () => {
   //     buttonLabel: 'Save',
   //     filters: [{ name: 'sql', extensions: ['sql'] }],
   //   };
-
   //   const filePath = dialog.showSaveDialogSync(options);
-
   //   if (filePath) {
-  //     const result = Db.findAll(database);
-
+  //     const result = Util.findAll(db);
   //     if (result && result.length > 0) {
-  //       const sqlstr = Db.generateInsertQueryFromSelect(result);
-  //       const saved = Db.saveFile(fs, filePath, sqlstr);
+  //       const sqlstr = Util.generateInsertQueryFromSelect(result);
+  //       const saved = Util.saveFile(filePath, sqlstr);
   //       if (saved) {
   //         event.sender.send('save-file-completed', 'File save completed');
   //       } else {
@@ -344,9 +340,8 @@ const createWindow = async () => {
   //   const rowCount = Number(STORE.get('rowCount'));
   //   const currentPage = Number(STORE.get('currentPage'));
   //   const offset = currentPage * PAGE_COUNT;
-
   //   if (rowCount > offset) {
-  //     const result = Db.findByRegDate(database, offset.toString());
+  //     const result = Util.findByRegDate(db, offset.toString());
   //     if (result && result.length > 0) {
   //       event.sender.send('load-more-data', result);
   //       STORE.set('currentPage', currentPage + 1);
@@ -376,8 +371,8 @@ const createWindow = async () => {
   // });
 
   // ipcMain.on('update-user-name', (event, arg) => {
-  //   const result = Db.updateUserName(database, arg);
-  //   _loadData(database, 'update-user-name', event, result);
+  //   const result = Util.updateUserName(db, arg);
+  //   _loadData(db, 'update-user-name', event, result);
   // });
 
   ipcMain.on('react-route', async (_, arg) => {
