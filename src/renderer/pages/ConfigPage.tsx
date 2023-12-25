@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Howl, Howler } from 'howler';
 
-import isEmpty from 'lodash.isempty';
-
 import { useAppDispatch } from '@hook/index';
 import { setNoticeOpen } from '@store/slices/navigateProvicer';
 import { alertCustom } from '@lib/common';
@@ -30,7 +28,7 @@ const ConfigPage = () => {
 
   const saveConfig = async () => {
     await window.electron.ipcRenderer
-      .invoke('set:config', [
+      .invoke('set:conf', [
         {
           defaultVolume: sliderVolume,
         },
@@ -46,9 +44,11 @@ const ConfigPage = () => {
   };
 
   const loadConfig = async () => {
-    const config = await window.electron.ipcRenderer.invoke('get:config');
-    if (!isEmpty(config) && !Number.isNaN(config.defaultVolume)) {
-      setSliderVolume(config.defaultVolume);
+    const defaultVolume = await window.electron.ipcRenderer.invoke('get:conf', [
+      'defaultVolume',
+    ]);
+    if (defaultVolume && !Number.isNaN(defaultVolume)) {
+      setSliderVolume(defaultVolume);
     }
   };
 

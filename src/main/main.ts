@@ -274,13 +274,12 @@ const createWindow = async () => {
     return temp;
   });
 
-  ipcMain.handle('set:config', async (_, arg) => {
-    STORE.set('config', arg[0]);
+  ipcMain.handle('set:conf', async (_, arg) => {
+    STORE.set({ config: arg[0] });
   });
 
-  ipcMain.handle('get:config', async (_, arg) => {
-    const config = STORE.get('config');
-    return config;
+  ipcMain.handle('get:conf', (event, arg) => {
+    return STORE.get(`config.${arg[0]}`);
   });
 
   ipcMain.on('electron-store-clear', async (_) => {

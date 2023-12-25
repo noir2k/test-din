@@ -61,9 +61,11 @@ const PreCheckScreen = () => {
   };
 
   const loadConfig = async () => {
-    const config = await window.electron.ipcRenderer.invoke('get:config');
-    if (!isEmpty(config) && !Number.isNaN(config.defaultVolume)) {
-      setSliderVolume(config.defaultVolume);
+    const defaultVolume = await window.electron.ipcRenderer.invoke('get:conf', [
+      'defaultVolume',
+    ]);
+    if (defaultVolume && !Number.isNaN(defaultVolume)) {
+      setSliderVolume(defaultVolume);
     } else {
       alertCustom({
         title: '설정 불러오기 오류',

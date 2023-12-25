@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import isEmpty from 'lodash.isempty';
-
 import ihabTextLogo from '@assets/images/logo/ihab_text_logo.png';
 import kdinTextLogo from '@assets/images/logo/kdin_text_logo.png';
 import ihabCorpLogo from '@assets/images/logo/ihab_corp_logo.png';
@@ -11,8 +9,10 @@ function Alert() {
   const navigate = useNavigate();
 
   const loadConfig = async () => {
-    const config = await window.electron.ipcRenderer.invoke('get:config');
-    if (!isEmpty(config) && !Number.isNaN(config.defaultVolume)) {
+    const defaultVolume = await window.electron.ipcRenderer.invoke('get:conf', [
+      'defaultVolume',
+    ]);
+    if (defaultVolume && !Number.isNaN(defaultVolume)) {
       navigate('/main-page');
     } else {
       navigate('/config-page');
