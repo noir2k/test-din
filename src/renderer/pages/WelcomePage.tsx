@@ -21,10 +21,23 @@ interface AlertPropType {
 
 const Alert = ({ licenseStatus, setShowAlert }: AlertPropType) => {
   const navigate = useNavigate();
+
+  const loadConfig = async () => {
+    const defaultVolume = await window.electron.ipcRenderer.invoke('get:conf', [
+      'defaultVolume',
+    ]);
+    if (defaultVolume && !Number.isNaN(defaultVolume)) {
+      navigate('/main-page');
+    } else {
+      navigate('/config-page');
+    }
+  };
+
   const handleAlertBtnClick = () => {
     setShowAlert(false);
     if (licenseStatus) {
-      navigate('/main-page');
+      loadConfig();
+      // navigate('/main-page');
     }
   };
 
@@ -34,42 +47,45 @@ const Alert = ({ licenseStatus, setShowAlert }: AlertPropType) => {
   };
 
   return (
-    <div className="alert-wrapper">
-      <div className="alert-inner">
-        {licenseStatus ? (
-          <>
-            <p className="alert-text">라이센스 확인 완료!</p>
-            <button
-              type="button"
-              className="alert-btn"
-              onClick={handleAlertBtnClick}
-            >
-              확인
-            </button>
-          </>
-        ) : (
-          <>
-            <p className="alert-text">
-              라이센스 확인 실패! <br /> 관리자(admin@mail.com)에게 문의하세요.
-            </p>
-            <div className="reset-register-user" onClick={handleClearConf}>
-              사용자 등록 초기화
-            </div>
-            <button
-              type="button"
-              className="alert-btn"
-              onClick={handleAlertBtnClick}
-            >
-              확인
-            </button>
-          </>
-        )}
+    <div className="alert-dim">
+      <div className="alert-wrapper">
+        <div className="alert-inner">
+          {licenseStatus ? (
+            <>
+              <p className="alert-text">라이센스 확인 완료!</p>
+              <button
+                type="button"
+                className="alert-btn"
+                onClick={handleAlertBtnClick}
+              >
+                확인
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="alert-text">
+                라이센스 확인 실패! <br /> 관리자(admin@mail.com)에게
+                문의하세요.
+              </p>
+              <div className="reset-register-user" onClick={handleClearConf}>
+                사용자 등록 초기화
+              </div>
+              <button
+                type="button"
+                className="alert-btn"
+                onClick={handleAlertBtnClick}
+              >
+                확인
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
-export default function Welcome() {
+const WelcomePage = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [showRegUser, setShowRegUser] = useState(false);
   const [licenseStatus, setLicenseStatus] = useState(false);
@@ -246,4 +262,6 @@ export default function Welcome() {
       )}
     </div>
   );
-}
+};
+
+export default WelcomePage;

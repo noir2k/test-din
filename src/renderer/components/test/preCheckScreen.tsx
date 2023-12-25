@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
+import { useNavigate } from 'react-router-dom';
 
 import type { RootState } from '@store/index';
 
 import hash from 'object-hash';
+import isEmpty from 'lodash.isempty';
 
 import { nextPage, setVolume } from '@store/slices/testProgressProvider';
 
@@ -27,6 +29,7 @@ interface IButtonStateType {
 
 const PreCheckScreen = () => {
   const hooks = useNumberInput(maxCount, true);
+  const navigate = useNavigate();
 
   const [play, setPlay] = useState(false);
   const [soundFile, setSoundFile] = useState('');
@@ -55,6 +58,22 @@ const PreCheckScreen = () => {
     const newValue = Number(e.target.value);
     setSliderVolume(newValue);
     setVolume(newValue);
+  };
+
+  const loadConfig = async () => {
+    const defaultVolume = await window.electron.ipcRenderer.invoke('get:conf', [
+      'defaultVolume',
+    ]);
+    if (defaultVolume && !Number.isNaN(defaultVolume)) {
+      setSliderVolume(defaultVolume);
+    } else {
+      alertCustom({
+        title: '설정 불러오기 오류',
+        message: `캘리브레이션 볼륨 설정 불러오기 오류가 발생하였습니다.
+        설정 화면으로 이동합니다.`,
+        callback: () => navigate('/config-page'),
+      });
+    }
   };
 
   useEffect(() => {
@@ -130,6 +149,10 @@ const PreCheckScreen = () => {
     }
   }, [soundFile]);
 
+  useEffect(() => {
+    loadConfig();
+  }, []);
+
   return (
     <>
       {play && <PlaySound mp3={soundFile} volume={sliderVolume} />}
@@ -149,7 +172,7 @@ const PreCheckScreen = () => {
 
         <div className="slide-bar-wrapper">
           <div className="slider-bar-top">
-            <p className="slide-bar-title">소리 강도 조절</p>
+            <p className="text-sm">소리 강도 조절</p>
           </div>
           <div className="slider-bar-inner">
             <input

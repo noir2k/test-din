@@ -4,6 +4,7 @@ import {
   useRef,
 } from 'react';
 import { useAppSelector, useAppDispatch } from '@hook/index';
+import { Link } from 'react-router-dom';
 
 import type { RootState } from '@store/index';
 
@@ -41,6 +42,7 @@ import AddUserIcon from '@assets/images/icons/icon_add_user.svg';
 import PrinterIcon from '@assets/images/icons/icon_printer.svg';
 import DownloadIcon from '@assets/images/icons/icon_download.svg';
 import ProfileIcon from '@assets/images/icons/icon_profile.svg';
+import SettingIcon from '@assets/images/icons/icon_setting.svg';
 
 // const PAGE_COUNT = 15;
 const headerArr = ColumnNameHeader.map((item) => {
@@ -239,8 +241,12 @@ const snb = () => {
                   dispatch(setNoticeOpen());
                 }}
               >
-                {/* <img alt="homeIconUrl" src={HomeIcon} /> */}
                 <HomeIcon className="snb-icon" />
+              </div>
+              <div className="cursor-pointer">
+                <Link to="/config-page">
+                  <SettingIcon className="snb-icon" />
+                </Link>
               </div>
             </div>
             <div className="snb-btn-container">
