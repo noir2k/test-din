@@ -275,13 +275,11 @@ const createWindow = async () => {
   });
 
   ipcMain.handle('set:config', async (_, arg) => {
-    log.log('set:config', arg);
     STORE.set('config', arg[0]);
   });
 
   ipcMain.handle('get:config', async (_, arg) => {
     const config = STORE.get('config');
-    log.log('get:config', config);
     return config;
   });
 
