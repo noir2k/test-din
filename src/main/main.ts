@@ -278,7 +278,7 @@ const createWindow = async () => {
     STORE.set({ config: arg[0] });
   });
 
-  ipcMain.handle('get:conf', (event, arg) => {
+  ipcMain.handle('get:conf', (_, arg) => {
     return STORE.get(`config.${arg[0]}`);
   });
 
