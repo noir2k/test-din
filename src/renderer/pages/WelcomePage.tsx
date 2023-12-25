@@ -1,19 +1,36 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+import isEmpty from 'lodash.isempty';
 
 import ihabTextLogo from '@assets/images/logo/ihab_text_logo.png';
 import kdinTextLogo from '@assets/images/logo/kdin_text_logo.png';
 import ihabCorpLogo from '@assets/images/logo/ihab_corp_logo.png';
 
 function Alert() {
+  const navigate = useNavigate();
+
+  const loadConfig = async () => {
+    const config = await window.electron.ipcRenderer.invoke('get:config');
+    if (!isEmpty(config) && !Number.isNaN(config.defaultVolume)) {
+      navigate('/main-page');
+    } else {
+      navigate('/config-page');
+    }
+  };
+
   return (
     <div className="alert-dim">
       <div className="alert-wrapper">
         <div className="alert-inner">
           <p className="alert-text">라이센스 확인 완료!</p>
-          <Link to="/main-page" className="alert-btn">
+          <button
+            type="button"
+            className="alert-btn"
+            onClick={() => loadConfig()}
+          >
             확인
-          </Link>
+          </button>
         </div>
       </div>
     </div>

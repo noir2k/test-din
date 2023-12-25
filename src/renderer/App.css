@@ -124,6 +124,14 @@ img {
   background-repeat: no-repeat;
 }
 
+.btn-template.calibration-play {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 280px;
+  margin-right: 24px;
+}
+
 .img-50,
 .img-33 {
   height: fit-content;
@@ -197,7 +205,9 @@ img {
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-left: 20px;
+  margin-right: 20px;
   padding-top: 15px;
   padding-bottom: 125px;
 }
@@ -823,10 +833,15 @@ span {
   font-size: 10px;
 }
 
+.slider-bar,
 .slider-bar-inner {
   display: flex;
   width: 100%;
   position: relative;
+}
+
+.slider-bar.calibration-config > input {
+  width: 480px;
 }
 
 .slider-bar-inner-text {
@@ -862,7 +877,7 @@ span {
   display: inline-flex;
   position: relative;
   top: 18px;
-  padding: 14px 20px;
+  padding: 14px 18px;
   align-items: center;
   gap: 14px;
   border-radius: 25.5px;

@@ -7,6 +7,7 @@ import './App.css';
 
 import WelcomePage from './pages/WelcomePage';
 import MainPage from './pages/MainPage';
+import ConfigPage from './pages/ConfigPage';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<WelcomePage />} />
           <Route path="/main-page" element={<MainPage />} />
+          <Route path="/config-page" element={<ConfigPage />} />
         </Routes>
       </Provider>
     </Router>
