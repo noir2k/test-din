@@ -30,7 +30,7 @@ import {
   setUserRegister,
   setTestStartOpen,
   setTestSession,
-} from '@store/slices/navigateProvicer';
+} from '@store/slices/navigateProvider';
 
 import { setUserInfo, resetUserInfo } from '@store/slices/userDataProvider';
 

@@ -9,7 +9,7 @@ import isEmpty from 'lodash.isempty';
 
 import type { FieldError } from 'react-hook-form';
 
-import { setNoticeOpen } from '@store/slices/navigateProvicer';
+import { setNoticeOpen } from '@store/slices/navigateProvider';
 import { setUserInfo } from '@store/slices/userDataProvider';
 import { setReplaceUserInfo } from '@store/slices/testResultProvider';
 
