@@ -64,7 +64,7 @@ const Alert = ({ licenseStatus, setShowAlert }: AlertPropType) => {
           ) : (
             <>
               <p className="alert-text">
-                라이센스 확인 실패! <br /> 관리자(admin@mail.com)에게
+                라이센스 확인 실패! <br /> 관리자(admin@ihab.co.kr)에게
                 문의하세요.
               </p>
               <div className="reset-register-user" onClick={handleClearConf}>
