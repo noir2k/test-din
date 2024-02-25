@@ -5,7 +5,7 @@ import type { RootState } from '@store/index';
 
 import { setInsertResult } from '@store/slices/testResultProvider';
 
-import { setNoticeOpen } from '@store/slices/navigateProvicer';
+import { setNoticeOpen } from '@store/slices/navigateProvider';
 
 import TestResult from '@components/main/TestResultComponent';
 

@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
-import navigateProvicer from './slices/navigateProvicer';
+import navigateProvider from './slices/navigateProvider';
 import scoreProvider from './slices/scoreProvider';
 import userDataProvider from './slices/userDataProvider';
 import testFormProvider from './slices/testFormProvider';
@@ -9,7 +9,7 @@ import testProgressProvider from './slices/testProgressProvider';
 import testResultProvider from './slices/testResultProvider';
 
 const rootReducer = combineReducers({
-  navigate: navigateProvicer,
+  navigate: navigateProvider,
   scoreData: scoreProvider,
   userData: userDataProvider,
   testForm: testFormProvider,

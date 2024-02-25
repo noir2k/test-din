@@ -6,7 +6,7 @@ import type { RootState } from '@store/index';
 
 import { setReplaceResult } from '@store/slices/testResultProvider';
 
-import { setDimPopup } from '@store/slices/navigateProvicer';
+import { setDimPopup } from '@store/slices/navigateProvider';
 
 import isEmpty from 'lodash.isempty';
 

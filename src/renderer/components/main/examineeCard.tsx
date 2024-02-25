@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAppDispatch } from '@hook/index';
 
-import { setTestResultOpen } from '@store/slices/navigateProvicer';
+import { setTestResultOpen } from '@store/slices/navigateProvider';
 
 import { setRemoveResult } from '@store/slices/testResultProvider';
 

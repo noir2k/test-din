@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Howl, Howler } from 'howler';
 
 import { useAppDispatch } from '@hook/index';
-import { setNoticeOpen } from '@store/slices/navigateProvicer';
+import { setNoticeOpen } from '@store/slices/navigateProvider';
 import { alertCustom } from '@lib/common';
 
 import ihabCorpLogo from '@assets/images/logo/ihab_corp_logo.png';
