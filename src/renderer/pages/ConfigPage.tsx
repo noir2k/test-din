@@ -83,7 +83,7 @@ const ConfigPage = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <p className="text-3xl font-black mb-16">
-        iHab K-DiN Pro 캘리브레이션 볼륨 설정
+        아이해브 청력테스트 Pro 캘리브레이션 볼륨 설정
       </p>
       <div className="flex justify-center w-4/5  mb-16">
         <div className="w-1/2">
@@ -93,11 +93,12 @@ const ConfigPage = () => {
             설정해주세요.
           </p>
           <p className="leading-8">
-            ● K-DiN Pro의 캘리브레이션은 80 dB SPL 이상으로 설정하는 것을
-            권장합니다.
+            ● 아이해브 청력테스트 Pro의 캘리브레이션은 80 dB SPL 이상으로
+            설정하는 것을 권장합니다.
           </p>
           <p className="leading-8">
-            ● K-DiN Pro의 사운드 볼륨은 운영체제의 볼륨 설정에 영향을 받습니다.
+            ● 아이해브 청력테스트 Pro의 사운드 볼륨은 운영체제의 볼륨 설정에
+            영향을 받습니다.
           </p>
           <br />
         </div>
